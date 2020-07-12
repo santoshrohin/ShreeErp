@@ -1,0 +1,68 @@
+20140521-13:51:33.463 00001E2C - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140521-13:55:46.085 00002508 - ERROR: Couldn't connect to routers 95.211.242.83:443,80,8080|95.211.191.142:443,80,8080|88.198.6.55:443,80,8080|88.198.6.54:443,80,8080|
+20140521-15:28:19.855 0000248C - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140526-12:28:17.718 00000C9C - ERROR: SetForegroundWindow()#1 Error 87
+20140621-12:43:23.571 0000160C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140624-16:32:22.452 000007D4 - ERROR: SetForegroundWindow()#1 Error 87
+20140624-18:35:39.706 000016CC - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140625-10:43:19.431 00000784 - ERROR: SetForegroundWindow()#1 Error 87
+20140625-11:04:35.518 00001550 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140625-11:33:31.436 000006E4 - ERROR: ERROR: Unhandled Exception eip=75619617 esp=033FF0B0 ebp=033FF100
+20140625-11:37:30.937 00001148 - ERROR: SetForegroundWindow()#1 Error 87
+20140625-14:23:29.014 000012A8 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140626-12:33:03.910 00001258 - ERROR: SetForegroundWindow()#1 Error 87
+20140626-15:43:26.220 00001298 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140626-16:00:57.470 0000179C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140626-16:59:27.634 0000160C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140626-17:12:53.433 000017B8 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140630-17:51:39.328 00000AF4 - ERROR: ERROR 0 0 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140703-13:25:32.461 000006A8 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140705-16:42:00.474 00001310 - ERROR: SetForegroundWindow()#1 Error 87
+20140705-16:53:49.812 00000A1C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140707-12:36:25.485 0000157C - ERROR: SetForegroundWindow()#1 Error 87
+20140707-16:23:48.376 00001768 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140724-17:08:22.543 00000C80 - ERROR: SetForegroundWindow()#1 Error 87
+20140724-17:17:55.274 00000F9C - ERROR: ERROR 10054 -1 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140724-17:18:00.524 00001298 - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140724-17:21:59.759 0000165C - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140724-17:58:58.609 000007B4 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140726-18:19:11.036 000006CC - ERROR: Error {12007} occured while connecting to server "http://rl.ammyy.com" 
+20140726-18:29:44.485 00000220 - ERROR: SetForegroundWindow()#1 Error 87
+20140729-18:17:16.342 00001F40 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140729-18:17:24.520 0000199C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140729-18:28:15.456 00001674 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140729-18:31:14.886 0000148C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140729-18:31:32.045 00000608 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140729-18:38:07.903 00001320 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140801-16:23:08.577 00002844 - ERROR: SetForegroundWindow()#1 Error 87
+20140804-10:57:08.337 000014B8 - ERROR: SetForegroundWindow()#1 Error 87
+20140804-11:18:43.446 00000A5C - ERROR: SetForegroundWindow()#1 Error 87
+20140804-12:12:51.262 00001968 - ERROR: SetForegroundWindow()#1 Error 87
+20140804-12:37:49.540 00001C04 - ERROR: SetForegroundWindow()#1 Error 87
+20140804-16:39:16.513 000024F4 - ERROR: SetForegroundWindow()#1 Error 87
+20140805-14:17:15.475 00002744 - ERROR: SetForegroundWindow()#1 Error 87
+20140805-14:23:32.393 00001A3C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140805-14:44:06.532 000023FC - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140805-17:21:20.516 00002564 - ERROR: SetForegroundWindow()#1 Error 87
+20140805-17:21:38.842 00002564 - ERROR: Error {12007} occured while connecting to server "http://rl.ammyy.com" 
+20140805-17:21:49.851 00002878 - ERROR: SetForegroundWindow()#1 Error 87
+20140806-12:07:35.718 000018C0 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140807-09:52:47.461 0000176C - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140807-09:53:24.942 00001194 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140807-09:56:55.045 000012D8 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140807-09:57:28.564 00000390 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140807-11:11:48.764 00001478 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140808-12:39:19.658 00000684 - ERROR: SetForegroundWindow()#1 Error 87
+20140808-18:59:59.015 00000744 - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140808-19:04:11.114 00002374 - ERROR: Couldn't connect to routers 95.211.242.83:443,80,8080|95.211.191.142:443,80,8080|88.198.6.55:443,80,8080|88.198.6.54:443,80,8080|
+20140808-19:08:29.295 00002C94 - ERROR: Couldn't connect to routers 95.211.242.83:443,80,8080|95.211.191.142:443,80,8080|88.198.6.55:443,80,8080|88.198.6.54:443,80,8080|
+20140808-19:12:47.177 00000A74 - ERROR: Couldn't connect to routers 95.211.242.83:443,80,8080|95.211.191.142:443,80,8080|88.198.6.55:443,80,8080|88.198.6.54:443,80,8080|
+20140809-10:12:50.974 00001564 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140809-10:55:15.195 0000121C - ERROR: SetForegroundWindow()#1 Error 87
+20140809-12:39:57.551 00001454 - ERROR: SetForegroundWindow()#1 Error 87
+20140809-12:40:51.910 00000A64 - ERROR: SetForegroundWindow()#1 Error 87
+20140809-23:07:44.365 000002F4 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140810-09:59:18.172 00001254 - ERROR: ERROR 0 0 in TransportTCP2::ReadExact()#2 in Vr::run_un
+20140813-19:00:39.597 0000100C - ERROR: ERROR 10054 -1 in TransportTCP1::ReadExact()#2 in TrClient::Run()#239
+20140821-13:37:21.973 00001A90 - ERROR: SetForegroundWindow()#1 Error 87
+20140825-18:49:22.649 00006A08 - ERROR: SetForegroundWindow()#1 Error 87

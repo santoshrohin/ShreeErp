@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsCreditNote" targetNamespace="http://tempuri.org/dsCreditNote.xsd" xmlns:mstns="http://tempuri.org/dsCreditNote.xsd" xmlns="http://tempuri.org/dsCreditNote.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsCreditNote" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtDebitNote">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DNM_SERIAL_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_GSTIN_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_EWAY_BILL_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_DATE" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_CUST_ADDRESS" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_CUST_STATE_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_GRAND_TOTAL" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_CENTRAL_TAX_AMT" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_STATE_UNION_TAX_AMT" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_INTEGRATED_TAX_AMT" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_CESS_TAX_AMT" type="xs:string" minOccurs="0" />
+              <xs:element name="DNM_NET_AMOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_QTY" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_RATE" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_AMOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_CENTRAL_TAX" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_STATE_UNION_TAX" type="xs:string" minOccurs="0" />
+              <xs:element name="DND_INTEGRATED_TAX" type="xs:string" minOccurs="0" />
+              <xs:element name="P_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="P_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="P_ADD1" type="xs:string" minOccurs="0" />
+              <xs:element name="P_VEND_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="P_CST" type="xs:string" minOccurs="0" />
+              <xs:element name="P_VAT" type="xs:string" minOccurs="0" />
+              <xs:element name="P_ECC_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="P_GST_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="P_PIN_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="P_PARTY_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="E_TARIFF_NO" type="xs:string" minOccurs="0" />
+              <xs:element name="SM_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="SM_STATE_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="I_CODENO" type="xs:string" minOccurs="0" />
+              <xs:element name="I_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="I_UOM_NAME" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

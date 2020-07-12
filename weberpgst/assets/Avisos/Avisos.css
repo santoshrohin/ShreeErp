@@ -1,0 +1,35 @@
+﻿.AvisoInfo, .AvisoOk, .AvisoAviso, .AvisoErro
+{
+    border: 1px solid;
+    margin: 15px 0px;
+    padding:15px 20px 15px 55px;
+    width: inherit;	
+    font: bold 12px verdana;
+    align-content: inherit;
+    align-self: inherit;
+    align-items: inherit;
+}
+
+.AvisoInfo 
+{
+    color: #00529B;
+    background: #BDE5F8 url("IconeInfo.png") no-repeat 10px center;
+}
+
+.AvisoOk 
+{
+    color: #4F8A10;
+    background: #DFF2BF url("IconeOk.png") no-repeat 10px center;
+}
+
+.AvisoAviso 
+{
+    color: #9F6000;
+    background: #FEEFB3 url("IconeAviso.png") no-repeat 10px center;
+}
+
+.AvisoErro 
+{
+    color: #D8000C;
+    background: #FFBABA url("IconeXis.png") no-repeat 10px center;
+}
