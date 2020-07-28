@@ -26,21 +26,20 @@ public partial class RoportForms_ADD_OutstandingReport : System.Web.UI.Page
         {
             string Title = Request.QueryString[0];
 
-            //bool All_CUST = Convert.ToBoolean(Request.QueryString[1].ToString());
+            bool All_CUST = Convert.ToBoolean(Request.QueryString[1].ToString());
 
-           
-            string Condition = Request.QueryString[1].ToString();
-            //string ToDate = Request.QueryString[2].ToString();
-            //int p_name = Convert.ToInt32(Request.QueryString[3].ToString());
-            //string rbtGroup = Request.QueryString[4].ToString();
-             string ddlType = Request.QueryString[2].ToString();
-            //string rbtReportType = Request.QueryString[6].ToString();
-            //string cond = Request.QueryString[7].ToString();
-            //string CondInv = Request.QueryString[8].ToString();
-            //string CondiCredit = Request.QueryString[9].ToString();
-            //string CondiDebit = Request.QueryString[10].ToString();
-            //string CondiAdvance = Request.QueryString[11].ToString();
-             GenerateReport(Title, Condition, ddlType);
+
+            string ToDate = Request.QueryString[2].ToString();
+            int p_name = Convert.ToInt32(Request.QueryString[3].ToString());
+            string rbtGroup = Request.QueryString[4].ToString();
+            string ddlType = Request.QueryString[5].ToString();
+            string rbtReportType = Request.QueryString[6].ToString();
+            string cond = Request.QueryString[7].ToString();
+            string CondInv = Request.QueryString[8].ToString();
+            string CondiCredit = Request.QueryString[9].ToString();
+            string CondiDebit = Request.QueryString[10].ToString();
+            string CondiAdvance = Request.QueryString[11].ToString();
+            GenerateReport(Title, All_CUST, ToDate, p_name, rbtGroup, ddlType, rbtReportType, cond, CondInv, CondiCredit, CondiDebit, CondiAdvance);
         }
         catch (Exception Ex)
         {
@@ -49,7 +48,6 @@ public partial class RoportForms_ADD_OutstandingReport : System.Web.UI.Page
     #endregion
 
     #region GenerateReport
-    /*
     private void GenerateReport(string Title, bool All_CUST, string ToDate, int p_name, string rbtGroup, string ddlType, string rbtReportType, string cond, string CondInv, string CondiCredit, string CondiDebit, string CondiAdvance)
     {
         try
@@ -154,80 +152,6 @@ public partial class RoportForms_ADD_OutstandingReport : System.Web.UI.Page
             //    PanelMsg.Visible = true;
             //    lblmsg.Text = " No Record Found! ";
             //}
-            #endregion
-
-        }
-        catch (Exception Ex)
-        {
-
-        }
-    }
-      */
-    #endregion
-
-    #region GenerateReport
-    private void GenerateReport(string Title, string Condition, string ddlType)
-    {
-        try
-        {
-            string selectstmt = "";
-            DL_DBAccess = new DatabaseAccessLayer();
-            DataSet ds = new DataSet();
-            ds = null;
-
-            string lastfinYear = Session["CompanyClosingDate"].ToString();
-
-            //SqlParameter[] par = new SqlParameter[7];
-            //par[0] = new SqlParameter("@billpassingcond", cond);
-            //par[1] = new SqlParameter("@Invcond", CondInv);
-            //par[2] = new SqlParameter("@CondiCreditcond", CondiCredit);
-            //par[3] = new SqlParameter("@CondiDebitcond", CondiDebit);
-            //string finyear = Session["CompanyFinancialYr"].ToString();
-            //string currentFinancialYear = ConfigurationManager.AppSettings["CurrentYearid"];
-            //string storeprocName = "";
-            //string sep = "-";
-
-            //string[] splitContent = finyear.Split(sep.ToCharArray());
-            //int yearid = Convert.ToInt32(splitContent[0]);
-            //if (currentFinancialYear == finyear)
-            //{
-            //    storeprocName = "Outstanding";
-            //}
-            //else
-            //{
-            //    storeprocName = "OutstandingAccordingToFinYear";
-
-            //}
-
-            DataTable dtOutstanding = new DataTable();
-            if (ddlType=="1")
-            {
-                dtOutstanding = CommonClasses.Execute("SELECT  * FROM  TALLY_OUTSTANDING  where " + Condition + " ORDER BY TALLY_OUT_PARTYNAME ");
-
-
-            }
-            else
-            {
-                dtOutstanding = CommonClasses.Execute("SELECT  * FROM  TALLY_OUTSTANDING where " + Condition + "    ORDER BY TALLY_OUT_PARTYNAME ");
-
-            }
-
-           
-            
-            #region Count
-            
-            ReportDocument rptname = null;
-            rptname = new ReportDocument();
-
-            rptname.Load(Server.MapPath("~/Account/Reports/outstanding.rpt"));
-            rptname.FileName = Server.MapPath("~/Account/Reports/outstanding.rpt");
-
-            rptname.Refresh();
-            rptname.SetDataSource(dtOutstanding);
-
-            rptname.SetParameterValue("txtCompanyName", Session["CompanyName"].ToString()); 
-            CrystalReportViewer1.ReportSource = rptname;
- 
             #endregion
 
         }
