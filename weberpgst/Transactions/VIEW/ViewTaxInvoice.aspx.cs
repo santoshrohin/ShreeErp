@@ -11,6 +11,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using System.Net.Mail;
+
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
+
+
 public partial class Transactions_VIEW_ViewTaxInvoice : System.Web.UI.Page
 {
 
@@ -305,6 +313,41 @@ public partial class Transactions_VIEW_ViewTaxInvoice : System.Web.UI.Page
                     return;
                     // btnOk_Click(null, null);
                 }
+            }
+            if (e.CommandName.Equals("SendEmail"))
+            {
+//                string FromEmail = ConfigurationManager.AppSettings["FromEmail"].ToString(); 
+//                string ToEmail = ConfigurationManager.AppSettings["ToEmail"].ToString();
+//                string Subject = ConfigurationManager.AppSettings["Subject"].ToString();
+//                string Body = ConfigurationManager.AppSettings["Body"].ToString();
+//                string password = ConfigurationManager.AppSettings["networkCredential"].ToString();
+//                string port = ConfigurationManager.AppSettings["port"].ToString(); 
+//                using (MailMessage mail = new MailMessage(FromEmail, ToEmail))
+//                {
+//                    mail.Subject = Subject;
+//                    string htmlString = @"<html>
+//                      <body>
+//                      <p>Dear Ms. Susan,</p>
+//                      <p>Thank you for your letter of yesterday inviting me to come for an interview on Friday afternoon, 5th July, at 2:30.
+//                              I shall be happy to be there as requested and will bring my diploma and other papers with me.</p>
+//                      <p>Sincerely,<br>-Jack</br></p>
+//                      </body>
+//                      </html>
+//                     ";  
+//                    mail.Body = htmlString;
+//                        mail.Attachments.Add(new Attachment("E:\\1.PNG"));
+                        
+//                    mail.IsBodyHtml = true;
+//                    SmtpClient smtp = new SmtpClient();
+//                    smtp.Host = "smtp.gmail.com";
+//                    smtp.EnableSsl = true;
+//                    NetworkCredential networkCredential = new NetworkCredential(FromEmail, password);
+//                    smtp.UseDefaultCredentials = true;
+//                    smtp.Credentials = networkCredential;
+//                    smtp.Port =Convert.ToInt32(port);
+//                    smtp.Send(mail);
+//                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Message has been sent successfully.');", true);
+//                }
             }
         }
         catch (Exception Ex)

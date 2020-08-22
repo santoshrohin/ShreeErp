@@ -1559,4 +1559,40 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
         }
         txtamt.Text = amt.ToString();
     }
+
+
+    public void SendEmail(string tomail, string attachment, string pname, string cmname, string subject)
+    {
+        string FromEmail = ConfigurationManager.AppSettings["FromEmail"].ToString();
+        string ToEmail = tomail;//ConfigurationManager.AppSettings["ToEmail"].ToString();
+        string Subject = subject;// ConfigurationManager.AppSettings["Subject"].ToString();
+
+        string password = ConfigurationManager.AppSettings["networkCredential"].ToString();
+        string port = ConfigurationManager.AppSettings["port"].ToString();
+        using (MailMessage mail = new MailMessage(FromEmail, ToEmail))
+        {
+            mail.Subject = Subject;
+            string htmlString = @"<html>
+                      <body>
+                      <p>Hi " + pname + @",</p>
+                      <p>We are contacting you in regards to the new invoice raised that has been created on your account.</p>
+<p>Please see the attached invoice and get back to us in case if you have queries.</p>
+                      <p>Sincerely,<br><br>" + cmname + @"</br></p>
+                      </body>
+                      </html>
+                     ";
+            mail.Body = htmlString;
+            mail.Attachments.Add(new Attachment(attachment));
+
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            NetworkCredential networkCredential = new NetworkCredential(FromEmail, password);
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = networkCredential;
+            smtp.Port = Convert.ToInt32(port);
+            smtp.Send(mail);
+        }
+    }
 }

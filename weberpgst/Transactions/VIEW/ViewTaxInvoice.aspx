@@ -127,6 +127,10 @@
                                                                                 <asp:LinkButton ID="lnkMultiple" runat="server" CausesValidation="False" CommandName="PrintMult"
                                                                                     Text="Print Multiple" CommandArgument='<%# Bind("INM_CODE") %>'><i class="fa fa-print"></i> Print Multiple</asp:LinkButton>
                                                                             </li>
+                                                                            <li>
+                                                                                <asp:LinkButton ID="lnkSendEmail" runat="server" CausesValidation="False" CommandName="SendEmail"
+                                                                                    Text="Send Email" CommandArgument='<%# Bind("P_NAME") %>'><i class="fa fa-print"></i>Send Email</asp:LinkButton>
+                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
