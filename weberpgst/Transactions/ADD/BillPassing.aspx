@@ -745,10 +745,29 @@ save<br />
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="col-md-2 control-label label-sm">
+                                                        TCS Amt
                                                     </label>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
+                                                        <asp:UpdatePanel ID="UpdatePanel22" runat="server">
+                                                            <ContentTemplate>
+                                                                <asp:TextBox CssClass="form-control text-right" ID="txtTCSper" Text="0.00" TabIndex="13"
+                                                                    runat="server"></asp:TextBox>
+                                                                <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" TargetControlID="txtTCSper"
+                                                                    ValidChars="0123456789." runat="server" />
+                                                            </ContentTemplate>
+                                                        </asp:UpdatePanel>
                                                     </div>
-                                                    <label class="col-md-3 control-label label-sm">
+                                                    <div class="col-md-2">
+                                                        <asp:UpdatePanel ID="UpdatePanel24" runat="server">
+                                                            <ContentTemplate>
+                                                                <asp:TextBox CssClass="form-control text-right" ID="txtTCSperAmt" Text="0.00"
+                                                                    TabIndex="13" runat="server"></asp:TextBox>
+                                                                <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender22" TargetControlID="txtTCSperAmt"
+                                                                    ValidChars="0123456789." runat="server" />
+                                                            </ContentTemplate>
+                                                        </asp:UpdatePanel>
+                                                    </div>
+                                                    <label class="col-md-2 control-label label-sm">
                                                         <span class="required"></span>Grand Total
                                                     </label>
                                                     <div class="col-md-4">
@@ -768,6 +787,8 @@ save<br />
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
                                 <div class="form-actions fluid">
                                     <div class="col-md-offset-5 col-md-9">
                                         <%--<asp:LinkButton ID="btnSubmit" CssClass="btn green" TabIndex="25" runat="server"
@@ -775,6 +796,9 @@ save<br />
                                       --%>
                                             <asp:UpdatePanel runat="server" ID="UpdatePanel59" UpdateMode="Conditional">
                                             <ContentTemplate>
+                                            <div class="row ">
+                <asp:Label ID="lblerrormessagebasicamt" BackColor="Red" CssClass="btn-danger" runat="server"></asp:Label>
+                
                                                 <asp:Button ID="btnSubmit" OnClientClick="this.disabled=true; this.value='Saving ... Please Wait.';"
                                                     UseSubmitBehavior="false" CssClass="btn green" TabIndex="25" runat="server" Text="Save"
                                                     OnClick="btnSubmit_Click" />
@@ -785,7 +809,9 @@ save<br />
                                             
                                             
                                     </div>
+                                    
                                 </div>
+                                
                                 <!--/row-->
                             </asp:Panel>
                         </div>
@@ -813,6 +839,7 @@ save<br />
                                                     </label>
                                                 </div>
                                                 <div class="row">
+                                                
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <asp:LinkButton ID="Button5" CssClass="btn blue" TabIndex="29" runat="server" Visible="true"
                                                             OnClick="btnOk_Click">  Yes </asp:LinkButton>
@@ -820,6 +847,7 @@ save<br />
                                                             OnClick="btnCancel1_Click"> No</asp:LinkButton>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -829,6 +857,7 @@ save<br />
                     </asp:UpdatePanel>
                 </div>
             </div>
+               
         </div>
     </div>
     <!-- END PAGE CONTENT-->

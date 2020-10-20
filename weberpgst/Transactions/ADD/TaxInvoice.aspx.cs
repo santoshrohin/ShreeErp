@@ -758,10 +758,23 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             txtGrandAmt.Text = "";
             txtTermsNConditions.Text = "";
             txtAuthorizedName.Text = "";
-
+            txtTCSPer.Text = "";
+            txtPercAmt.Text = "";
 
             #endregion Clear_Grid_Controls
+            DataTable dtTCSPercentage = new DataTable();
+            dtTCSPercentage = CommonClasses.Execute("select P_TCS_PER from PARTY_MASTER WHERE P_CODE='" + ddlCustomer.SelectedValue + "' AND PARTY_MASTER.P_CM_COMP_ID='" + Session["CompanyId"] + "' AND PARTY_MASTER.ES_DELETE=0");
 
+            if (dtTCSPercentage.Rows.Count > 0)
+            {
+                txtTCSPer.Text = dtTCSPercentage.Rows[0]["P_TCS_PER"].ToString();
+
+            }
+            else
+            {
+                txtTCSPer.Text = "0.00";
+                txtPercAmt.Text = "0.00";
+            }
             LoadICode();
             LoadIName();
             LoadCustomerAddress();
@@ -909,7 +922,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             txtremovaldate.Attributes.Add("readonly", "readonly");
             txtLRDate.Attributes.Add("readonly", "readonly");
             dtInvoiceDetail.Clear();
-            DataTable dtMast = CommonClasses.Execute("SELECT INM_G_AMT,INM_CODE,INM_NO,INM_DATE,INM_P_CODE,cast(isnull(INM_NET_AMT,0) as numeric(20,2)) as INM_NET_AMT,INM_CM_CODE,MODIFY,cast(isnull(INM_DISC,0) as numeric(20,2)) as INM_DISC,cast(isnull(INM_DISC_AMT,0) as numeric(20,2)) as INM_DISC_AMT,cast(isnull(INM_BEXCISE,0) as numeric(20,2)) as INM_BEXCISE,cast(isnull(INM_BE_AMT,0) as numeric(20,2)) as INM_BE_AMT,cast(isnull(INM_EDUC_CESS,0) as numeric(20,2)) as INM_EDUC_CESS,cast(isnull(INM_EDUC_AMT,0) as numeric(20,2)) as INM_EDUC_AMT,cast(isnull(INM_H_EDUC_CESS,0) as numeric(20,2)) as INM_H_EDUC_CESS,cast(isnull(INM_H_EDUC_AMT,0) as numeric(20,2)) as INM_H_EDUC_AMT,cast(isnull(INM_FREIGHT,0) as numeric(20,2)) as INM_FREIGHT,cast(isnull(INM_S_TAX,0) as numeric(20,2)) as INM_S_TAX,cast(isnull(INM_S_TAX_AMT,0) as numeric(20,2)) as INM_S_TAX_AMT,cast(isnull(INM_TAX_TCS,0) as numeric(20,2)) as INM_TAX_TCS,cast(isnull(INM_TAX_TCS_AMT,0) as numeric(20,2)) as INM_TAX_TCS_AMT,cast(isnull(INM_PACK_AMT,0) as numeric(20,2)) as INM_PACK_AMT,cast(isnull(INM_OTHER_AMT,0) as numeric(20,2)) as INM_OTHER_AMT,INM_T_CODE,INM_STO_LOC,INM_VEH_NO,INM_TRANSPORT,INM_ISSUE_DATE,INM_REMOVAL_DATE,INM_REMARK,INM_LR_NO,INM_LR_DATE,cast(isnull(INM_ACCESSIBLE_AMT,0) as numeric(20,2)) as INM_ACCESSIBLE_AMT,cast(isnull(INM_TAXABLE_AMT,0) as numeric(20,2)) as INM_TAXABLE_AMT,cast(isnull(INM_ROUNDING_AMT,0) as numeric(20,2)) as INM_ROUNDING_AMT,cast(isnull(INM_OTHER_AMT,0) as numeric(20,2)) as INM_OTHER_AMT,cast(isnull(INM_FREIGHT,0) as numeric(20,2)) as INM_FREIGHT,cast(isnull(INM_INSURANCE,0) as numeric(20,2)) as INM_INSURANCE,cast(isnull(INM_TRANS_AMT,0) as numeric(20,2)) as INM_TRANS_AMT,cast(isnull(INM_OCTRI_AMT,0)  as numeric(20,2)) as INM_OCTRI_AMT,isnull(INM_IS_SUPPLIMENT,0) as INM_IS_SUPPLIMENT,INM_ISSU_TIME,INM_REMOVEL_TIME,INM_TRAY_CODE,INM_TRAY_QTY , INM_ADDRESS , INM_STATE ,INM_HSN_CODE , INM_ELECTRREFNUM,INM_TERMSNCONDITIONS,INM_AUTHORIZEDNAME FROM INVOICE_MASTER WHERE ES_DELETE=0 AND INM_CM_CODE= '" + (string)Session["CompanyCode"] + "' AND INM_CODE= '" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "' ");
+            DataTable dtMast = CommonClasses.Execute("SELECT INM_G_AMT,INM_CODE,INM_NO,INM_DATE,INM_P_CODE,cast(isnull(INM_NET_AMT,0) as numeric(20,2)) as INM_NET_AMT,INM_CM_CODE,MODIFY,cast(isnull(INM_DISC,0) as numeric(20,2)) as INM_DISC,cast(isnull(INM_DISC_AMT,0) as numeric(20,2)) as INM_DISC_AMT,cast(isnull(INM_BEXCISE,0) as numeric(20,2)) as INM_BEXCISE,cast(isnull(INM_BE_AMT,0) as numeric(20,2)) as INM_BE_AMT,cast(isnull(INM_EDUC_CESS,0) as numeric(20,2)) as INM_EDUC_CESS,cast(isnull(INM_EDUC_AMT,0) as numeric(20,2)) as INM_EDUC_AMT,cast(isnull(INM_H_EDUC_CESS,0) as numeric(20,2)) as INM_H_EDUC_CESS,cast(isnull(INM_H_EDUC_AMT,0) as numeric(20,2)) as INM_H_EDUC_AMT,cast(isnull(INM_FREIGHT,0) as numeric(20,2)) as INM_FREIGHT,cast(isnull(INM_S_TAX,0) as numeric(20,2)) as INM_S_TAX,cast(isnull(INM_S_TAX_AMT,0) as numeric(20,2)) as INM_S_TAX_AMT,cast(isnull(INM_TAX_TCS,0) as numeric(20,2)) as INM_TAX_TCS,cast(isnull(INM_TAX_TCS_AMT,0) as numeric(20,2)) as INM_TAX_TCS_AMT,cast(isnull(INM_PACK_AMT,0) as numeric(20,2)) as INM_PACK_AMT,cast(isnull(INM_OTHER_AMT,0) as numeric(20,2)) as INM_OTHER_AMT,INM_T_CODE,INM_STO_LOC,INM_VEH_NO,INM_TRANSPORT,INM_ISSUE_DATE,INM_REMOVAL_DATE,INM_REMARK,INM_LR_NO,INM_LR_DATE,cast(isnull(INM_ACCESSIBLE_AMT,0) as numeric(20,2)) as INM_ACCESSIBLE_AMT,cast(isnull(INM_TAXABLE_AMT,0) as numeric(20,2)) as INM_TAXABLE_AMT,cast(isnull(INM_ROUNDING_AMT,0) as numeric(20,2)) as INM_ROUNDING_AMT,cast(isnull(INM_OTHER_AMT,0) as numeric(20,2)) as INM_OTHER_AMT,cast(isnull(INM_FREIGHT,0) as numeric(20,2)) as INM_FREIGHT,cast(isnull(INM_INSURANCE,0) as numeric(20,2)) as INM_INSURANCE,cast(isnull(INM_TRANS_AMT,0) as numeric(20,2)) as INM_TRANS_AMT,cast(isnull(INM_OCTRI_AMT,0)  as numeric(20,2)) as INM_OCTRI_AMT,isnull(INM_IS_SUPPLIMENT,0) as INM_IS_SUPPLIMENT,INM_ISSU_TIME,INM_REMOVEL_TIME,INM_TRAY_CODE,INM_TRAY_QTY , INM_ADDRESS , INM_STATE ,INM_HSN_CODE , INM_ELECTRREFNUM,INM_TERMSNCONDITIONS,INM_AUTHORIZEDNAME,INM_TCS_PERCENTAGE,INM_TCS_PERCENTAGE_AMOUNT FROM INVOICE_MASTER WHERE ES_DELETE=0 AND INM_CM_CODE= '" + (string)Session["CompanyCode"] + "' AND INM_CODE= '" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "' ");
 
             if (dtMast.Rows.Count > 0)
             {
@@ -1000,6 +1013,8 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 //    txtTrayStock.Text = (TrayQty + Convert.ToDouble(dtTrayStock.Rows[0]["I_CURRENT_BAL"].ToString())).ToString();
                 //}
                 txtTrayStock.Text = "0";
+                txtTCSPer.Text = dtMast.Rows[0]["INM_TCS_PERCENTAGE"].ToString();
+                txtPercAmt.Text = dtMast.Rows[0]["INM_TCS_PERCENTAGE_AMOUNT"].ToString();
                 btnSubmit.Visible = true;
                 btnInsert.Visible = true;
                 //dtInvoiceDetail = CommonClasses.Execute("select CPOD_I_CODE as ItemCode,I_CODENO as ShortName,cast((CPOD_ORD_QTY*CPOD_RATE) as numeric(20,2)) as Amount,CPOD_AMT,I_NAME as ItemName,ITEM_UNIT_MASTER.I_UOM_CODE as UnitCode,I_UOM_NAME as Unit,cast(CPOD_ORD_QTY as numeric(20,2))  as OrderQty,cast(CPOD_RATE as  numeric(10,2)) as Rate,CPOD_DESC as Description FROM CUSTPO_DETAIL,CUSTPO_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER WHERE CPOD_I_CODE=I_CODE AND CPOM_CODE=CPOD_CPOM_CODE AND CUSTPO_MASTER.ES_DELETE=0 and ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  AND ITEM_MASTER.ES_DELETE=0  and CPOM_CM_COMP_ID=" + (string)Session["CompanyId"] + " and CPOM_CODE='" + mlCode + "' order by CPOD_I_CODE");
@@ -1519,7 +1534,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 txtNoPackaeg.Text = "0.00";
             }
             dr["IND_NO_PACK"] = txtNoPackaeg.Text;
-            dr["IND_PAK_QTY"] = txtQtyPerPack.Text;
+            dr["IND_PAK_QTY"] = string.Format("{0:0.00}", (txtQtyPerPack.Text == "" ? "0.00" : txtQtyPerPack.Text)); 
             dr["IND_PACK_DESC"] = Description.ToString();
             dr["IND_SR_NO"] = txtsrNo.Text;
             #region ExciseCalculation
@@ -1543,8 +1558,17 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
 
             DataTable dtCompState = new DataTable();
             DataTable dtCustState = new DataTable();
+            DataTable dtTCSPercentage = new DataTable();
             dtCompState = CommonClasses.Execute("SELECT * FROM COMPANY_MASTER WHERE CM_CODE='" + Session["CompanyCode"] + "' AND ISNULL(CM_DELETE_FLAG,0)='0' AND CM_ID= '" + Session["CompanyId"] + "'");
             dtCustState = CommonClasses.Execute("SELECT P_SM_CODE,* FROM CUSTPO_MASTER INNER JOIN PARTY_MASTER ON CUSTPO_MASTER.CPOM_P_CODE=PARTY_MASTER.P_CODE WHERE CUSTPO_MASTER.CPOM_CODE='" + ddlPONo.SelectedValue + "' AND CUSTPO_MASTER.CPOM_CM_COMP_ID='" + Session["CompanyId"] + "' AND CUSTPO_MASTER.ES_DELETE=0");
+
+            dtTCSPercentage = CommonClasses.Execute("select P_TCS_PER from PARTY_MASTER WHERE P_CODE='" + ddlCustomer.SelectedValue + "' AND PARTY_MASTER.P_CM_COMP_ID='" + Session["CompanyId"] + "' AND PARTY_MASTER.ES_DELETE=0");
+
+            if (dtTCSPercentage.Rows.Count>0)
+            {
+                txtTCSPer.Text = dtTCSPercentage.Rows[0]["P_TCS_PER"].ToString();
+                
+            }
 
             if (dtCompState.Rows[0]["CM_STATE"].ToString() == dtCustState.Rows[0]["P_SM_CODE"].ToString())
             {
@@ -1753,6 +1777,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             }
             txtNetAmount.Text = string.Format("{0:0.00}", Math.Round(decTotal, 2));
 
+           
             //userd for amort
             txtstroreloc.Text = string.Format("{0:0.00}", Math.Round(AmortAmount, 2));
             if (dgInvoiceAddDetail.Enabled)
@@ -1979,9 +2004,26 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             {
                 txtTCSAmount.Text = "0";
             }
+            if (txtTCSPer.Text != "")
+            {
+                if (Convert.ToDouble(txtTCSPer.Text) > 0)
+                {
+                    //txtPercAmt.Text = string.Format("{0:0.00}", Math.Round(((decTotal * Convert.ToDouble(txtTCSPer.Text)) / 100), 2));
+                    txtPercAmt.Text = string.Format("{0:0.00}",((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text)) * Convert.ToDouble(txtTCSPer.Text) / 100));
+                }
+                else
+                {
+                    txtPercAmt.Text = "0.00";
+                }
+            }
+            else
+            {
+                txtPercAmt.Text = "0.00";
+            }
+            
             //GrandAmount
             // txtGrandAmt.Text = string.Format("{0:0.00}", Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtSalesTaxAmount.Text) + Convert.ToDouble(txtstroreloc.Text)) + Convert.ToDouble(txtOtherCharges.Text) + Convert.ToDouble(txtFreight.Text) + Convert.ToDouble(txtIncurance.Text) + Convert.ToDouble(txtTransportAmt.Text) + Convert.ToDouble(txtOctri.Text) + Convert.ToDouble(txtTCSAmt.Text) + Convert.ToDouble(txtRoundingAmt.Text) - AmortAmount), 2));
-            txtGrandAmt.Text = string.Format("{0:0.00}", Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtTCSAmount.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text) + Convert.ToDouble(txtRoundingAmt.Text)) - AmortAmount), 2));
+            txtGrandAmt.Text = string.Format("{0:0.00}", Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtTCSAmount.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtPercAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text) + Convert.ToDouble(txtRoundingAmt.Text)) - AmortAmount), 2));
             //txtEdueceAmt.Text=string.Format("{0:0.00}", Math.Round(Excedu,2));
             //txtSHEExcAmt.Text = string.Format("{0:0.00}", Math.Round(ExcSH,2));
 
@@ -2433,7 +2475,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                     Invoice_No = strYear + "/" + Invoice_No;
                 }
                 // Eway Bill Number Save in INM_HSN_CODE In Master Table
-                if (CommonClasses.Execute1("INSERT INTO INVOICE_MASTER (INM_CM_CODE,INM_NO,INM_DATE,INM_INVOICE_TYPE,INM_P_CODE,INM_NET_AMT,INM_DISC,INM_DISC_AMT,INM_BEXCISE,INM_BE_AMT,INM_EDUC_CESS,INM_EDUC_AMT,INM_H_EDUC_CESS,INM_H_EDUC_AMT,INM_S_TAX,INM_S_TAX_AMT,INM_TAX_TCS,INM_TAX_TCS_AMT,INM_PACK_AMT,INM_G_AMT,INM_T_CODE,INM_STO_LOC,INM_VEH_NO,INM_TRANSPORT,INM_ISSUE_DATE,INM_REMOVAL_DATE,INM_REMARK,INM_LR_NO,INM_LR_DATE,INM_ACCESSIBLE_AMT,INM_TAXABLE_AMT,INM_ROUNDING_AMT,INM_OTHER_AMT,INM_FREIGHT,INM_INSURANCE,INM_TRANS_AMT,INM_OCTRI_AMT,INM_IS_SUPPLIMENT,INM_ISSU_TIME,INM_REMOVEL_TIME,INM_TRAY_CODE,INM_TRAY_QTY,INM_TNO,INM_TYPE , INM_ADDRESS , INM_STATE ,INM_HSN_CODE , INM_ELECTRREFNUM , INM_TERMSNCONDITIONS, INM_AUTHORIZEDNAME ) VALUES ('" + Convert.ToInt32(Session["CompanyCode"]) + "','" + Inv_No + "','" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "','0','" + ddlCustomer.SelectedValue + "','" + txtNetAmount.Text + "','" + txtDiscPer.Text + "','" + txtDiscAmt.Text + "','" + txtBasicExcPer.Text + "','" + txtBasicExcAmt.Text + "','" + txtducexcper.Text + "','" + txtEdueceAmt.Text + "','" + txtSHEExcPer.Text + "','" + txtSHEExcAmt.Text + "','" + txtSalesTaxPer.Text + "','" + txtSalesTaxAmount.Text + "','0','" + txtTCSAmount.Text + "','" + txtPackAmt.Text + "','" + txtGrandAmt.Text + "','" + ddlTaxName.SelectedValue + "','" + txtstroreloc.Text + "','" + txtVechicleNo.Text + "','" + transport.ToString() + "','" + Convert.ToDateTime(txtIssuedate.Text).ToString("dd/MMM/yyyy") + "','" + Convert.ToDateTime(txtremovaldate.Text).ToString("dd/MMM/yyyy") + "','" + remark.ToString() + "','" + txtLRNo.Text + "','" + Convert.ToDateTime(txtLRDate.Text).ToString("dd/MMM/yyyy") + "','" + txtAccessableAmt.Text + "','" + txtTaxableAmt.Text + "','" + txtRoundingAmt.Text + "','" + txtOtherCharges.Text + "','" + txtFreight.Text + "','" + txtIncurance.Text + "','" + txtTransportAmt.Text + "','" + txtOctri.Text + "','" + IsSuppliement + "','" + txtIssuetime.Text + "','" + txtRemoveltime.Text + "','" + ddlTray.SelectedValue + "','" + txtTrayQty.Text + "','" + Invoice_No + "','TAXINV','" + address.ToString() + "','" + ddlState.SelectedValue + "','" + txtEWayBill.Text + "','" + txtElectrRefNum.Text + "','" + PayTerms.ToString() + "','" + authorizename.ToString() + "')"))
+                if (CommonClasses.Execute1("INSERT INTO INVOICE_MASTER (INM_CM_CODE,INM_NO,INM_DATE,INM_INVOICE_TYPE,INM_P_CODE,INM_NET_AMT,INM_DISC,INM_DISC_AMT,INM_BEXCISE,INM_BE_AMT,INM_EDUC_CESS,INM_EDUC_AMT,INM_H_EDUC_CESS,INM_H_EDUC_AMT,INM_S_TAX,INM_S_TAX_AMT,INM_TAX_TCS,INM_TAX_TCS_AMT,INM_PACK_AMT,INM_G_AMT,INM_T_CODE,INM_STO_LOC,INM_VEH_NO,INM_TRANSPORT,INM_ISSUE_DATE,INM_REMOVAL_DATE,INM_REMARK,INM_LR_NO,INM_LR_DATE,INM_ACCESSIBLE_AMT,INM_TAXABLE_AMT,INM_ROUNDING_AMT,INM_OTHER_AMT,INM_FREIGHT,INM_INSURANCE,INM_TRANS_AMT,INM_OCTRI_AMT,INM_IS_SUPPLIMENT,INM_ISSU_TIME,INM_REMOVEL_TIME,INM_TRAY_CODE,INM_TRAY_QTY,INM_TNO,INM_TYPE , INM_ADDRESS , INM_STATE ,INM_HSN_CODE , INM_ELECTRREFNUM , INM_TERMSNCONDITIONS, INM_AUTHORIZEDNAME ,INM_TCS_PERCENTAGE,INM_TCS_PERCENTAGE_AMOUNT) VALUES ('" + Convert.ToInt32(Session["CompanyCode"]) + "','" + Inv_No + "','" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "','0','" + ddlCustomer.SelectedValue + "','" + txtNetAmount.Text + "','" + txtDiscPer.Text + "','" + txtDiscAmt.Text + "','" + txtBasicExcPer.Text + "','" + txtBasicExcAmt.Text + "','" + txtducexcper.Text + "','" + txtEdueceAmt.Text + "','" + txtSHEExcPer.Text + "','" + txtSHEExcAmt.Text + "','" + txtSalesTaxPer.Text + "','" + txtSalesTaxAmount.Text + "','0','" + txtTCSAmount.Text + "','" + txtPackAmt.Text + "','" + txtGrandAmt.Text + "','" + ddlTaxName.SelectedValue + "','" + txtstroreloc.Text + "','" + txtVechicleNo.Text + "','" + transport.ToString() + "','" + Convert.ToDateTime(txtIssuedate.Text).ToString("dd/MMM/yyyy") + "','" + Convert.ToDateTime(txtremovaldate.Text).ToString("dd/MMM/yyyy") + "','" + remark.ToString() + "','" + txtLRNo.Text + "','" + Convert.ToDateTime(txtLRDate.Text).ToString("dd/MMM/yyyy") + "','" + txtAccessableAmt.Text + "','" + txtTaxableAmt.Text + "','" + txtRoundingAmt.Text + "','" + txtOtherCharges.Text + "','" + txtFreight.Text + "','" + txtIncurance.Text + "','" + txtTransportAmt.Text + "','" + txtOctri.Text + "','" + IsSuppliement + "','" + txtIssuetime.Text + "','" + txtRemoveltime.Text + "','" + ddlTray.SelectedValue + "','" + txtTrayQty.Text + "','" + Invoice_No + "','TAXINV','" + address.ToString() + "','" + ddlState.SelectedValue + "','" + txtEWayBill.Text + "','" + txtElectrRefNum.Text + "','" + PayTerms.ToString() + "','" + authorizename.ToString() + "','" + txtTCSPer.Text + "','" + txtPercAmt.Text + "')"))
                 {
                     string Code = CommonClasses.GetMaxId("Select Max(INM_CODE) from INVOICE_MASTER");
                     //Tray Stock Entry
@@ -2485,7 +2527,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             }
             else if (Request.QueryString[0].Equals("MODIFY"))
             {
-                if (CommonClasses.Execute1("UPDATE INVOICE_MASTER SET INM_CM_CODE=" + Session["CompanyCode"] + " , INM_DATE='" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "',INM_P_CODE='" + ddlCustomer.SelectedValue + "',INM_NET_AMT='" + txtNetAmount.Text + "',INM_DISC='" + txtDiscPer.Text + "',INM_DISC_AMT='" + txtDiscAmt.Text + "',INM_BEXCISE='" + txtBasicExcPer.Text + "',INM_BE_AMT='" + txtBasicExcAmt.Text + "',INM_EDUC_CESS='" + txtducexcper.Text + "',INM_EDUC_AMT='" + txtEdueceAmt.Text + "',INM_H_EDUC_CESS='" + txtSHEExcPer.Text + "',INM_H_EDUC_AMT = '" + txtSHEExcAmt.Text + "',INM_S_TAX='" + txtSalesTaxPer.Text + "',INM_S_TAX_AMT='" + txtSalesTaxAmount.Text + "',INM_PACK_AMT='" + txtPackAmt.Text + "',INM_G_AMT='" + txtGrandAmt.Text + "',INM_T_CODE='" + ddlTaxName.SelectedValue + "',INM_STO_LOC='" + txtstroreloc.Text + "',INM_VEH_NO='" + txtVechicleNo.Text + "',INM_TRANSPORT='" + txtTransport.Text + "',INM_ISSUE_DATE='" + Convert.ToDateTime(txtIssuedate.Text).ToString("dd/MMM/yyyy") + "',INM_REMOVAL_DATE='" + Convert.ToDateTime(txtremovaldate.Text).ToString("dd/MMM/yyyy") + "',INM_REMARK='" + txtRemark.Text + "',INM_LR_NO='" + txtLRNo.Text + "',INM_LR_DATE='" + Convert.ToDateTime(txtLRDate.Text).ToString("dd/MMM/yyyy") + "',INM_ACCESSIBLE_AMT='" + txtAccessableAmt.Text + "',INM_TAXABLE_AMT='" + txtTaxableAmt.Text + "',INM_ROUNDING_AMT='" + txtRoundingAmt.Text + "',INM_OTHER_AMT='" + txtOtherCharges.Text + "',INM_FREIGHT='" + txtFreight.Text + "',INM_INSURANCE='" + txtIncurance.Text + "',INM_TRANS_AMT='" + txtTransportAmt.Text + "',INM_OCTRI_AMT='" + txtOctri.Text + "',INM_IS_SUPPLIMENT='" + IsSuppliement + "',INM_ISSU_TIME='" + txtIssuetime.Text + "',INM_REMOVEL_TIME='" + txtRemoveltime.Text + "' ,INM_ADDRESS='" + address.ToString() + "' ,INM_STATE ='" + ddlState.SelectedValue + "' ,INM_ELECTRREFNUM=	'" + txtElectrRefNum.Text + "' ,INM_TERMSNCONDITIONS='" + txtTermsNConditions.Text + "' ,INM_AUTHORIZEDNAME=	'" + txtAuthorizedName.Text.ToUpper() + "' ,INM_TAX_TCS_AMT ='" + txtTCSAmount.Text + "' WHERE INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'"))
+                if (CommonClasses.Execute1("UPDATE INVOICE_MASTER SET INM_CM_CODE=" + Session["CompanyCode"] + " , INM_DATE='" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "',INM_P_CODE='" + ddlCustomer.SelectedValue + "',INM_NET_AMT='" + txtNetAmount.Text + "',INM_DISC='" + txtDiscPer.Text + "',INM_DISC_AMT='" + txtDiscAmt.Text + "',INM_BEXCISE='" + txtBasicExcPer.Text + "',INM_BE_AMT='" + txtBasicExcAmt.Text + "',INM_EDUC_CESS='" + txtducexcper.Text + "',INM_EDUC_AMT='" + txtEdueceAmt.Text + "',INM_H_EDUC_CESS='" + txtSHEExcPer.Text + "',INM_H_EDUC_AMT = '" + txtSHEExcAmt.Text + "',INM_S_TAX='" + txtSalesTaxPer.Text + "',INM_S_TAX_AMT='" + txtSalesTaxAmount.Text + "',INM_PACK_AMT='" + txtPackAmt.Text + "',INM_G_AMT='" + txtGrandAmt.Text + "',INM_T_CODE='" + ddlTaxName.SelectedValue + "',INM_STO_LOC='" + txtstroreloc.Text + "',INM_VEH_NO='" + txtVechicleNo.Text + "',INM_TRANSPORT='" + txtTransport.Text + "',INM_ISSUE_DATE='" + Convert.ToDateTime(txtIssuedate.Text).ToString("dd/MMM/yyyy") + "',INM_REMOVAL_DATE='" + Convert.ToDateTime(txtremovaldate.Text).ToString("dd/MMM/yyyy") + "',INM_REMARK='" + txtRemark.Text + "',INM_LR_NO='" + txtLRNo.Text + "',INM_LR_DATE='" + Convert.ToDateTime(txtLRDate.Text).ToString("dd/MMM/yyyy") + "',INM_ACCESSIBLE_AMT='" + txtAccessableAmt.Text + "',INM_TAXABLE_AMT='" + txtTaxableAmt.Text + "',INM_ROUNDING_AMT='" + txtRoundingAmt.Text + "',INM_OTHER_AMT='" + txtOtherCharges.Text + "',INM_FREIGHT='" + txtFreight.Text + "',INM_INSURANCE='" + txtIncurance.Text + "',INM_TRANS_AMT='" + txtTransportAmt.Text + "',INM_OCTRI_AMT='" + txtOctri.Text + "',INM_IS_SUPPLIMENT='" + IsSuppliement + "',INM_ISSU_TIME='" + txtIssuetime.Text + "',INM_REMOVEL_TIME='" + txtRemoveltime.Text + "' ,INM_ADDRESS='" + address.ToString() + "' ,INM_STATE ='" + ddlState.SelectedValue + "' ,INM_ELECTRREFNUM=	'" + txtElectrRefNum.Text + "' ,INM_TERMSNCONDITIONS='" + txtTermsNConditions.Text + "' ,INM_AUTHORIZEDNAME=	'" + txtAuthorizedName.Text.ToUpper() + "' ,INM_TAX_TCS_AMT ='" + txtTCSAmount.Text + "',INM_TCS_PERCENTAGE ='" + txtTCSPer.Text + "',INM_TCS_PERCENTAGE_AMOUNT ='" + txtPercAmt.Text + "' WHERE INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'"))
                 {
                     CommonClasses.Execute1("DELETE FROM ACCOUNTS_LEDGER WHERE ACCNT_DOC_NO='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "' and ACCNT_DOC_TYPE='TAXINV'");
 

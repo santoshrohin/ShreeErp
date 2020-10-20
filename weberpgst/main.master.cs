@@ -24,7 +24,8 @@ public partial class main : System.Web.UI.MasterPage
             if (!IsPostBack)
             {
                 lblUserName.Text = Session["Username"].ToString();
-                lblfinacial.Text = "FY Year " + Convert.ToDateTime(Session["CompanyOpeningDate"].ToString()).ToString("dd/MMM/yyyy").Substring(7, 4) + " - " + Convert.ToDateTime(Session["CompanyClosingDate"].ToString()).ToString("dd/MMM/yyyy").ToString().Substring(7, 4);
+                string CompanyName = Session["CompanyName"].ToString();
+                lblfinacial.Text = "FY Year " + Convert.ToDateTime(Session["CompanyOpeningDate"].ToString()).ToString("dd/MMM/yyyy").Substring(7, 4) + " - " + Convert.ToDateTime(Session["CompanyClosingDate"].ToString()).ToString("dd/MMM/yyyy").ToString().Substring(7, 4) + " / " + CompanyName;
                 DataTable dt = CommonClasses.Execute("select UM_NAME from USER_MASTER where UM_CODE='" + Convert.ToInt32(Session["UserCode"]) + "'");
                 if (dt.Rows.Count > 0)
                 {

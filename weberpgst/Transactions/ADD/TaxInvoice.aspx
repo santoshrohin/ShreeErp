@@ -1688,6 +1688,70 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <%--TCS PERCENTAGE VALUE --%>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label label-sm">
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-7">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <label class="col-md-2 control-label label-sm">
+                                                    TCS Per
+                                                </label>
+                                                <div class="col-md-2">
+                                                    <asp:UpdatePanel ID="UpdatePanel65" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox Visible="true" CssClass="form-control text-right input-sm" ID="txtTCSPer"
+                                                                placeholder="0.00" TabIndex="33" runat="server" Text="" 
+                                                                AutoPostBack="true" Enabled="true"></asp:TextBox>
+                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender37" TargetControlID="txtTCSPer"
+                                                                ValidChars="0123456789." runat="server" />
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlCustomer" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="chkIsSuppliement" EventName="CheckedChanged" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <asp:UpdatePanel ID="UpdatePanel66" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" ID="txtPercAmt" Text=""
+                                                                placeholder="0.00" TabIndex="34" runat="server" Enabled="true" 
+                                                                AutoPostBack="true"></asp:TextBox>
+                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender39" TargetControlID="txtPercAmt"
+                                                                ValidChars="0123456789." runat="server" />
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlCustomer" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtducexcper" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtBasicExcPer" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtDiscAmt" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtDiscPer" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtPackAmt" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtBasicExcAmt" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtOtherCharges" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtFreight" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtIncurance" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtTransportAmt" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtOctri" EventName="TextChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtTCSAmt" EventName="TextChanged" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <!--Rounding Value-->
                                     <div class="row">
                                         <div class="col-md-12">

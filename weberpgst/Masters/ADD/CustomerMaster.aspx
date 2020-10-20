@@ -482,6 +482,14 @@
                                                     <asp:TextBox CssClass="form-control input-sm" ID="txtAbbrevation" MaxLength="20"
                                                         TabIndex="32" MsgObrigatorio="Abbreviation Name" placeholder="Abbreviation" runat="server"></asp:TextBox>
                                                 </div>
+                                                <label class="col-md-3 control-label label-sm">
+                                                    TCS %</label>
+                                                <div class="col-md-3">
+                                                    <asp:TextBox CssClass="form-control input-sm text-right" ID="txtTCSPercentage" MaxLength="20"
+                                                        TabIndex="33" MsgObrigatorio="Abbreviation Name" placeholder="TCS %" runat="server"></asp:TextBox>
+                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" TargetControlID="txtTCSPercentage"
+                                                                ValidChars="0123456789." runat="server" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

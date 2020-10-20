@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +8,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.HtmlControls;
 using System.IO;
-
-
+using System.Configuration;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
 {
     #region General Declaration
@@ -566,6 +568,18 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
                         CommonClasses.Execute("UPDATE INWARD_DETAIL SET IWD_TUR_WEIGHT=1 where IWD_IWM_CODE='" + Code + "'");
                         CommonClasses.WriteLog("Material Inward ", "Insert", "Material Inward", Code, Convert.ToInt32(Code), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                         result = true;
+
+                        try
+                        {
+                            SendEmail(dgInwardMaster);
+                        }
+                        catch (Exception Ex)
+                        {
+                            
+                            
+                        }
+                        
+                        
                         Response.Redirect("~/Transactions/VIEW/ViewMaterialInward.aspx", false);
                     }
                     else
@@ -1560,29 +1574,64 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
         txtamt.Text = amt.ToString();
     }
 
-
-    public void SendEmail(string tomail, string attachment, string pname, string cmname, string subject)
+    public void SendEmail(GridView XGrid)
     {
+        string pname = ddlSupplier.SelectedItem.Text;
+        string cmname = Session["CompanyName"].ToString();
+        string attachment = "";
+        DataTable dtPDetails = CommonClasses.Execute("select P_EMAIL from PARTY_MASTER where P_CODE=" + ddlSupplier.SelectedValue);
+        
         string FromEmail = ConfigurationManager.AppSettings["FromEmail"].ToString();
-        string ToEmail = tomail;//ConfigurationManager.AppSettings["ToEmail"].ToString();
-        string Subject = subject;// ConfigurationManager.AppSettings["Subject"].ToString();
+        string ToEmail = (dtPDetails.Rows[0]["P_EMAIL"]).ToString();//ConfigurationManager.AppSettings["ToEmail"].ToString();
+        if (ToEmail =="")
+        {
+            ToEmail=ConfigurationManager.AppSettings["ToEmail"].ToString();
+        }
+        string Subject = cmname + " " + "Material Inward againt invoice " + txtChallanNo.Text.ToString();//ConfigurationManager.AppSettings["Subject"].ToString();
 
         string password = ConfigurationManager.AppSettings["networkCredential"].ToString();
         string port = ConfigurationManager.AppSettings["port"].ToString();
         using (MailMessage mail = new MailMessage(FromEmail, ToEmail))
         {
             mail.Subject = Subject;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < XGrid.Rows.Count; i++)
+            {
+
+                
+                int IWD_I_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblIWD_I_CODE")).Text);
+
+                DataTable dtIDetails = CommonClasses.Execute("select I_CODENO,I_NAME,I_UOM_NAME from item_master i,ITEM_UNIT_MASTER u where i.I_UOM_CODE=u.I_UOM_CODE and u.ES_DELETE=0  and i.I_CODE="+IWD_I_CODE);
+                string Icodeno = (dtIDetails.Rows[0]["I_CODENO"]).ToString();
+                string Iname = (dtIDetails.Rows[0]["I_NAME"]).ToString();
+                string Iunit = (dtIDetails.Rows[0]["I_UOM_NAME"]).ToString();
+                float IWD_CH_QTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_CH_QTY")).Text);
+                double IWD_REV_QTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text);
+                float IWD_SQTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text);
+                int IWD_CPOM_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblIWD_CPOM_CODE")).Text);
+                DataTable dtPODetails = CommonClasses.Execute("select SPOM_PONO from SUPP_PO_MASTER where SPOM_CODE=" + IWD_CPOM_CODE);
+                string POName = (dtPODetails.Rows[0]["SPOM_PONO"]).ToString();
+                double IWD_RATE = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_RATE")).Text);
+                string IWD_REMARK = ((Label)XGrid.Rows[i].FindControl("lblIWD_REMARK")).Text;
+                int IWD_UOM_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblUOM_CODE")).Text);
+                string IWD_BATCH_NO = ((Label)XGrid.Rows[i].FindControl("lblIWD_BATCH_NO")).Text;
+                string IWD_PROCESS_CODE = ((Label)XGrid.Rows[i].FindControl("lblIWD_PROCESS_CODE")).Text;
+                string Doc_Name = "";
+                sb.Append("<tr><td>" + Icodeno + "</td> <td>  " + Iname + "  </td><td>  " + POName + "  </td><td>  " + IWD_REV_QTY + "  </td><td>  " + IWD_CH_QTY + "  </td><td>  " + IWD_RATE + "  </td><td>  " + Iunit + "  </td><td>  " + IWD_REMARK + "  </td></tr>");
+            }
+
             string htmlString = @"<html>
-                      <body>
-                      <p>Hi " + pname + @",</p>
-                      <p>We are contacting you in regards to the new invoice raised that has been created on your account.</p>
-<p>Please see the attached invoice and get back to us in case if you have queries.</p>
-                      <p>Sincerely,<br><br>" + cmname + @"</br></p>
-                      </body>
-                      </html>
-                     ";
+                          <body>
+                          <p>" + pname + @",</p>
+                          <p>Material inwarded against your invoice number : " + txtInvoiceNo.Text + @" . our compnay name GRN number  is " + txtGRNno.Text + @". Total invoice value booked 
+at our end is " + txtamt.Text + @".</p><br><br><p>You are requeted to achknowledge:</p><br><br><p>1. if any descrepticancy within 2 days of recieving this email </p><br><br><p>1. if any descrepticancy within 2 days of recieving this email </p>
+                            <table border=""+1+@""  width = ""100%"" bgcolor='grey'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Challan Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString()+@"</table>
+                          <p>Sincerely,<br><br>" + cmname + @"</br></p>
+                          </body>
+                          </html>
+                         ";
             mail.Body = htmlString;
-            mail.Attachments.Add(new Attachment(attachment));
+            //mail.Attachments.Add(new Attachment(attachment));
 
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -1595,4 +1644,5 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
             smtp.Send(mail);
         }
     }
+
 }

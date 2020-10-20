@@ -509,6 +509,21 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label class="col-md-2 control-label label-sm">
+                                                    TCS %
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <asp:TextBox CssClass="form-control input-sm text-right" ID="txtTCSPercentage" MaxLength="20"
+                                                        TabIndex="33" MsgObrigatorio="Abbreviation Name" placeholder="TCS %" runat="server"></asp:TextBox>
+                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" TargetControlID="txtTCSPercentage"
+                                                                ValidChars="0123456789." runat="server" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label class="col-md-2 control-label label-sm" runat="server" visible="false">
                                                     GST Number
                                                 </label>

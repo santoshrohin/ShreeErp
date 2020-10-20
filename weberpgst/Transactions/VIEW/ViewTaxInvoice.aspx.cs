@@ -518,6 +518,87 @@ public partial class Transactions_VIEW_ViewTaxInvoice : System.Web.UI.Page
     }
     #endregion chk1_CheckedChanged
 
+    //#region btnOk_Click
+    //protected void btnOk_Click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        if (ddlPrintOpt.SelectedValue == "0")
+    //        {
+    //            PanelMsg.Visible = true;
+    //            lblmsg.Text = "Please Select print Option";
+    //            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
+    //            ModalPopupPrintSelection.Show();
+    //            return;
+    //        }
+    //        if (chkPrintCopy1.Checked == true)
+    //        {
+    //        }
+    //        else if (chkPrintCopy2.Checked == true)
+    //        {
+    //        }
+    //        else if (chkPrintCopy3.Checked == true)
+    //        {
+    //        }
+    //        else if (chkPrintCopy4.Checked == true)
+    //        {
+    //        }
+    //        else
+    //        {
+    //            PanelMsg.Visible = true;
+    //            lblmsg.Text = "Please Select Print No. Of Copies";
+    //            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
+    //            ModalPopupPrintSelection.Show();
+    //            return;
+    //        }
+
+    //        if (type == "Single")
+    //        {
+    //            if (chkPrintCopy1.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + chkPrintCopy1.Text + "&code=" + Code + "&type=" + type + "", false);
+    //            }
+    //            if (chkPrintCopy2.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint2=" + chkPrintCopy2.Text + "&code=" + Code + "&type=" + type + "", false);
+    //            }
+    //            if (chkPrintCopy3.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint3=" + chkPrintCopy3.Text + "&code=" + Code + "&type=" + type + "", false);
+    //            }
+    //            if (chkPrintCopy4.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint4=" + chkPrintCopy4.Text + "&code=" + Code + "&type=" + type + "", false);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (chkPrintCopy1.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 1 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+    //            }
+    //            if (chkPrintCopy2.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 2 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+    //            }
+    //            if (chkPrintCopy3.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 3 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+    //            }
+    //            if (chkPrintCopy4.Checked == true)
+    //            {
+    //                Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 4 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+    //            }
+    //        }
+    //        //}
+    //    }
+    //    catch (Exception Ex)
+    //    {
+    //        // CommonClasses.SendError("Invoice Print ", "btnOk_Click", Ex.Message);
+    //        throw;
+    //    }
+    //}
+    //#endregion
     #region btnOk_Click
     protected void btnOk_Click(object sender, EventArgs e)
     {
@@ -556,38 +637,54 @@ public partial class Transactions_VIEW_ViewTaxInvoice : System.Web.UI.Page
             {
                 if (chkPrintCopy1.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + chkPrintCopy1.Text + "&code=" + Code + "&type=" + type + "", false);
+                    string Url = "../../RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + chkPrintCopy1.Text + "&code=" + Code + "&type=" + type + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + chkPrintCopy1.Text + "&code=" + Code + "&type=" + type + "", false);
                 }
                 if (chkPrintCopy2.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint2=" + chkPrintCopy2.Text + "&code=" + Code + "&type=" + type + "", false);
+                    string Url = "../../RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint2=" + chkPrintCopy2.Text + "&code=" + Code + "&type=" + type + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint2=" + chkPrintCopy2.Text + "&code=" + Code + "&type=" + type + "", false);
                 }
                 if (chkPrintCopy3.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint3=" + chkPrintCopy3.Text + "&code=" + Code + "&type=" + type + "", false);
+                    string Url = "../../RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint3=" + chkPrintCopy3.Text + "&code=" + Code + "&type=" + type + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint3=" + chkPrintCopy3.Text + "&code=" + Code + "&type=" + type + "", false);
                 }
                 if (chkPrintCopy4.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint4=" + chkPrintCopy4.Text + "&code=" + Code + "&type=" + type + "", false);
+                    string Url = "../../RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint4=" + chkPrintCopy4.Text + "&code=" + Code + "&type=" + type + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/ADD/TaxInvoicePrint.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint4=" + chkPrintCopy4.Text + "&code=" + Code + "&type=" + type + "", false);
                 }
             }
             else
             {
                 if (chkPrintCopy1.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 1 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+                    string Url = "../../RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 1 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 1 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
                 }
                 if (chkPrintCopy2.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 2 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+                    string Url = "../../RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 2 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 2 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
                 }
                 if (chkPrintCopy3.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 3 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+                    string Url = "../../RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 3 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 3 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
                 }
                 if (chkPrintCopy4.Checked == true)
                 {
-                    Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 4 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
+                    string Url = "../../RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 4 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "window.open('" + Url + "');", true);
+                    //Response.Redirect("~/RoportForms/VIEW/ViewInvoiceReport.aspx?Title=" + Title + "&Cond=" + ddlPrintOpt.SelectedValue + "&chkPrint1=" + 4 + "&code=" + Code + "&type=" + type + "&Supp=" + chlSupp.Checked + "", false);
                 }
             }
             //}
@@ -595,7 +692,7 @@ public partial class Transactions_VIEW_ViewTaxInvoice : System.Web.UI.Page
         catch (Exception Ex)
         {
             // CommonClasses.SendError("Invoice Print ", "btnOk_Click", Ex.Message);
-            throw;
+            throw Ex;
         }
     }
     #endregion
