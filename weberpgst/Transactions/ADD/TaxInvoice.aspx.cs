@@ -2415,7 +2415,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 DataTable dt = new DataTable();
                 string Invoice_No = "";
 
-                dt = CommonClasses.Execute("Select isnull(max(INM_NO),0) as INM_NO FROM INVOICE_MASTER WHERE INM_CM_CODE = " + (string)Session["CompanyCode"] + " AND INM_INVOICE_TYPE=0 AND INM_TYPE='TAXINV' and ES_DELETE=0");
+                dt = CommonClasses.Execute("Select isnull(max(INM_NO),0) as INM_NO FROM INVOICE_MASTER WHERE INM_CM_CODE = " + (string)Session["CompanyCode"] + "   AND  INM_IS_SUPPLIMENT=0 AND INM_SUPPLEMENTORY=0  AND INM_INVOICE_TYPE=0 AND INM_TYPE='TAXINV' and ES_DELETE=0");
 
                 if (dt.Rows.Count > 0)
                 {
