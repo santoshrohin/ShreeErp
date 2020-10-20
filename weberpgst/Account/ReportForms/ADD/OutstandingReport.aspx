@@ -51,7 +51,7 @@
                                 <div class="form-body" style="overflow: auto;">
                                     <div class="row">
                                         <center>
-                                            <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="True"
+                                            <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="True" DisplayGroupTree="False"
                                                 Height="50px" ReuseParameterValuesOnRefresh="True" DisplayToolbar="True" EnableDatabaseLogonPrompt="False"
                                                  />
                                         </center>

@@ -728,11 +728,57 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
                         //Basic Exc Details
                         DataTable DtBasicExcDetail = CommonClasses.Execute("SELECT top 1 BPD_I_CODE,I_NAME,T2.TALLY_NAME AS BASICEXC_TALLY_NAME,E_TALLY_BASIC,cast(ISnull(BPM_EXCIES_AMT,0) as numeric(20,2)) as BPM_EXCIES_AMT FROM BILL_PASSING_DETAIL,BILL_PASSING_MASTER,ITEM_MASTER,TALLY_MASTER T2,EXCISE_TARIFF_MASTER WHERE BPD_BPM_CODE = BPM_CODE AND BPD_I_CODE = I_CODE AND I_E_CODE=E_CODE AND E_TALLY_BASIC=T2.TALLY_CODE AND BILL_PASSING_MASTER.ES_DELETE=0   AND BPD_BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
 
+
+                        DataTable DtNewTCSDetail = CommonClasses.Execute("SELECT BPM_TCS_PER,BPM_TCS_PER_AMT FROM BILL_PASSING_MASTER WHERE  BILL_PASSING_MASTER.ES_DELETE=0   AND BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
+
+                        
+
                         //Basic Exc Details
                         DataTable DtEduExcDetail = CommonClasses.Execute("SELECT top 1 BPD_I_CODE,I_NAME,T3.TALLY_NAME AS EDUTALLY_NAME,E_TALLY_EDU,cast(ISnull(BPM_ECESS_AMT,0) as numeric(20,2)) as BPM_ECESS_AMT FROM BILL_PASSING_DETAIL,BILL_PASSING_MASTER,ITEM_MASTER,TALLY_MASTER T3,EXCISE_TARIFF_MASTER WHERE BPD_BPM_CODE = BPM_CODE AND BPD_I_CODE = I_CODE AND I_E_CODE=E_CODE AND E_TALLY_EDU=T3.TALLY_CODE AND BILL_PASSING_MASTER.ES_DELETE=0   AND BPD_BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
 
                         //Basic Exc Details
                         DataTable DtHighExcDetail = CommonClasses.Execute("SELECT top 1 BPD_I_CODE,I_NAME,T4.TALLY_NAME AS SHEDU_TALLY_NAME,E_TALLY_H_EDU,cast(ISnull(BPM_HECESS_AMT,0) as numeric(20,2)) as BPM_HECESS_AMT FROM BILL_PASSING_DETAIL,BILL_PASSING_MASTER,ITEM_MASTER,TALLY_MASTER T4,EXCISE_TARIFF_MASTER WHERE BPD_BPM_CODE = BPM_CODE AND BPD_I_CODE = I_CODE AND I_E_CODE=E_CODE AND E_TALLY_H_EDU=T4.TALLY_CODE  AND BILL_PASSING_MASTER.ES_DELETE=0  AND BPD_BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
+
+
+                        for (int a = 0; a < DtNewTCSDetail.Rows.Count; a++)
+                        {
+                            if (Convert.ToDouble(DtNewTCSDetail.Rows[a]["BPM_TCS_PER_AMT"]) > 0)
+                            {
+                                //Basic Excise Tally Name And Amount
+                                writer.WriteRaw("<ALLLEDGERENTRIES.LIST>");
+                                //writer.WriteRaw("<LEDGERNAME>Cenvat Credit (On Purchases) 12.5 </LEDGERNAME>");
+                                //if (ddlInvType.SelectedIndex == 1)
+                                //{
+                                //    writer.WriteRaw("<LEDGERNAME>CGST ON PURCHASES " + dtAMTDeclaration.Rows[0]["BPM_EXCPER"].ToString() + "  % </LEDGERNAME>");
+                                //}
+                                //else
+                                //{
+                                //    writer.WriteRaw("<LEDGERNAME>CGST ON SERVICES " + dtAMTDeclaration.Rows[0]["BPM_EXCPER"].ToString() + "  % </LEDGERNAME>");
+                                //}
+
+                                if (ddlInvType.SelectedIndex == 1)
+                                {
+                                    writer.WriteRaw("<LEDGERNAME>PURCHASE TCS " + DtNewTCSDetail.Rows[0]["BPM_TCS_PER"].ToString() + "% </LEDGERNAME>");
+                                }
+                                else if (ddlInvType.SelectedValue == "3")
+                                {
+                                    writer.WriteRaw("<LEDGERNAME>PURCHASE TCS " + DtNewTCSDetail.Rows[0]["BPM_TCS_PER"].ToString() + "% </LEDGERNAME>");
+                                }
+                                else
+                                {
+                                    writer.WriteRaw("<LEDGERNAME>PURCHASE TCS " + DtNewTCSDetail.Rows[0]["BPM_TCS_PER"].ToString() + "% </LEDGERNAME>");
+                                }
+                                // writer.WriteRaw("<LEDGERNAME>CGST</LEDGERNAME>");
+                                writer.WriteRaw("<GSTCLASS/>");
+                                writer.WriteRaw("<ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>");
+                                writer.WriteRaw("<LEDGERFROMITEM>No</LEDGERFROMITEM>");
+                                writer.WriteRaw("<REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>");
+                                writer.WriteRaw("<ISPARTYLEDGER>no</ISPARTYLEDGER>");
+                                writer.WriteRaw("<AMOUNT>-" + Math.Round(Convert.ToDouble(DtNewTCSDetail.Rows[a]["BPM_TCS_PER_AMT"].ToString()), 2).ToString() + "</AMOUNT>");
+                                writer.WriteRaw("</ALLLEDGERENTRIES.LIST>");
+                            }
+
+                        }
 
 
                         for (int a = 0; a < DtBasicExcDetail.Rows.Count; a++)

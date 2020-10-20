@@ -14,10 +14,11 @@
 
     <script type="text/javascript">
         Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(function(evt, args) {
-        jQuery("#<%=ddlPartyName.ClientID %>").select2();
-        jQuery("#<%=ddlType.ClientID %>").select2();
-        jQuery("#<%=ddlBillType.ClientID %>").select2();
-        
+            jQuery("#<%=ddlPartyName.ClientID %>").select2();
+            jQuery("#<%=ddlPname.ClientID %>").select2();
+            jQuery("#<%=ddlType.ClientID %>").select2();
+            jQuery("#<%=ddlBillType.ClientID %>").select2();
+
         });
     </script>
 
@@ -69,9 +70,25 @@
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="form-group">
-                                            
                                             <label class="col-md-2 control-label text-right">
-                                                Till Date
+                                                From Date
+                                            </label>
+                                            <div class="col-md-3">
+                                                <asp:UpdatePanel runat="server" ID="UpdatePanel5">
+                                                    <ContentTemplate>
+                                                        <div class="input-group">
+                                                            <asp:TextBox ID="txtFromDate" runat="server" placeholder="dd MMM yyyy" CssClass="form-control"
+                                                                MsgObrigatorio="Please Select From Date" TabIndex="6" ValidationGroup="Save"></asp:TextBox>
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            <cc1:CalendarExtender ID="txtFromDate_CalenderExtender" BehaviorID="calendar1" runat="server"
+                                                                Enabled="True" TargetControlID="txtFromDate" PopupButtonID="txtFromDate" Format="dd MMM yyyy">
+                                                            </cc1:CalendarExtender>
+                                                        </div>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                            <label class="col-md-2 control-label text-right">
+                                                To Date
                                             </label>
                                             <div class="col-md-3">
                                                 <asp:UpdatePanel runat="server" ID="UpdatePanel4">
@@ -85,13 +102,11 @@
                                                             </cc1:CalendarExtender>
                                                         </div>
                                                     </ContentTemplate>
-                                                    
                                                 </asp:UpdatePanel>
                                             </div>
-                                            
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="display: none">
                                         <div class="form-group">
                                             <label class="col-md-2 control-label text-right">
                                                 Type
@@ -115,16 +130,15 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="col-md-2 control-label text-right">
-                                               Bill Type
+                                                Bill Type
                                             </label>
                                             <div class="col-md-8">
                                                 <asp:UpdatePanel runat="server" ID="UpdatePanel10">
                                                     <ContentTemplate>
                                                         <asp:DropDownList ID="ddlBillType" runat="server" AutoPostBack="True" CssClass="select2"
-                                                            MsgObrigatorio="Please Select Bill Type" Width="100%" TabIndex="3" >
+                                                            MsgObrigatorio="Please Select Bill Type" Width="100%" TabIndex="3">
                                                             <asp:ListItem Value="0" Text="All Balances"> </asp:ListItem>
                                                             <asp:ListItem Value="1" Text="Due Bills Only"> </asp:ListItem>
-                                                            
                                                         </asp:DropDownList>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
@@ -133,8 +147,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="row">
+                                    <div class="row" style="display: none">
                                         <div class="form-group">
                                             <label class="col-md-2 control-label text-right">
                                                 Party Name
@@ -161,7 +174,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="display: none">
                                         <div class="form-group">
                                             <div class="col-md-1">
                                             </div>
@@ -180,7 +193,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="display: none">
                                         <div class="form-group">
                                             <div class="col-md-1">
                                             </div>
@@ -194,6 +207,33 @@
                                                             <asp:ListItem Value="0" Selected="True">&nbsp Detail&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</asp:ListItem>
                                                             <asp:ListItem Value="1">&nbsp Summary &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</asp:ListItem>
                                                         </asp:RadioButtonList>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label text-right">
+                                                Party Name
+                                            </label>
+                                            <div class="col-md-8">
+                                                <asp:UpdatePanel runat="server" ID="UpddatePanel3">
+                                                    <ContentTemplate>
+                                                        <asp:DropDownList ID="ddlPname" runat="server" AutoPostBack="True" CssClass="select2"
+                                                            MsgObrigatorio="Please Select Supplier" Width="100%" TabIndex="4">
+                                                        </asp:DropDownList>
+                                                    </ContentTemplate>
+                                                    <Triggers>
+                                                        <asp:AsyncPostBackTrigger ControlID="chkALLP" EventName="CheckedChanged" />
+                                                    </Triggers>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <asp:UpdatePanel runat="server" ID="UpdadtePanel5">
+                                                    <ContentTemplate>
+                                                        <asp:CheckBox ID="chkALLP" runat="server" CssClass="checker" Text="All" AutoPostBack="True"
+                                                            TabIndex="5" OnCheckedChanged="chkALLP_CheckedChanged" />
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </div>
@@ -235,7 +275,8 @@
     <script src="../../../assets/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js"
         type="text/javascript"></script>
 
-    <script src="../../../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="../../../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+        type="text/javascript"></script>
 
     <script src="../../../assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 
@@ -250,7 +291,8 @@
 
     <script src="../../../assets/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
 
-    <script src="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.js"
+        type="text/javascript"></script>
 
     <script src="../../../assets/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
 

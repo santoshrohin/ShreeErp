@@ -18,11 +18,15 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
             //right = dtRights.Rows.Count == 0 ? "0000000" : dtRights.Rows[0][0].ToString();
 
             LoadCombos();
-            
+            loadparty();
+            ddlPname.Enabled = false;
             ddlPartyName.Enabled = false;
+            txtFromDate.Text = Convert.ToDateTime(Session["CompanyOpeningDate"]).ToString("dd MMM yyyy");
+            txtFromDate.Attributes.Add("readonly", "readonly");
+
             txtToDate.Text = Convert.ToDateTime(DateTime.Now).ToString("dd MMM yyyy");
             txtToDate.Attributes.Add("readonly", "readonly");
-
+            chkALLP.Checked = true;
             chkAllParty.Checked = true;
         }
     }
@@ -34,6 +38,19 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
         /*Load All Party fro Party_master*/
         CommonClasses.FillCombo("PARTY_MASTER", "P_NAME", "P_CODE", "PARTY_MASTER.ES_DELETE='0' AND P_CM_COMP_ID='" + Convert.ToInt32(Session["CompanyId"]) + "' ORDER BY P_NAME ", ddlPartyName);
         ddlPartyName.Items.Insert(0, new ListItem("--Select Party--", "0"));
+    }
+    #endregion LoadCombos
+
+    #region loadparty
+    private void loadparty()
+    {
+        /*Load All Party fro Party_master*/
+        DataTable dtparty = CommonClasses.Execute("SELECT  DISTINCT TALLY_OUT_PARTYNAME FROM  TALLY_OUTSTANDING   ORDER BY TALLY_OUT_PARTYNAME ");
+        ddlPname.DataSource = dtparty;
+        ddlPname.DataTextField = "TALLY_OUT_PARTYNAME";
+        ddlPname.DataValueField = "TALLY_OUT_PARTYNAME";
+        ddlPname.DataBind();
+        ddlPname.Items.Insert(0, new ListItem("--Select Party--", "0"));
     }
     #endregion LoadCombos
 
@@ -54,7 +71,23 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
     }
     #endregion
 
-    
+    #region chkALLP_CheckedChanged
+    protected void chkALLP_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkALLP.Checked == true)
+        {
+            ddlPname.SelectedIndex = 0;
+            ddlPname.Enabled = false;
+        }
+        else
+        {
+            ddlPname.SelectedIndex = 0;
+            ddlPname.Enabled = true;
+            ddlPname.Focus();
+        }
+    }
+    #endregion
+
 
     #region btnCancel_Click
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -95,7 +128,7 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
         try
         {
             #region Validation
-            
+
             if (chkAllParty.Checked == false)
             {
                 if (ddlPartyName.SelectedIndex == 0)
@@ -108,9 +141,9 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
             }
             #endregion Validation
 
-           
+
             string To = "";
-            
+
             To = txtToDate.Text;
             string str = "";
             string CondInv = "";
@@ -120,22 +153,22 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
             string CondiAdvance = "";
             #region ChkDateRegion
 
-               if (To != "")
+            if (To != "")
+            {
+
+                DateTime Date2 = Convert.ToDateTime(txtToDate.Text);
+                if (Date2 > Convert.ToDateTime(Session["ClosingDate"]))
                 {
-                    
-                    DateTime Date2 = Convert.ToDateTime(txtToDate.Text);
-                    if ( Date2 > Convert.ToDateTime(Session["ClosingDate"]))
-                    {
-                        PanelMsg.Visible = true;
-                        lblmsg.Text = "FromDate And ToDate Must Be In Between Financial Year! ";
-                        return;
-                    }
-                    
+                    PanelMsg.Visible = true;
+                    lblmsg.Text = "FromDate And ToDate Must Be In Between Financial Year! ";
+                    return;
                 }
-            
+
+            }
+
             else
             {
-                
+
                 DateTime To2 = Convert.ToDateTime(Session["ClosingDate"]);
                 To = To2.ToString("dd/MMM/yyyy");
             }
@@ -143,16 +176,16 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
             //chkDateAll.Checked == true && 
             #region Conditions
 
-               if (chkAllParty.Checked == false)
-               {
-                   CondiBill = CondiBill + " BPM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
-                   CondInv = CondInv + " INM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
-                   CondiCredit = CondiCredit + " CNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
-                   CondiDebit = CondiDebit + " DNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
-                   CondiAdvance = CondiAdvance + " PAYM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
+            if (chkAllParty.Checked == false)
+            {
+                CondiBill = CondiBill + " BPM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
+                CondInv = CondInv + " INM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
+                CondiCredit = CondiCredit + " CNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
+                CondiDebit = CondiDebit + " DNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
+                CondiAdvance = CondiAdvance + " PAYM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
 
 
-               }
+            }
 
 
             if (ddlType.SelectedValue == "0" && chkAllParty.Checked == true)
@@ -180,7 +213,7 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
 
                     CondiCredit = CondiCredit + "CNM_DATE <= '" + Convert.ToDateTime(To).ToString("dd/MMM/yyyy") + "' and CNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
                     CondiDebit = CondiDebit + "DNM_DATE <= '" + Convert.ToDateTime(To).ToString("dd/MMM/yyyy") + "' and DNM_CUST_CODE='" + ddlPartyName.SelectedValue + "' and ";
-                    CondiAdvance = CondiAdvance + "PAYM_DATE <= '" + Convert.ToDateTime(To).ToString("dd/MMM/yyyy") + "' and PAYM_P_CODE='" + ddlPartyName.SelectedValue + "' and "; 
+                    CondiAdvance = CondiAdvance + "PAYM_DATE <= '" + Convert.ToDateTime(To).ToString("dd/MMM/yyyy") + "' and PAYM_P_CODE='" + ddlPartyName.SelectedValue + "' and ";
                 }
                 else
                 {
@@ -235,18 +268,134 @@ public partial class RoportForms_VIEW_ViewOutstandingReport : System.Web.UI.Page
             }
 
             #endregion Conditions
-
-            
+            string strCondition = "";
+            if (chkALLP.Checked == false)
+            {
+                if (ddlPname.SelectedValue == "0")
+                {
+                    PanelMsg.Visible = true;
+                    lblmsg.Text = "Select Party Name";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+                    ddlPname.Focus();
+                    return;
+                }
+                else
+                {
+                    strCondition = strCondition + " TALLY_OUT_PARTYNAME='" + ddlPname.SelectedValue + "' AND ";
+                }
+            }
+            strCondition = strCondition + "   TALLY_OUT_DATE BETWEEN '" + Convert.ToDateTime(txtFromDate.Text).ToString("dd-MMM-yyyy") + "' AND '" + Convert.ToDateTime(txtToDate.Text).ToString("dd-MMM-yyyy") + "'   ";
 
             str = rbtGroup.SelectedValue;
-            Response.Redirect("~/Account/ReportForms/ADD/OutstandingReport.aspx?Title=" + Title + "&All_CUST=" + chkAllParty.Checked.ToString() + "&ToDate=" + Convert.ToDateTime(To.ToString()).ToString("dd/MMM/yyyy") + "&p_name=" + ddlPartyName.SelectedValue.ToString() + "&rbtGroup=" + rbtGroup.SelectedValue + "&ddlType=" + ddlType.SelectedValue + "&rbtReportType=" + rbtReportType.SelectedValue + "&Condition=" + CondiBill + "&CondInv=" + CondInv + "&CondiCredit=" + CondiCredit + "&CondiDebit=" + CondiDebit + "&CondiAdvance=" + CondiAdvance + "  ", false);
+            Response.Redirect("~/Account/ReportForms/ADD/OutstandingReport.aspx?Title=" + Title + "&Condition=" + strCondition + "&Type=" + ddlBillType.SelectedValue + " ", false);
 
-            
 
+            //try
+            //{
+
+
+            //    DataTable dtResult = new DataTable();
+            //    if (chkALLP.Checked == true)
+            //    {
+            //        dtResult = CommonClasses.Execute("SELECT  * FROM  TALLY_OUTSTANDING   ORDER BY TALLY_OUT_PARTYNAME ");
+
+
+            //    }
+            //    else
+            //    {
+            //        dtResult = CommonClasses.Execute("SELECT  * FROM  TALLY_OUTSTANDING where TALLY_OUT_PARTYNAME='" + ddlPname.SelectedValue + "'   ORDER BY TALLY_OUT_PARTYNAME ");
+
+            //    }
+            //    DataTable dtExport = new DataTable();
+            //    if (dtResult.Rows.Count > 0)
+            //    {
+            //        dtExport.Columns.Add("Sr No");
+            //        dtExport.Columns.Add("Ref No");
+            //        dtExport.Columns.Add("Date");
+            //        dtExport.Columns.Add("Party Name");
+            //        dtExport.Columns.Add("Amount");
+            //        dtExport.Columns.Add("Due Days");
+            //        for (int i = 0; i < dtResult.Rows.Count; i++)
+            //        {
+            //            dtExport.Rows.Add(i + 1,
+            //                              dtResult.Rows[i]["TALLY_OUT_REFNO"].ToString(),
+            //                             Convert.ToDateTime(dtResult.Rows[i]["TALLY_OUT_DATE"].ToString()).ToString("dd/MM/yyyy"),
+            //                              dtResult.Rows[i]["TALLY_OUT_PARTYNAME"].ToString(),
+            //                              dtResult.Rows[i]["TALLY_OUT_AMT"].ToString(),
+            //                              dtResult.Rows[i]["TALLY_OUT_DUEDAYS"].ToString()
+            //                             );
+            //        }
+            //    }
+
+            //    HttpContext.Current.Response.Clear();
+            //    HttpContext.Current.Response.ClearContent();
+            //    HttpContext.Current.Response.ClearHeaders();
+            //    HttpContext.Current.Response.Buffer = true;
+            //    HttpContext.Current.Response.ContentType = "application/ms-excel";
+            //    HttpContext.Current.Response.Write(@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">");
+
+            //    HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=OutstandingLedger.xls");
+
+            //    HttpContext.Current.Response.Charset = "utf-8";
+            //    HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1250");
+            //    //sets font
+            //    HttpContext.Current.Response.Write("<font style='font-size:10.0pt; font-family:Calibri;'>");
+            //    HttpContext.Current.Response.Write("<BR><BR><BR>");
+            //    HttpContext.Current.Response.Write("<Table border='1' bgColor='#ffffff' " +
+            //    "borderColor='#000000' cellSpacing='0' cellPadding='0' " +
+            //    "style='font-size:10.0pt; font-family:Calibri; background:white;'> <TR>");
+            //    //am getting my grid's column headers
+            //    int columnscount = dtExport.Columns.Count;
+            //    for (int j = 0; j < columnscount; j++)
+            //    {      //write in new column
+            //        HttpContext.Current.Response.Write("<Td>");
+            //        //Get column headers  and make it as bold in excel columns
+            //        HttpContext.Current.Response.Write("<B>");
+            //        HttpContext.Current.Response.Write(dtExport.Columns[j].ColumnName.ToString());
+            //        HttpContext.Current.Response.Write("</B>");
+            //        HttpContext.Current.Response.Write("</Td>");
+            //    }
+
+            //    HttpContext.Current.Response.Write("</TR>");
+            //    for (int k = 0; k < dtExport.Rows.Count; k++)
+            //    {//write in new row
+
+            //        HttpContext.Current.Response.Write("<TR>");
+            //        for (int i = 0; i < dtExport.Columns.Count; i++)
+            //        {
+            //            if (i == dtExport.Columns.Count - 1)
+            //            {
+            //                HttpContext.Current.Response.Write("<Td style=\"display:none;\">");
+            //                HttpContext.Current.Response.Write(Convert.ToString(dtExport.Rows[k][i].ToString()));
+            //                HttpContext.Current.Response.Write("</Td>");
+            //            }
+            //            else
+            //            {
+
+            //                HttpContext.Current.Response.Write("<Td>");
+
+            //                HttpContext.Current.Response.Write(Convert.ToString(dtExport.Rows[k][i].ToString()));
+            //                HttpContext.Current.Response.Write("</Td>");
+            //            }
+            //        }
+            //        HttpContext.Current.Response.Write("</TR>");
+            //    }
+
+
+
+            //    HttpContext.Current.Response.Write("</Table>");
+            //    HttpContext.Current.Response.Write("</font>");
+            //    HttpContext.Current.Response.Flush();
+            //    HttpContext.Current.Response.End();
+            //}
+            //catch (Exception)
+            //{
+
+            //}
         }
         catch (Exception Ex)
         {
-            CommonClasses.SendError("Outstanding Report", "btnShow_Click", Ex.Message);
+            //CommonClasses.SendError("Outstanding Report", "btnShow_Click", Ex.Message);
         }
     }
     #endregion

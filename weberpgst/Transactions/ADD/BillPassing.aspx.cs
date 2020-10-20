@@ -15,6 +15,8 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
     static string right = "";
     public static string str = "";
     public static string Type = "";
+    public double basicAmtAfterCal = 0;
+    public double basicAmtAfterCalforCondition = 0;
     static DataTable dt2 = new DataTable();
     DataTable dtBillPassing = new DataTable();
     #endregion
@@ -31,6 +33,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
+                
                 ViewState["mlCode"] = mlCode;
                 ViewState["right"] = right;
                 ViewState["Type"] = Type;
@@ -207,6 +210,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
     #region btnSubmit_Click
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+                  
         try
         {
 
@@ -238,6 +242,14 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     //lblmsg.Text = "Please, Select Item";
                     return;
                 }
+                if (Convert.ToDouble(txtBasicAmount.Text) != VerifyCalucalte())
+                {
+                    lblerrormessagebasicamt.Text = "Basic Amount does not match";
+                    ShowMessage("#Avisos", "Basic Amount Does not match", CommonClasses.MSG_Warning);
+                    //PanelMsg.Visible = true;
+                    //lblmsg.Text = "Please, Select Item";
+                    return;
+                }
                 if (txtInvoceNo.Text.Trim() == "")
                 {
                     ShowMessage("#Avisos", "Please Enter Invoice No", CommonClasses.MSG_Warning);
@@ -245,6 +257,8 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     //lblmsg.Text = "Please, Select Item";
                     return;
                 }
+                //basicAmtAfterCalforCondition=VerifyCalucalte();
+                
                 if (SaveRec())
                 {
 
@@ -347,6 +361,11 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
     {
         try
         {
+            DataTable dtSuppTCSPer = CommonClasses.Execute("SELECT P_TCS_PER  FROM PARTY_MASTER where P_CODE='" + ddlSupplierName.SelectedValue + "' AND ES_DELETE=0");
+            if (dtSuppTCSPer.Rows.Count > 0)
+            {
+                txtTCSper.Text = dtSuppTCSPer.Rows[0]["P_TCS_PER"].ToString();
+            }
             CheckBox thisCheckBox = (CheckBox)sender;
             GridViewRow thisGridViewRow = (GridViewRow)thisCheckBox.Parent.Parent;
             int index = thisGridViewRow.RowIndex;
@@ -370,6 +389,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
             if (ddlSupplierName.SelectedIndex != 0)
             {
                 DataTable dtSuppType = CommonClasses.Execute("SELECT IWM_TYPE  FROM INWARD_MASTER where IWM_P_CODE='" + ddlSupplierName.SelectedValue + "' AND ES_DELETE=0");
+
                 if (dtSuppType.Rows.Count > 0)
                 {
 
@@ -377,6 +397,11 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     {
                         ViewState["SuppType"] = 1;
                     }
+                }
+                DataTable dtSuppTCSPer = CommonClasses.Execute("SELECT P_TCS_PER  FROM PARTY_MASTER where P_CODE='" + ddlSupplierName.SelectedValue + "' AND ES_DELETE=0");
+                if (dtSuppTCSPer.Rows.Count>0)
+                {
+                    txtTCSper.Text = dtSuppTCSPer.Rows[0]["P_TCS_PER"].ToString();
                 }
                 LoadBill();
             }
@@ -589,7 +614,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
         try
         {
 
-            dt = CommonClasses.Execute("select  ISNULL(BPM_EX_YN,0) AS BPM_EX_YN,  CASE WHEN BPM_TYPE='OUTCUSTINV' then 'OUTCUSTINV' WHEN BPM_TYPE='WPO' then 'Without PO inward' WHEN BPM_TYPE='CUSTOMER-REJECTION' then 'CUSTOMER-REJECTION' else 'IWIM' END IWM_TYPE ,BPM_CODE,BPM_NO,CONVERT(varchar,BPM_DATE,106) as BPM_DATE, ISNULL(BPM_EX_TYPE,0)  AS BPM_EX_TYPE,BPM_P_CODE,P_NAME,BPM_IWM_CODE,BPM_INV_NO,CONVERT(varchar,BPM_INV_DATE,106) as BPM_INV_DATE,BPM_BILL_PASS_BY,BPM_BASIC_AMT, BPM_DISCOUNT_AMT,	BPM_PACKING_AMT,BPM_ACCESS_AMT ,BPM_EXCIES_AMT ,BPM_ECESS_AMT,BPM_HECESS_AMT ,BPM_EXCPER ,BPM_EXCEDCESS_PER ,BPM_EXCHIEDU_PER ,BPM_TAXABLE_AMT ,BPM_TAX_AMT ,BPM_TAX_PER ,BPM_TAX_CODE ,BPM_OTHER_AMT ,BPM_ADD_DUTY ,BPM_FREIGHT ,BPM_INSURRANCE ,BPM_TRANSPORT ,isnull(BPM_OCTRO_AMT,0) as BPM_OCTRO_AMT,isnull(BPM_ROUND_OFF,0) as BPM_ROUND_OFF ,BPM_G_AMT,BPM_IS_SERVICEIN   from BILL_PASSING_MASTER,PARTY_MASTER WHERE BPM_P_CODE=P_CODE and BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "'");
+            dt = CommonClasses.Execute("select  ISNULL(BPM_EX_YN,0) AS BPM_EX_YN,  CASE WHEN BPM_TYPE='OUTCUSTINV' then 'OUTCUSTINV' WHEN BPM_TYPE='WPO' then 'Without PO inward' WHEN BPM_TYPE='CUSTOMER-REJECTION' then 'CUSTOMER-REJECTION' else 'IWIM' END IWM_TYPE ,BPM_CODE,BPM_NO,CONVERT(varchar,BPM_DATE,106) as BPM_DATE, ISNULL(BPM_EX_TYPE,0)  AS BPM_EX_TYPE,BPM_P_CODE,P_NAME,BPM_IWM_CODE,BPM_INV_NO,CONVERT(varchar,BPM_INV_DATE,106) as BPM_INV_DATE,BPM_BILL_PASS_BY,BPM_BASIC_AMT, BPM_DISCOUNT_AMT,	BPM_PACKING_AMT,BPM_ACCESS_AMT ,BPM_EXCIES_AMT ,BPM_ECESS_AMT,BPM_HECESS_AMT ,BPM_EXCPER ,BPM_EXCEDCESS_PER ,BPM_EXCHIEDU_PER ,BPM_TAXABLE_AMT ,BPM_TAX_AMT ,BPM_TAX_PER ,BPM_TAX_CODE ,BPM_OTHER_AMT ,BPM_ADD_DUTY ,BPM_FREIGHT ,BPM_INSURRANCE ,BPM_TRANSPORT ,isnull(BPM_OCTRO_AMT,0) as BPM_OCTRO_AMT,isnull(BPM_ROUND_OFF,0) as BPM_ROUND_OFF ,BPM_G_AMT,BPM_IS_SERVICEIN,BPM_TCS_PER,BPM_TCS_PER_AMT   from BILL_PASSING_MASTER,PARTY_MASTER WHERE BPM_P_CODE=P_CODE and BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "'");
             if (dt.Rows.Count > 0)
             {
                 ViewState["mlCode"] = Convert.ToInt32(dt.Rows[0]["BPM_CODE"]);
@@ -639,30 +664,31 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                 txtexcper.Text = string.Format("{0:0.0000}", Convert.ToDouble(dt.Rows[0]["BPM_EXCPER"]));
                 txteducessper.Text = string.Format("{0:0.0000}", Convert.ToDouble(dt.Rows[0]["BPM_EXCEDCESS_PER"]));
                 txtsheper.Text = string.Format("{0:0.0000}", Convert.ToDouble(dt.Rows[0]["BPM_EXCHIEDU_PER"]));
-
+                txtTCSper.Text = string.Format("{0:0.0000}", Convert.ToDouble(dt.Rows[0]["BPM_TCS_PER"]));
+                txtTCSperAmt.Text = string.Format("{0:0.0000}", Convert.ToDouble(dt.Rows[0]["BPM_TCS_PER_AMT"]));
                 ddlSupplierName.Enabled = false;
                 //dtBillPassing = CommonClasses.Execute("select distinct IWM_TYPE AS IWM_TYPE,  IWM_CODE,IWD_CPOM_CODE,SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(IWD_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(IWD_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,2)) as SPOD_RATE,cast(IWD_CH_QTY*IWD_RATE as numeric(20,2)) as SPOD_TOTAL_AMT,cast(SPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT,SPOD_EXC_PER,SPOD_EDU_CESS_PER,SPOD_H_EDU_CESS,SPOD_T_CODE,ST_TAX_NAME,ST_SALES_TAX,SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY  FROM   SUPP_PO_MASTER ,SUPP_PO_DETAILS,INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,SALES_TAX_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL where SPOD_SPOM_CODE = SPOM_CODE AND IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=SPOM_CODE  and BPD_SPOM_CODE=IWD_CPOM_CODE AND SPOD_I_CODE = I_CODE AND SPOD_T_CODE = ST_CODE AND IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND  IWM_P_CODE='" + ddlSupplierName.SelectedValue + "'  and BPD_IWM_CODE=IWM_CODE and BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
                 // dtBillPassing = CommonClasses.Execute("select distinct IWM_TYPE AS IWM_TYPE,  IWM_CODE,IWD_CPOM_CODE,SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(IWD_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(IWD_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,2)) as SPOD_RATE,cast(IWD_CH_QTY*IWD_RATE as numeric(20,2)) as SPOD_TOTAL_AMT,cast(SPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT,SPOD_EXC_PER,SPOD_EDU_CESS_PER,SPOD_H_EDU_CESS,SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS FROM   SUPP_PO_MASTER ,SUPP_PO_DETAILS,INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL where SPOD_SPOM_CODE = SPOM_CODE AND IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=SPOM_CODE  and BPD_SPOM_CODE=IWD_CPOM_CODE AND SPOD_I_CODE = I_CODE   AND IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND  IWM_P_CODE='" + ddlSupplierName.SelectedValue + "'  and BPD_IWM_CODE=IWM_CODE and BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
                 if (chkUseCustRej.Checked)
                 {
-                    dtBillPassing = CommonClasses.Execute("select distinct 'CUSTOMER-REJECTION' as IWM_TYPE,CR_CODE as IWM_CODE,CD_PO_CODE as IWD_CPOM_CODE,CPOM_PONO as SPOM_PO_NO,CR_GIN_NO as IWM_NO,convert(varchar,CR_GIN_DATE,106) as IWM_DATE,CR_CHALLAN_NO as IWM_CHALLAN_NO,convert(varchar,CR_CHALLAN_DATE,106) as IWM_CHAL_DATE,CD_I_CODE as IWD_I_CODE,I_CODENO,I_NAME,I_UOM_NAME,cast(CD_CHALLAN_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(CD_RECEIVED_QTY as numeric(10,3)) as IWD_REV_QTY,cast(CD_CHALLAN_QTY as numeric(10,3)) as IWD_CON_OK_QTY,0 As IWD_CON_REJ_QTY,0 as IWD_CON_SCRAP_QTY,CONVERT(decimal(10,2),CD_RATE) AS SPOD_RATE,CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))AS SPOD_TOTAL_AMT,  '0.00' as SPOD_DISC_AMT,CASE WHEN CM_STATE=P_SM_CODE then E_BASIC else 0 END as SPOD_EXC_PER,CASE WHEN CM_STATE=P_SM_CODE then CONVERT(decimal(10,2),E_BASIC*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))/100 )else 0 END as EX_EX_DUTY,CASE WHEN CM_STATE=P_SM_CODE then E_EDU_CESS else 0 END AS SPOD_EDU_CESS_PER,CASE WHEN CM_STATE=P_SM_CODE then CONVERT(decimal(10,2),E_EDU_CESS*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE)) /100) ELSE 0 END as EX_EX_CESS ,CASE WHEN CM_STATE!=P_SM_CODE then E_H_EDU else 0 END AS SPOD_H_EDU_CESS ,CASE WHEN CM_STATE!=P_SM_CODE then CONVERT(decimal(10,2),E_H_EDU*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))/100 ) ELSE 0 END   AS EX_EX_HCESS,0 as SPOD_T_CODE,'' as ST_TAX_NAME,'' AS ST_SALES_TAX,'0.00' AS T_AMT,CPOM_CODE as SPOM_CODE,CR_CODE as IWM_CODE,'0.00' AS SPOD_GP_RATE,'0.00' as GP_AMT,'0.00' as ECPG,'0.00' as SECG,'1' as SPOD_EXC_Y_N,0 as EX_FREIGHT,0 as EX_PACKING_AMT,0 as EX_OTHER_AMT,0 as EX_INSURANCE_AMT   from  CUSTPO_MASTER,CUSTPO_DETAIL,CUSTREJECTION_MASTER, CUSTREJECTION_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,EXCISE_TARIFF_MASTER ,PARTY_MASTER,COMPANY_MASTER where CD_I_CODE=CPOD_I_CODE and I_E_CODE=E_CODE and CPOM_CODE =CPOD_CPOM_CODE AND CR_CODE = CD_CR_CODE AND CD_I_CODE = I_CODE AND  CD_UOM = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=CPOM_CODE  and BPD_SPOM_CODE=CD_PO_CODE AND CD_MODVAT_FLG = 1 AND  CUSTREJECTION_MASTER.ES_DELETE = 0 AND CPOM_P_CODE=P_CODE AND CR_CM_CODE=CM_CODE AND  BPD_IWM_CODE=CR_CODE and BPM_CODE=BPD_BPM_CODE and CD_I_CODE=BPD_I_CODE  and BILL_PASSING_MASTER.ES_DELETE=0 and   BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + ViewState["mlCode"].ToString() + "'   ORDER BY CUSTREJECTION_MASTER.CR_GIN_NO");
+                    dtBillPassing = CommonClasses.Execute("select distinct 'CUSTOMER-REJECTION' as IWM_TYPE,CR_CODE as IWM_CODE,CD_PO_CODE as IWD_CPOM_CODE,CPOM_PONO as SPOM_PO_NO,CR_GIN_NO as IWM_NO,convert(varchar,CR_GIN_DATE,106) as IWM_DATE,CR_CHALLAN_NO as IWM_CHALLAN_NO,convert(varchar,CR_CHALLAN_DATE,106) as IWM_CHAL_DATE,CD_I_CODE as IWD_I_CODE,I_CODENO,I_NAME,I_UOM_NAME,cast(CD_CHALLAN_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(CD_RECEIVED_QTY as numeric(10,3)) as IWD_REV_QTY,cast(CD_CHALLAN_QTY as numeric(10,3)) as IWD_CON_OK_QTY,0 As IWD_CON_REJ_QTY,0 as IWD_CON_SCRAP_QTY,CONVERT(decimal(10,2),CD_RATE) AS SPOD_RATE,CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))AS SPOD_TOTAL_AMT,  '0.00' as SPOD_DISC_AMT,CASE WHEN CM_STATE=P_SM_CODE then E_BASIC else 0 END as SPOD_EXC_PER,CASE WHEN CM_STATE=P_SM_CODE then CONVERT(decimal(10,2),E_BASIC*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))/100 )else 0 END as EX_EX_DUTY,CASE WHEN CM_STATE=P_SM_CODE then E_EDU_CESS else 0 END AS SPOD_EDU_CESS_PER,CASE WHEN CM_STATE=P_SM_CODE then CONVERT(decimal(10,2),E_EDU_CESS*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE)) /100) ELSE 0 END as EX_EX_CESS ,CASE WHEN CM_STATE!=P_SM_CODE then E_H_EDU else 0 END AS SPOD_H_EDU_CESS ,CASE WHEN CM_STATE!=P_SM_CODE then CONVERT(decimal(10,2),E_H_EDU*CONVERT(decimal(10,2),(CD_CHALLAN_QTY *CPOD_RATE))/100 ) ELSE 0 END   AS EX_EX_HCESS,0 as SPOD_T_CODE,'' as ST_TAX_NAME,'' AS ST_SALES_TAX,'0.00' AS T_AMT,CPOM_CODE as SPOM_CODE,CR_CODE as IWM_CODE,'0.00' AS SPOD_GP_RATE,'0.00' as GP_AMT,'0.00' as ECPG,'0.00' as SECG,'1' as SPOD_EXC_Y_N,0 as EX_FREIGHT,0 as EX_PACKING_AMT,0 as EX_OTHER_AMT,0 as EX_INSURANCE_AMT,BPM_TCS_PER,BPM_TCS_PER_AMT   from  CUSTPO_MASTER,CUSTPO_DETAIL,CUSTREJECTION_MASTER, CUSTREJECTION_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,EXCISE_TARIFF_MASTER ,PARTY_MASTER,COMPANY_MASTER where CD_I_CODE=CPOD_I_CODE and I_E_CODE=E_CODE and CPOM_CODE =CPOD_CPOM_CODE AND CR_CODE = CD_CR_CODE AND CD_I_CODE = I_CODE AND  CD_UOM = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=CPOM_CODE  and BPD_SPOM_CODE=CD_PO_CODE AND CD_MODVAT_FLG = 1 AND  CUSTREJECTION_MASTER.ES_DELETE = 0 AND CPOM_P_CODE=P_CODE AND CR_CM_CODE=CM_CODE AND  BPD_IWM_CODE=CR_CODE and BPM_CODE=BPD_BPM_CODE and CD_I_CODE=BPD_I_CODE  and BILL_PASSING_MASTER.ES_DELETE=0 and   BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + ViewState["mlCode"].ToString() + "'   ORDER BY CUSTREJECTION_MASTER.CR_GIN_NO");
                 }
                 else if (!ChkUseService.Checked)
                 {
                     if (ViewState["SuppType"].ToString() == "0")
                     {
                         //dtBillPassing = CommonClasses.Execute("select distinct IWM_TYPE AS IWM_TYPE,  IWM_CODE,IWD_CPOM_CODE,SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(IWD_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(IWD_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,3)) as SPOD_RATE,CONVERT (decimal(20,4),((IWD_CH_QTY * ISNULL( IWM_CURR_RATE , 0)) * ROUND(IWD_RATE,3)))  AS SPOD_TOTAL_AMT,CAST(SPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT, CASE WHEN P_SM_CODE=CM_STATE then SPOD_EXC_PER else 0 END  AS SPOD_EXC_PER,CASE WHEN P_SM_CODE=CM_STATE then SPOD_EDU_CESS_PER else 0 END AS SPOD_EDU_CESS_PER, CASE WHEN P_SM_CODE<>CM_STATE then SPOD_H_EDU_CESS else 0 END AS SPOD_H_EDU_CESS ,SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT  FROM   SUPP_PO_MASTER ,SUPP_PO_DETAILS,INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER where SPOD_SPOM_CODE = SPOM_CODE AND IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=SPOM_CODE  and BPD_SPOM_CODE=IWD_CPOM_CODE AND SPOD_I_CODE = I_CODE AND BPD_I_CODE=I_CODE  AND IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND      BPD_IWM_CODE=IWM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
-                        dtBillPassing = CommonClasses.Execute("select distinct IWM_TYPE AS IWM_TYPE, IWM_CODE,IWD_CPOM_CODE,SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, CONVERT (decimal(20, 4), CASE when round((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END),4)=0 then IWD_REV_QTY ELSE ( INWARD_DETAIL.IWD_REV_QTY *round((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END),4)) END) AS    IWD_REV_QTY,cast(IWD_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,3)) as SPOD_RATE,  CONVERT (decimal(20, 4), INWARD_DETAIL.IWD_CH_QTY * ISNULL((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END), 0) * ROUND(INWARD_DETAIL.IWD_RATE, 4)) AS SPOD_TOTAL_AMT,CAST(SPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT, CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE=CM_STATE then SPOD_EXC_PER ELSE 0 END ELSE 0 END  AS SPOD_EXC_PER,CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE=CM_STATE then SPOD_EDU_CESS_PER else 0 END ELSE 0 END  AS SPOD_EDU_CESS_PER,CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE<>CM_STATE then SPOD_H_EDU_CESS else 0 END   ELSE 0 END  AS SPOD_H_EDU_CESS  ,SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT  FROM   SUPP_PO_MASTER ,SUPP_PO_DETAILS,INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER where SPOD_SPOM_CODE = SPOM_CODE AND IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=SPOM_CODE  and BPD_SPOM_CODE=IWD_CPOM_CODE AND SPOD_I_CODE = I_CODE AND BPD_I_CODE=I_CODE  AND IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND      BPD_IWM_CODE=IWM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
+                        dtBillPassing = CommonClasses.Execute("select distinct IWM_TYPE AS IWM_TYPE, IWM_CODE,IWD_CPOM_CODE,SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, CONVERT (decimal(20, 4), CASE when round((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END),4)=0 then IWD_REV_QTY ELSE ( INWARD_DETAIL.IWD_REV_QTY *round((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END),4)) END) AS    IWD_REV_QTY,cast(IWD_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,3)) as SPOD_RATE,  CONVERT (decimal(20, 4), INWARD_DETAIL.IWD_CH_QTY * ISNULL((CASE WHEN SPOD_UOM_CODE=SPOD_RATE_UOM then 1 else IWD_TUR_WEIGHT END), 0) * ROUND(INWARD_DETAIL.IWD_RATE, 4)) AS SPOD_TOTAL_AMT,CAST(SPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT, CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE=CM_STATE then SPOD_EXC_PER ELSE 0 END ELSE 0 END  AS SPOD_EXC_PER,CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE=CM_STATE then SPOD_EDU_CESS_PER else 0 END ELSE 0 END  AS SPOD_EDU_CESS_PER,CASE WHEN P_LBT_IND=1 THEN CASE WHEN P_SM_CODE<>CM_STATE then SPOD_H_EDU_CESS else 0 END   ELSE 0 END  AS SPOD_H_EDU_CESS  ,SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT,BPM_TCS_PER,BPM_TCS_PER_AMT  FROM   SUPP_PO_MASTER ,SUPP_PO_DETAILS,INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER where SPOD_SPOM_CODE = SPOM_CODE AND IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE AND BPD_SPOM_CODE=SPOM_CODE  and BPD_SPOM_CODE=IWD_CPOM_CODE AND SPOD_I_CODE = I_CODE AND BPD_I_CODE=I_CODE  AND IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND      BPD_IWM_CODE=IWM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
                     }
                     else
                     {
-                        dtBillPassing = CommonClasses.Execute(" select distinct IWM_TYPE AS IWM_TYPE, IWM_CODE,IWD_CPOM_CODE,0 AS SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(IWD_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(IWD_REV_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,3)) as SPOD_RATE,CONVERT (decimal(20,4),((IWD_CH_QTY *   ROUND(IWD_RATE,3))))  AS SPOD_TOTAL_AMT,0 as SPOD_DISC_AMT,  CASE WHEN P_SM_CODE=CM_STATE then E_BASIC else 0 END  AS SPOD_EXC_PER,CASE WHEN P_SM_CODE=CM_STATE then E_EDU_CESS else 0 END AS SPOD_EDU_CESS_PER, CASE WHEN P_SM_CODE<>CM_STATE then E_H_EDU else 0 END AS SPOD_H_EDU_CESS ,0 AS SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,0 AS SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT  FROM   INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER,EXCISE_TARIFF_MASTER where  IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE  AND BPD_I_CODE=I_CODE    and BPD_SPOM_CODE=IWD_CPOM_CODE AND  IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND I_E_CODE=E_CODE AND      BPD_IWM_CODE=IWM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "'  and BPD_BPM_CODE= '" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
+                        dtBillPassing = CommonClasses.Execute(" select distinct IWM_TYPE AS IWM_TYPE, IWM_CODE,IWD_CPOM_CODE,0 AS SPOM_PO_NO,IWM_NO,convert(varchar,IWM_DATE,106) as IWM_DATE,IWM_CHALLAN_NO,convert(varchar,IWM_CHAL_DATE,106) as IWM_CHAL_DATE,IWD_I_CODE,I_NAME,cast(IWD_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(IWD_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(IWD_REV_QTY as numeric(10,3)) as IWD_CON_OK_QTY,IWD_CON_REJ_QTY,IWD_CON_SCRAP_QTY,cast(IWD_RATE as numeric(20,3)) as SPOD_RATE,CONVERT (decimal(20,4),((IWD_CH_QTY *   ROUND(IWD_RATE,3))))  AS SPOD_TOTAL_AMT,0 as SPOD_DISC_AMT,  CASE WHEN P_SM_CODE=CM_STATE then E_BASIC else 0 END  AS SPOD_EXC_PER,CASE WHEN P_SM_CODE=CM_STATE then E_EDU_CESS else 0 END AS SPOD_EDU_CESS_PER, CASE WHEN P_SM_CODE<>CM_STATE then E_H_EDU else 0 END AS SPOD_H_EDU_CESS ,0 AS SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,0 AS SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT,BPM_TCS_PER,BPM_TCS_PER_AMT  FROM   INWARD_MASTER,INWARD_DETAIL,ITEM_UNIT_MASTER,ITEM_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER,EXCISE_TARIFF_MASTER where  IWM_CODE = IWD_IWM_CODE AND IWD_I_CODE = I_CODE AND  IWD_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE  AND BPD_I_CODE=I_CODE    and BPD_SPOM_CODE=IWD_CPOM_CODE AND  IWD_BILL_PASS_FLG = 1 AND IWD_INSP_FLG = 1 AND  INWARD_MASTER.ES_DELETE = 0 AND I_E_CODE=E_CODE AND      BPD_IWM_CODE=IWM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "'  and BPD_BPM_CODE= '" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY INWARD_MASTER.IWM_NO");
                     }
                 }
                 else
                 {
 
-                    dtBillPassing = CommonClasses.Execute("select distinct SIM_TYPE AS IWM_TYPE,  SIM_CODE AS IWM_CODE,SID_CPOM_CODE AS IWD_CPOM_CODE,SRPOM_PO_NO AS SPOM_PO_NO,SIM_NO AS IWM_NO,convert(varchar,SIM_DATE,106) as IWM_DATE,SIM_CHALLAN_NO AS IWM_CHALLAN_NO,convert(varchar,SIM_CHAL_DATE,106) as IWM_CHAL_DATE,SID_I_CODE AS IWD_I_CODE,S_NAME AS I_NAME,cast(SID_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(SID_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(SID_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,SID_CON_REJ_QTY AS IWD_CON_REJ_QTY,SID_CON_SCRAP_QTY AS IWD_CON_SCRAP_QTY,cast(SID_RATE as numeric(20,3)) as SPOD_RATE,cast(SID_CH_QTY*SID_RATE as numeric(20,2)) as SPOD_TOTAL_AMT,cast(SRPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT, CASE WHEN P_SM_CODE=CM_STATE then SRPOD_EXC_PER else 0 END  AS SPOD_EXC_PER,CASE WHEN P_SM_CODE=CM_STATE then SRPOD_EDU_CESS_PER else 0 END AS SPOD_EDU_CESS_PER, CASE WHEN P_SM_CODE<>CM_STATE then SRPOD_H_EDU_CESS else 0 END AS SPOD_H_EDU_CESS ,SRPOD_T_CODE AS SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SRPOD_EXC_Y_N AS SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT  FROM   SERVICE_PO_MASTER ,SERVICE_PO_DETAILS,SERVICE_INWARD_MASTER,SERVICE_INWARD_DETAIL,SERVICE_TYPE_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER where SRPOD_SPOM_CODE = SRPOM_CODE AND SIM_CODE = SID_SIM_CODE AND SID_I_CODE = S_CODE AND BPD_SPOM_CODE=SRPOM_CODE  and BPD_SPOM_CODE=SID_CPOM_CODE AND SRPOD_I_CODE = S_CODE   AND SID_BILL_PASS_FLG = 1 AND SID_INSP_FLG = 1 AND  SERVICE_INWARD_MASTER.ES_DELETE = 0 AND      BPD_IWM_CODE=SIM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY SERVICE_INWARD_MASTER.SIM_NO");
+                    dtBillPassing = CommonClasses.Execute("select distinct SIM_TYPE AS IWM_TYPE,  SIM_CODE AS IWM_CODE,SID_CPOM_CODE AS IWD_CPOM_CODE,SRPOM_PO_NO AS SPOM_PO_NO,SIM_NO AS IWM_NO,convert(varchar,SIM_DATE,106) as IWM_DATE,SIM_CHALLAN_NO AS IWM_CHALLAN_NO,convert(varchar,SIM_CHAL_DATE,106) as IWM_CHAL_DATE,SID_I_CODE AS IWD_I_CODE,S_NAME AS I_NAME,cast(SID_CH_QTY as numeric(10,3)) AS IWD_CH_QTY, cast(SID_REV_QTY as numeric(10,3)) as IWD_REV_QTY,cast(SID_CON_OK_QTY as numeric(10,3)) as IWD_CON_OK_QTY,SID_CON_REJ_QTY AS IWD_CON_REJ_QTY,SID_CON_SCRAP_QTY AS IWD_CON_SCRAP_QTY,cast(SID_RATE as numeric(20,3)) as SPOD_RATE,cast(SID_CH_QTY*SID_RATE as numeric(20,2)) as SPOD_TOTAL_AMT,cast(SRPOD_DISC_AMT as numeric(20,2)) as SPOD_DISC_AMT, CASE WHEN P_SM_CODE=CM_STATE then SRPOD_EXC_PER else 0 END  AS SPOD_EXC_PER,CASE WHEN P_SM_CODE=CM_STATE then SRPOD_EDU_CESS_PER else 0 END AS SPOD_EDU_CESS_PER, CASE WHEN P_SM_CODE<>CM_STATE then SRPOD_H_EDU_CESS else 0 END AS SPOD_H_EDU_CESS ,SRPOD_T_CODE AS SPOD_T_CODE,'' AS ST_TAX_NAME,'' AS ST_SALES_TAX,SRPOD_EXC_Y_N AS SPOD_EXC_Y_N,ISNULL(BPD_EXC_AMT,0) AS EX_EX_DUTY ,ISNULL(BPD_EDU_AMT,0) AS EX_EX_CESS,ISNULL(BPD_HSEDU_AMT,0) AS EX_EX_HCESS,BPM_FREIGHT as EX_FREIGHT,BPM_PACKING_AMT as EX_PACKING_AMT,BPM_OTHER_AMT as EX_OTHER_AMT,BPM_INSURRANCE as EX_INSURANCE_AMT,BPM_TCS_PER,BPM_TCS_PER_AMT  FROM   SERVICE_PO_MASTER ,SERVICE_PO_DETAILS,SERVICE_INWARD_MASTER,SERVICE_INWARD_DETAIL,SERVICE_TYPE_MASTER,BILL_PASSING_MASTER,BILL_PASSING_DETAIL,PARTY_MASTER,COMPANY_MASTER where SRPOD_SPOM_CODE = SRPOM_CODE AND SIM_CODE = SID_SIM_CODE AND SID_I_CODE = S_CODE AND BPD_SPOM_CODE=SRPOM_CODE  and BPD_SPOM_CODE=SID_CPOM_CODE AND SRPOD_I_CODE = S_CODE   AND SID_BILL_PASS_FLG = 1 AND SID_INSP_FLG = 1 AND  SERVICE_INWARD_MASTER.ES_DELETE = 0 AND      BPD_IWM_CODE=SIM_CODE and BPM_CM_CODE=CM_CODE AND P_CODE=BPM_P_CODE AND  BPD_BPM_CODE=BPM_CODE and BILL_PASSING_MASTER.ES_DELETE=0 and  BPM_CM_CODE = '" + Session["CompanyCode"].ToString() + "' and BPD_BPM_CODE='" + Convert.ToInt32(ViewState["mlCode"]) + "' and BPM_NO='" + txtBillNo.Text + "' ORDER BY SERVICE_INWARD_MASTER.SIM_NO");
 
                 }
                 if (dtBillPassing.Rows.Count != 0)
@@ -751,7 +777,8 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                 txtRoundOff.Text = string.Format("{0:0.0000}", billPassing_BL.BPM_ROUND_OFF);
 
                 txtGrandTotal.Text = string.Format("{0:0.0000}", billPassing_BL.BPM_G_AMT);
-
+                txtTCSper.Text = string.Format("{0:0.0000}", billPassing_BL.BPM_TCS_PER);
+                txtTCSperAmt.Text = string.Format("{0:0.0000}", billPassing_BL.BPM_TCS_PER_AMT);
 
                 rbLstIsExise.SelectedValue = billPassing_BL.BPM_EX_TYPE.ToString();
             }
@@ -810,7 +837,9 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
             billPassing_BL.BPM_ROUND_OFF = Math.Round(Convert.ToDouble(txtRoundOff.Text), 2);
             billPassing_BL.BPM_G_AMT = Math.Round(Convert.ToDouble(txtGrandTotal.Text), 2);
             billPassing_BL.BPM_CM_CODE = Convert.ToInt32(Session["CompanyCode"].ToString());
-
+            billPassing_BL.BPM_TCS_PER = Convert.ToDouble(txtTCSper.Text);
+            billPassing_BL.BPM_TCS_PER_AMT = Convert.ToDouble(txtTCSperAmt.Text);
+            
             //excise
             // billPassing_BL.BPM_EX_TYPE = rbLstIsExise.SelectedValue.ToString();
             billPassing_BL.BPM_EX_TYPE = ViewState["SuppType"].ToString();
@@ -987,6 +1016,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
     }
     #endregion
 
+    double VerifyBasicAmt = 0;
     double BasicAmt = 0;
     double DiscountAmt = 0;
     double acceablevalue = 0;
@@ -1189,8 +1219,8 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     //    txtEduCessAmt.Text = string.Format("{0:0.0000}", ExcEduCessAmt);
                     //}
                     RoundOff = Convert.ToDouble(txtRoundOff.Text);
-
-                    GrandAmt = Math.Round(TaxableAmt + ExcAmt + ExcEduCessAmt + ExcHighAmt + RoundOff, 2);
+                    txtTCSperAmt.Text = string.Format("{0:0.00}",(((TaxableAmt + ExcAmt + ExcEduCessAmt + ExcHighAmt) * Convert.ToDouble(txtTCSper.Text))/100));
+                    GrandAmt = Math.Round(TaxableAmt + ExcAmt + ExcEduCessAmt + ExcHighAmt + RoundOff + Convert.ToDouble(txtTCSperAmt.Text), 2);
                     txtGrandTotal.Text = string.Format("{0:0.00}", GrandAmt);
                 }
                 else
@@ -1215,6 +1245,8 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     txtexcper.Text = "0.00";
                     txteducessper.Text = "0.00";
                     txtsheper.Text = "0.00";
+                    txtTCSper.Text="0.00";
+                    txtTCSperAmt.Text = "0.00";
                 }
             }
         }
@@ -1224,6 +1256,41 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
         }
     }
     #endregion
+
+    #region VerifyCalucalte
+    public double VerifyCalucalte()
+    {
+        try
+        {
+            
+
+                
+                for (int i = 0; i < dgBillPassing.Rows.Count; i++)
+                {
+                    CheckBox chkRow = (((CheckBox)(dgBillPassing.Rows[i].FindControl("chkSelect"))) as CheckBox);
+                    if (chkRow.Checked)
+                    {
+                        basicAmtAfterCal = basicAmtAfterCal + Convert.ToDouble(((Label)(dgBillPassing.Rows[i].FindControl("lblSPOD_TOTAL_AMT"))).Text);
+
+
+
+                        
+                    }
+                    
+                }
+
+                
+                
+            
+        }
+        catch (Exception ex)
+        {
+            CommonClasses.SendError("Bill Passing", "Calculate", ex.Message.ToString());
+        }
+        return basicAmtAfterCal;
+    }
+    #endregion
+
 
     #region txtPackingAmt_TextChanged
     protected void txtPackingAmt_TextChanged(object sender, EventArgs e)

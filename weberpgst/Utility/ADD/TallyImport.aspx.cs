@@ -35,14 +35,14 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
     {
         myLabel.Text = "Import Started......";
         lblmsz.Text = "Import Started......";
-        
+
     }
     public void imporSuupliertexcel()
     {
-        
-        string connString = ConfigurationManager.ConnectionStrings["xlsx"].ConnectionString;
 
         
+
+
         string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/supout.xlsx");
         // Create the connection object
 
@@ -58,7 +58,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             myConnection.Open();
 
             // Create OleDbCommand object and select data from worksheet Sheet1
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Bills Receivable$]", myConnection);
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Bills Payable$]", myConnection);
 
             // Create new OleDbDataAdapter
             OleDbDataAdapter oleda = new OleDbDataAdapter();
@@ -75,7 +75,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             DateTime date;
             DateTime duedate;
             string refno;
-            int Ovrduedays;
+            int Ovrduedays=0;
             float amt;
             foreach (DataRow dc in dt.Rows)
             {
@@ -85,18 +85,23 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
                 if (dc[0].ToString() == "" && dc[1].ToString() == "" && dc[2].ToString() != "" && dc[3].ToString() == "" && dc[4].ToString() == "" && dc[5].ToString() == "")
                 {
                     partyname = dc[2].ToString();
-
+                    
 
                 }
-                if (dc[0].ToString() != "" && dc[1].ToString() != "" && dc[2].ToString() == "" && dc[3].ToString() != "" && dc[4].ToString() != "" && dc[5].ToString() != "")
+                //if (dc[0].ToString() != "" && dc[1].ToString() != "" && dc[2].ToString() == "" && dc[3].ToString() != "" && dc[4].ToString() != "" && dc[5].ToString() != "")
+                if (dc[0].ToString() != "" && dc[1].ToString() != "" && dc[2].ToString() == "" && dc[3].ToString() != "" && dc[4].ToString() != "")
                 {
                     date = Convert.ToDateTime(dc[0].ToString());
                     refno = dc[1].ToString();
                     amt = float.Parse(dc[3].ToString());
                     duedate = Convert.ToDateTime(dc[4].ToString());
-                    Ovrduedays = Convert.ToInt32(dc[5].ToString());
+                    if (dc[5].ToString() !="")
+                    {
+                        Ovrduedays = Convert.ToInt32(dc[5].ToString());    
+                    }
+                    
 
-                    insertintotable(date, refno, amt, duedate, Ovrduedays, partyname,"Supp");
+                    insertintotable(date, refno, amt, duedate, Ovrduedays, partyname, "Supp");
 
 
 
@@ -127,7 +132,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
     public void imporCustomerexcel()
     {
 
-        string connString = ConfigurationManager.ConnectionStrings["xlsx"].ConnectionString;
+        
 
 
         string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/custout.xlsx");
@@ -162,7 +167,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             DateTime date;
             DateTime duedate;
             string refno;
-            int Ovrduedays;
+            int Ovrduedays=0;
             float amt;
             foreach (DataRow dc in dt.Rows)
             {
@@ -175,13 +180,18 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
 
 
                 }
-                if (dc[0].ToString() != "" && dc[1].ToString() != "" && dc[2].ToString() == "" && dc[3].ToString() != "" && dc[4].ToString() != "" && dc[5].ToString() != "")
+                if (dc[0].ToString() != "" && dc[1].ToString() != "" && dc[2].ToString() == "" && dc[3].ToString() != "" && dc[4].ToString() != "")
                 {
                     date = Convert.ToDateTime(dc[0].ToString());
                     refno = dc[1].ToString();
                     amt = float.Parse(dc[3].ToString());
                     duedate = Convert.ToDateTime(dc[4].ToString());
-                    Ovrduedays = Convert.ToInt32(dc[5].ToString());
+                    if (dc[5].ToString() != "")
+                    {
+                        Ovrduedays = Convert.ToInt32(dc[5].ToString());
+                    }
+
+                    //Ovrduedays = Convert.ToInt32(dc[5].ToString());
 
                     insertintotable(date, refno, amt, duedate, Ovrduedays, partyname, "Cust");
 
@@ -210,9 +220,9 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
         }
     }
 
-    
 
-    public void insertintotable(DateTime date, string refno, float amt, DateTime duedate, int Ovrduedays, string partyname,string type)
+
+    public void insertintotable(DateTime date, string refno, float amt, DateTime duedate, int Ovrduedays, string partyname, string type)
     {
         DL_DBAccess = new DatabaseAccessLayer();
         DataSet ds = new DataSet();
@@ -249,17 +259,17 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
         {
             try
             {
-                string imageFolder = @"../UpLoadPath" + "/" + FileUpload1.FileName;
+                string imageFolder = @"../UpLoadPath/Accounts" + "/" + FileUpload1.FileName;
 
                 // upload path
-                string imagePathString = @"UpLoadPath" + "/" + FileUpload1.FileName;
-                string s =Server.MapPath("");
+                string imagePathString = @"UpLoadPath/Accounts" + "/" + FileUpload1.FileName;
+                string s = Server.MapPath("");
 
-                
-                FileUpload1.SaveAs(Server.MapPath("~/UpLoadPath/" + FileUpload1.FileName));
+
+                FileUpload1.SaveAs(Server.MapPath("~/UpLoadPath/Accounts/" + FileUpload1.FileName));
                 sb.AppendFormat(" Uploading file: {0}", FileUpload1.FileName);
 
-               
+
 
                 //Showing the file information
                 sb.AppendFormat("<br/> Save As: {0}", FileUpload1.PostedFile.FileName);
@@ -267,7 +277,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
                 sb.AppendFormat("<br/> File length: {0}", FileUpload1.PostedFile.ContentLength);
                 sb.AppendFormat("<br/> File name: {0}", FileUpload1.PostedFile.FileName);
 
-                Label1.Text = "File Uploading Done  "+sb.ToString();
+                Label1.Text = "File Uploading Done  " + sb.ToString();
             }
             catch (Exception ex)
             {

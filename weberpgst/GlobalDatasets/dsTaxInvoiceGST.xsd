@@ -86,6 +86,8 @@
               <xs:element name="INM_SUPPLEMENTORY" type="xs:string" minOccurs="0" />
               <xs:element name="OLD_RATE" type="xs:double" minOccurs="0" />
               <xs:element name="P_VEND_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="INM_TCS_PERCENTAGE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="INM_TCS_PERCENTAGE_AMOUNT" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

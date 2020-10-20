@@ -95,6 +95,9 @@ public class BillPassing_BL
     private double _BPM_EXCPER;
     private double _BPM_EXCEDCESS_PER;
     private double _BPM_EXCHIEDU_PER;
+    private double _BPM_TCS_PER;
+    private double _BPM_TCS_PER_AMT;
+
     private double _BPM_TAX_PER;
     private int _BPM_TAX_CODE;
     private double _BPM_ROUND_OFF;
@@ -379,6 +382,16 @@ public class BillPassing_BL
         get { return _BPM_EXCHIEDU_PER; }
         set { _BPM_EXCHIEDU_PER = value; }
     }
+    public double BPM_TCS_PER
+    {
+        get { return _BPM_TCS_PER; }
+        set { _BPM_TCS_PER = value; }
+    }
+    public double BPM_TCS_PER_AMT
+    {
+        get { return _BPM_TCS_PER_AMT; }
+        set { _BPM_TCS_PER_AMT = value; }
+    }
     public double BPM_TAX_PER
     {
         get { return _BPM_TAX_PER; }
@@ -484,7 +497,9 @@ public class BillPassing_BL
 				new SqlParameter("@BPM_G_AMT",BPM_G_AMT) ,
                 new SqlParameter("@BPM_EX_TYPE",BPM_EX_TYPE)  ,
                 new SqlParameter("@BPM_TYPE",BPM_TYPE),  
-				new SqlParameter("@BPM_IS_SERVICEIN",BPM_IS_SERVICEIN)
+				new SqlParameter("@BPM_IS_SERVICEIN",BPM_IS_SERVICEIN),
+                new SqlParameter("@BPM_TCS_PER",BPM_TCS_PER),
+                new SqlParameter("@BPM_TCS_PER_AMT",BPM_TCS_PER_AMT)
 			};
 
             result = DL_DBAccess.Insertion_Updation_Delete("SP_INSERT_BILLPASSING_MASTER", Params, out message, out PK_CODE);

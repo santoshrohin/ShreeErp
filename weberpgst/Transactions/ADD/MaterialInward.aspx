@@ -1,3 +1,4 @@
+﻿
 ﻿<%@ Page Title="Material Inward" Language="C#" MasterPageFile="~/main.master" AutoEventWireup="true"
     CodeFile="MaterialInward.aspx.cs" Inherits="Transactions_ADD_MaterialInward"
     EnableEventValidation="true" %>
@@ -198,7 +199,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" runat="server" visible="false">
+                                    <div id="Div1" class="row" runat="server" visible="false">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label text-right">
@@ -320,7 +321,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" runat="server" visible="false">
+                                    <div id="Div2" class="row" runat="server" visible="false">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label label-sm">
@@ -399,11 +400,9 @@
                                                     </asp:UpdatePanel>
                                                 </div>
                                                 <div class="col-md-1">
-                                                    <asp:UpdatePanel ID="UpdatePanel28" runat="server" UpdateMode="Conditional">
-                                                        <ContentTemplate>
+                                                    
                                                             <asp:LinkButton ID="lnkPO"      OnClientClick="aspnetForm.target ='_blank';" runat="server" OnClick="lnkPO_click">PO</asp:LinkButton>
-                                                        </ContentTemplate>
-                                                    </asp:UpdatePanel>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
