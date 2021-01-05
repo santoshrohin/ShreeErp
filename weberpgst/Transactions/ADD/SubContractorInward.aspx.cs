@@ -1106,12 +1106,16 @@ public partial class Transactions_ADD_SubContractorInward : System.Web.UI.Page
                     txtChallanQty.Enabled = true;
                     txtRecdQty.Enabled = true;
                 }
-                txtPendingQty.Text = string.Format("{0:0.000}", Convert.ToDouble(dtchallan.Rows[0]["PENDING_QTY"].ToString()));
+                
                 txtRate.Text = string.Format("{0:0.000}", Convert.ToDouble(dt.Rows[0]["SPOD_RATE"].ToString()));
 
                 txtTurningWeight.Text = string.Format("{0:0.000}", Convert.ToDouble(dt.Rows[0]["SPOD_CONV_RATIO"].ToString()));
 
                 ddlUom.SelectedValue = dt.Rows[0]["SPOD_UOM_CODE"].ToString();
+            }
+            if (dtchallan.Rows.Count > 0)
+            {
+                txtPendingQty.Text = string.Format("{0:0.000}", Convert.ToDouble(dtchallan.Rows[0]["PENDING_QTY"].ToString()));
             }
             else
             {
