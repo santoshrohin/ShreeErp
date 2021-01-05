@@ -610,6 +610,15 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
                         // CommonClasses.WriteLog("Material Inward ", "Update", "Material Inward",  Convert.ToInt32(ViewState["mlCode"].ToString()) , Convert.ToInt32(mlCode), Convert.ToInt32(Session["CompanyId"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                         CommonClasses.WriteLog("Material Inward ", "Update", "Material Inward", Convert.ToInt32(ViewState["mlCode"].ToString()).ToString(), Convert.ToInt32(ViewState["mlCode"].ToString()), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                         result = true;
+                        try
+                        {
+                            SendEmail(dgInwardMaster);
+                        }
+                        catch (Exception Ex)
+                        {
+
+
+                        }
                         Response.Redirect("~/Transactions/VIEW/ViewMaterialInward.aspx", false);
                     }
                     else
@@ -1580,16 +1589,16 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
         string cmname = Session["CompanyName"].ToString();
         string attachment = "";
         DataTable dtPDetails = CommonClasses.Execute("select P_EMAIL from PARTY_MASTER where P_CODE=" + ddlSupplier.SelectedValue);
-        
-        string FromEmail = ConfigurationManager.AppSettings["FromEmail"].ToString();
+
+        string FromEmail = ConfigurationManager.AppSettings["FromAccountsEmail"].ToString();
         string ToEmail = (dtPDetails.Rows[0]["P_EMAIL"]).ToString();//ConfigurationManager.AppSettings["ToEmail"].ToString();
         if (ToEmail =="")
         {
-            ToEmail=ConfigurationManager.AppSettings["ToEmail"].ToString();
+            ToEmail = ConfigurationManager.AppSettings["FromAccountsEmail"].ToString();
         }
-        string Subject = cmname + " " + "Material Inward againt invoice " + txtChallanNo.Text.ToString();//ConfigurationManager.AppSettings["Subject"].ToString();
+        string Subject = cmname + " " + "GRN: " + txtGRNno.Text.ToString() + " " + "Material Inwarded against Inv :  " + txtChallanNo.Text.ToString();//ConfigurationManager.AppSettings["Subject"].ToString();
 
-        string password = ConfigurationManager.AppSettings["networkCredential"].ToString();
+        string password = ConfigurationManager.AppSettings["AccountsnetworkCredential"].ToString();
         string port = ConfigurationManager.AppSettings["port"].ToString();
         using (MailMessage mail = new MailMessage(FromEmail, ToEmail))
         {
@@ -1605,13 +1614,13 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
                 string Icodeno = (dtIDetails.Rows[0]["I_CODENO"]).ToString();
                 string Iname = (dtIDetails.Rows[0]["I_NAME"]).ToString();
                 string Iunit = (dtIDetails.Rows[0]["I_UOM_NAME"]).ToString();
-                float IWD_CH_QTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_CH_QTY")).Text);
-                double IWD_REV_QTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text);
-                float IWD_SQTY = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text);
+                double IWD_CH_QTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_CH_QTY")).Text), 2);
+                double IWD_REV_QTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text),2);
+                double IWD_SQTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text), 2);
                 int IWD_CPOM_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblIWD_CPOM_CODE")).Text);
                 DataTable dtPODetails = CommonClasses.Execute("select SPOM_PONO from SUPP_PO_MASTER where SPOM_CODE=" + IWD_CPOM_CODE);
                 string POName = (dtPODetails.Rows[0]["SPOM_PONO"]).ToString();
-                double IWD_RATE = float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_RATE")).Text);
+                double IWD_RATE = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_RATE")).Text), 2);
                 string IWD_REMARK = ((Label)XGrid.Rows[i].FindControl("lblIWD_REMARK")).Text;
                 int IWD_UOM_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblUOM_CODE")).Text);
                 string IWD_BATCH_NO = ((Label)XGrid.Rows[i].FindControl("lblIWD_BATCH_NO")).Text;
@@ -1621,12 +1630,13 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
             }
 
             string htmlString = @"<html>
-                          <body>
+                          <body style=""color: blueviolet;font-style: italic;"">
                           <p>" + pname + @",</p>
                           <p>Material inwarded against your invoice number : " + txtInvoiceNo.Text + @" . our compnay name GRN number  is " + txtGRNno.Text + @". Total invoice value booked 
-at our end is " + txtamt.Text + @".</p><br><br><p>You are requeted to achknowledge:</p><br><br><p>1. if any descrepticancy within 2 days of recieving this email </p><br><br><p>1. if any descrepticancy within 2 days of recieving this email </p>
-                            <table border=""+1+@""  width = ""100%"" bgcolor='grey'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Challan Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString()+@"</table>
-                          <p>Sincerely,<br><br>" + cmname + @"</br></p>
+at our end is " + txtamt.Text + @".</p><br><p>You are requeted to achknowledge:</p><br><p>1. if any descrepticancy within 2 days of recieving this email </p><br><p>2. If we don not receive any communication in 2 days it will be presumed that GRN is accepted by you.<br> </p>
+                            <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Challan Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString() + @"</table>
+                          <p><br>Sincerely,<br><br>" + cmname + @"</br></p>
+<p><br><br>This is system generated Email </p>
                           </body>
                           </html>
                          ";

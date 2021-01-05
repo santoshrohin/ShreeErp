@@ -482,7 +482,7 @@ public partial class RoportForms_ADD_TaxInvoicePrint : System.Web.UI.Page
 
                         try
                         {
-                            SendEmail(dsTaxInvoiceGST.Tables[0].Rows[0]["P_EMAIL"].ToString(), invoiceName, dsTaxInvoiceGST.Tables[0].Rows[0]["P_NAME"].ToString(), dtComp.Rows[0]["CM_NAME"].ToString(), invoicenumber, dtComp.Rows[0]["CM_BANK_NAME"].ToString(), dtComp.Rows[0]["CM_NAME"].ToString(), dtComp.Rows[0]["CM_BANK_ACC_NO"].ToString(), dtComp.Rows[0]["CM_IFSC_CODE"].ToString(), dtComp.Rows[0]["CM_B_SWIFT_CODE"].ToString(), dtComp.Rows[0]["CM_ACC_TYPE"].ToString());
+                            //SendEmail(dsTaxInvoiceGST.Tables[0].Rows[0]["P_EMAIL"].ToString(), invoiceName, dsTaxInvoiceGST.Tables[0].Rows[0]["P_NAME"].ToString(), dtComp.Rows[0]["CM_NAME"].ToString(), invoicenumber, dtComp.Rows[0]["CM_BANK_NAME"].ToString(), dtComp.Rows[0]["CM_NAME"].ToString(), dtComp.Rows[0]["CM_BANK_ACC_NO"].ToString(), dtComp.Rows[0]["CM_IFSC_CODE"].ToString(), dtComp.Rows[0]["CM_B_SWIFT_CODE"].ToString(), dtComp.Rows[0]["CM_ACC_TYPE"].ToString());
                         
                         }
                         catch (Exception ex)

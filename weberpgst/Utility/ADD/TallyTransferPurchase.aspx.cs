@@ -70,7 +70,14 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
 
 
             DataTable custdet = new DataTable();
-            custdet = CommonClasses.Execute("select distinct P_CODE,P_NAME FROM PARTY_MASTER,SUPP_PO_MASTER WHERE SPOM_P_CODE=P_CODE and P_CM_COMP_ID=" + Session["CompanyId"].ToString() + " and SUPP_PO_MASTER.ES_DELETE=0  ORDER BY P_NAME ");
+            if (ddlInvType.SelectedValue == "5")
+            {
+                custdet = CommonClasses.Execute("select distinct P_CODE,P_NAME FROM PARTY_MASTER,CUSTREJECTION_MASTER WHERE CR_P_CODE=P_CODE and CR_CM_COMP_ID=" + Session["CompanyId"].ToString() + " and CUSTREJECTION_MASTER.ES_DELETE=0  ORDER BY P_NAME ");
+            }
+            else
+            {
+                custdet = CommonClasses.Execute("select distinct P_CODE,P_NAME FROM PARTY_MASTER,SUPP_PO_MASTER WHERE SPOM_P_CODE=P_CODE and P_CM_COMP_ID=" + Session["CompanyId"].ToString() + " and SUPP_PO_MASTER.ES_DELETE=0  ORDER BY P_NAME ");
+            }
             ddlSupplier.DataSource = custdet;
             ddlSupplier.DataTextField = "P_NAME";
             ddlSupplier.DataValueField = "P_CODE";
@@ -98,6 +105,15 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
             if (type == "2")
             {
                 custdet = CommonClasses.Execute("select distinct P_CODE,P_NAME FROM PARTY_MASTER,SERVICE_PO_MASTER WHERE SRPOM_P_CODE=P_CODE and P_CM_COMP_ID=" + Session["CompanyId"].ToString() + " and SERVICE_PO_MASTER.ES_DELETE=0 ORDER BY P_NAME ");
+                ddlSupplier.DataSource = custdet;
+                ddlSupplier.DataTextField = "P_NAME";
+                ddlSupplier.DataValueField = "P_CODE";
+                ddlSupplier.DataBind();
+                ddlSupplier.Items.Insert(0, new ListItem("Select Supplier", "0"));
+            }
+            else if (ddlInvType.SelectedValue == "5")
+            {
+                custdet = CommonClasses.Execute("select distinct P_CODE,P_NAME FROM PARTY_MASTER,CUSTREJECTION_MASTER WHERE CR_P_CODE=P_CODE and CR_CM_COMP_ID=" + Session["CompanyId"].ToString() + " and CUSTREJECTION_MASTER.ES_DELETE=0  ORDER BY P_NAME ");
                 ddlSupplier.DataSource = custdet;
                 ddlSupplier.DataTextField = "P_NAME";
                 ddlSupplier.DataValueField = "P_CODE";
@@ -332,6 +348,10 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
             {
                 Query = "select BPM_CODE,BPM_NO,convert(varchar,BPM_DATE,106) as BPM_DATE,CAST(BPM_G_AMT AS NUMERIC(10,2)) AS BPM_BASIC_AMT,BPM_P_CODE as P_CODE,P_NAME,(CASE BPM_IS_TALL_TRANS WHEN 'FALSE' THEN 'PENDING' ELSE 'TRANSFERED' END) AS BPM_IS_TALL_TRANS FROM BILL_PASSING_MASTER,PARTY_MASTER WHERE BPM_P_CODE=P_CODE AND BPM_TYPE='WPO' AND BILL_PASSING_MASTER.ES_DELETE=0 AND BPM_CM_CODE=" + Session["CompanyCode"].ToString() + " ";
             }
+            else if (ddlInvType.SelectedValue == "5")
+            {
+                Query = "select BPM_CODE,BPM_NO,convert(varchar,BPM_DATE,106) as BPM_DATE,CAST(BPM_G_AMT AS NUMERIC(10,2)) AS BPM_BASIC_AMT,BPM_P_CODE as P_CODE,P_NAME,(CASE BPM_IS_TALL_TRANS WHEN 'FALSE' THEN 'PENDING' ELSE 'TRANSFERED' END) AS BPM_IS_TALL_TRANS FROM BILL_PASSING_MASTER,PARTY_MASTER WHERE BPM_P_CODE=P_CODE AND BPM_TYPE='CUSTOMER-REJECTION' AND BILL_PASSING_MASTER.ES_DELETE=0 AND BPM_CM_CODE=" + Session["CompanyCode"].ToString() + " ";
+            }
             else
             {
                 Query = "select BPM_CODE,BPM_NO,convert(varchar,BPM_DATE,106) as BPM_DATE,CAST(BPM_G_AMT AS NUMERIC(10,2)) AS BPM_BASIC_AMT,BPM_P_CODE as P_CODE,P_NAME,(CASE BPM_IS_TALL_TRANS WHEN 'FALSE' THEN 'PENDING' ELSE 'TRANSFERED' END) AS BPM_IS_TALL_TRANS FROM BILL_PASSING_MASTER,PARTY_MASTER WHERE BPM_P_CODE=P_CODE AND BPM_TYPE='SIWM' AND BILL_PASSING_MASTER.ES_DELETE=0  AND BPM_CM_CODE=" + Session["CompanyCode"].ToString() + " ";
@@ -495,7 +515,15 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
                         //Narration
                         //DataTable Dtnaration = CommonClasses.Execute("SELECT (I_CODENO+' '+I_NAME+' '+CAST(CAST(BPD_RATE AS DECIMAL(10, 0)) AS VARCHAR(20))+' '+CAST(CAST(BPD_AMT  AS DECIMAL(10, 0)) AS VARCHAR(20))) As Narration FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
                         //DataTable Dtnaration = CommonClasses.Execute(" SELECT  ('GRN No '+convert(varchar,IWM_NO)+'  PROJECT CODE  '+PROCM_NAME+'  PO NO '+SPOM_PONO +' BILL NO '+convert(varchar,BPM_INV_NO)+'  / '+convert(varchar,BPM_INV_DATE,105)+' '+I_CODENO+' '+I_NAME+'  QTY ' +CONVERT(varchar, ROUND(IWD_CON_OK_QTY,2 ))+'  RATE '+CONVERT(varchar, ROUND(BPD_RATE,2 ))  ) As Narration   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER  , PROJECT_CODE_MASTER   WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'  AND IWM_CODE=IWD_IWM_CODE AND BPD_IWM_CODE=IWM_CODE AND BPD_I_CODE=IWD_I_CODE   AND SUPP_PO_MASTER.SPOM_CODE=IWD_CPOM_CODE   AND SPOM_PROJECT=PROJECT_CODE_MASTER.PROCM_CODE");
-                        DataTable Dtnaration = CommonClasses.Execute("  SELECT  ('GRN No '+convert(varchar,IWM_NO)+'  PROJECT CODE  '+PROCM_NAME+'  PO NO '+SPOM_PONO +' BILL NO '+convert(varchar,BPM_INV_NO)+'  / '+convert(varchar,BPM_INV_DATE,105)+' '+I_CODENO+' '+I_NAME+'  QTY ' +CONVERT(varchar, ROUND(IWD_CON_OK_QTY,2 ))+'  RATE '+CONVERT(varchar, ROUND(BPD_RATE,2 )) +'  HSN No '+ EXCISE_TARIFF_MASTER.E_TARIFF_NO +'  SAC No '+ SACMASTER.E_TARIFF_NO ) As Narration   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER  , PROJECT_CODE_MASTER,EXCISE_TARIFF_MASTER,EXCISE_TARIFF_MASTER AS SACMASTER   WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'  AND IWM_CODE=IWD_IWM_CODE AND BPD_IWM_CODE=IWM_CODE AND BPD_I_CODE=IWD_I_CODE   AND SUPP_PO_MASTER.SPOM_CODE=IWD_CPOM_CODE   AND    EXCISE_TARIFF_MASTER.E_CODE=I_E_CODE AND SACMASTER.e_code=I_SCAT_CODE AND  SPOM_PROJECT=PROJECT_CODE_MASTER.PROCM_CODE");
+                        DataTable Dtnaration = new DataTable();
+                        if (ddlInvType.SelectedValue == "5")
+                        {
+                            Dtnaration = CommonClasses.Execute("    SELECT  ('GRN No '+convert(varchar,CR_GIN_NO)+'    BILL NO '+convert(varchar,BPM_INV_NO)+'  / '+convert(varchar,BPM_INV_DATE,105)+' '+I_CODENO+' '+I_NAME+'  QTY ' +CONVERT(varchar, ROUND(CD_RECEIVED_QTY,2 ))+'  RATE '+CONVERT(varchar, ROUND(BPD_RATE,2 )) +'  HSN No '+ EXCISE_TARIFF_MASTER.E_TARIFF_NO +'  SAC No '+ SACMASTER.E_TARIFF_NO ) As Narration   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,CUSTREJECTION_MASTER,CUSTREJECTION_DETAIL   ,  EXCISE_TARIFF_MASTER,EXCISE_TARIFF_MASTER AS SACMASTER   WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'   AND CR_CODE=CD_CR_CODE AND BPD_IWM_CODE=CR_CODE AND BPD_I_CODE=CD_I_CODE      AND    EXCISE_TARIFF_MASTER.E_CODE=I_E_CODE AND SACMASTER.e_code=I_SCAT_CODE  ");
+                        }
+                        else
+                        {
+                            Dtnaration = CommonClasses.Execute("  SELECT  ('GRN No '+convert(varchar,IWM_NO)+'  PROJECT CODE  '+PROCM_NAME+'  PO NO '+SPOM_PONO +' BILL NO '+convert(varchar,BPM_INV_NO)+'  / '+convert(varchar,BPM_INV_DATE,105)+' '+I_CODENO+' '+I_NAME+'  QTY ' +CONVERT(varchar, ROUND(IWD_CON_OK_QTY,2 ))+'  RATE '+CONVERT(varchar, ROUND(BPD_RATE,2 )) +'  HSN No '+ EXCISE_TARIFF_MASTER.E_TARIFF_NO +'  SAC No '+ SACMASTER.E_TARIFF_NO ) As Narration   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER  , PROJECT_CODE_MASTER,EXCISE_TARIFF_MASTER,EXCISE_TARIFF_MASTER AS SACMASTER   WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'  AND IWM_CODE=IWD_IWM_CODE AND BPD_IWM_CODE=IWM_CODE AND BPD_I_CODE=IWD_I_CODE   AND SUPP_PO_MASTER.SPOM_CODE=IWD_CPOM_CODE   AND    EXCISE_TARIFF_MASTER.E_CODE=I_E_CODE AND SACMASTER.e_code=I_SCAT_CODE AND  SPOM_PROJECT=PROJECT_CODE_MASTER.PROCM_CODE");
+                        }
 
                         DataTable dtgIN = new DataTable();
                         if (ddlInvType.SelectedValue == "3")
@@ -505,6 +533,10 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
                         else if (ddlInvType.SelectedValue == "4")
                         {
                             dtgIN = CommonClasses.Execute(" SELECT DISTINCT   IWM_NO As IWM_NO   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,INWARD_MASTER,INWARD_DETAIL     WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'  AND IWM_CODE=IWD_IWM_CODE AND BPD_IWM_CODE=IWM_CODE AND BPD_I_CODE=IWD_I_CODE     ");
+                        }
+                        else if (ddlInvType.SelectedValue == "5")
+                        {
+                            dtgIN = CommonClasses.Execute(" SELECT DISTINCT   CR_GIN_NO As IWM_NO   FROM BILL_PASSING_MASTER,BILL_PASSING_DETAIL,ITEM_MASTER,CUSTREJECTION_MASTER,CUSTREJECTION_DETAIL    WHERE BPM_CODE=BPD_BPM_CODE AND BPD_I_CODE=I_CODE and BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'  AND  CR_CODE=CD_CR_CODE AND BPD_IWM_CODE=CR_CODE AND BPD_I_CODE=CD_I_CODE     ");
                         }
                         else
                         {
@@ -731,7 +763,7 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
 
                         DataTable DtNewTCSDetail = CommonClasses.Execute("SELECT BPM_TCS_PER,BPM_TCS_PER_AMT FROM BILL_PASSING_MASTER WHERE  BILL_PASSING_MASTER.ES_DELETE=0   AND BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
 
-                        
+
 
                         //Basic Exc Details
                         DataTable DtEduExcDetail = CommonClasses.Execute("SELECT top 1 BPD_I_CODE,I_NAME,T3.TALLY_NAME AS EDUTALLY_NAME,E_TALLY_EDU,cast(ISnull(BPM_ECESS_AMT,0) as numeric(20,2)) as BPM_ECESS_AMT FROM BILL_PASSING_DETAIL,BILL_PASSING_MASTER,ITEM_MASTER,TALLY_MASTER T3,EXCISE_TARIFF_MASTER WHERE BPD_BPM_CODE = BPM_CODE AND BPD_I_CODE = I_CODE AND I_E_CODE=E_CODE AND E_TALLY_EDU=T3.TALLY_CODE AND BILL_PASSING_MASTER.ES_DELETE=0   AND BPD_BPM_CODE='" + DtInvDet.Rows[i]["BPM_CODE"] + "'");
@@ -1283,6 +1315,11 @@ public partial class Utility_ADD_TallyTransferPurchase : System.Web.UI.Page
                 LoadCombos("2");
             }
 
+            else if (ddlInvType.SelectedValue == "5")
+            {
+                FromInv = CommonClasses.Execute("select distinct BPM_CODE,BPM_NO FROM BILL_PASSING_MASTER WHERE  BPM_CM_CODE=" + Session["CompanyCode"].ToString() + " AND  BPM_TYPE='CUSTOMER-REJECTION'  and ES_DELETE=0 ORDER BY BPM_NO");
+                LoadCombos("5");
+            }
             ddlFromInvNo.DataSource = FromInv;
             ddlFromInvNo.DataTextField = "BPM_NO";
             ddlFromInvNo.DataValueField = "BPM_CODE";

@@ -98,6 +98,7 @@
                                                                 <asp:ListItem Value="2">Sub Contractor Inward</asp:ListItem>
                                                                 <asp:ListItem Value="3">Service Inward</asp:ListItem>
                                                                 <asp:ListItem Value="4">Without PO Inward</asp:ListItem>
+                                                                 <asp:ListItem Value="5">Customer Rejection Inward</asp:ListItem>
                                                             </asp:DropDownList>
                                                         </ContentTemplate>
                                                     </asp:UpdatePanel>

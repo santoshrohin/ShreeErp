@@ -11,7 +11,9 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 using System.Threading;
-
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
 {
 
@@ -2511,7 +2513,24 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             {
                                 result = CommonClasses.Execute1("UPDATE ITEM_MASTER SET I_CURRENT_BAL=I_CURRENT_BAL-" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + ",I_ISSUE_DATE='" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "',I_INV_RATE='" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "'    WHERE I_CODE='" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "'");
                             }
+                           
                         }
+                    }
+                    if (result == true)
+                    {
+                        
+                        try
+                        {
+                            float taxamt = float.Parse(txtBasicExcAmt.Text) + float.Parse(txtEdueceAmt.Text) + float.Parse(txtSHEExcAmt.Text);
+                            float grandamt = float.Parse(txtGrandAmt.Text);
+                            SendEmail((DataTable)ViewState["dt2"], Invoice_No, taxamt, grandamt);
+                        }
+                        catch (Exception)
+                        {
+                            
+                            
+                        }
+                        
                     }
                     CommonClasses.WriteLog("Tax Invoice", "Save", "Tax Invoice", Convert.ToString(Inv_No), Convert.ToInt32(Code), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                     result = true;
@@ -2591,12 +2610,28 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                                 }
                             }
                         }
-
+                        if (result == true)
+                        {
+                            
+                            try
+                            {
+                                float taxamt = float.Parse(txtBasicExcAmt.Text) + float.Parse(txtEdueceAmt.Text) + float.Parse(txtSHEExcAmt.Text);
+                                float grandamt = float.Parse(txtGrandAmt.Text);
+                                SendEmail((DataTable)ViewState["dt2"], txtInvoiceNo.Text, taxamt, grandamt);
+                            }
+                            catch (Exception)
+                            {
+                                
+                                
+                            }
+                            
+                        }
                         //CommonClasses.Execute("UPDATE QUOTATION_ENTRY set QE_PO_FLAG = 1 where QE_CODE=" + ddlQuatation.SelectedValue + "");
                         CommonClasses.RemoveModifyLock("INVOICE_MASTER", "MODIFY", "INM_CODE", Convert.ToInt32(ViewState["mlCode"].ToString()));
                         CommonClasses.WriteLog("Tax Invoice", "Update", "Tax Invoice", Convert.ToString(Convert.ToInt32(ViewState["mlCode"].ToString())), Convert.ToInt32(ViewState["mlCode"].ToString()), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                         ((DataTable)ViewState["dt2"]).Rows.Clear();
                         result = true;
+
                     }
                     Response.Redirect("~/Transactions/VIEW/ViewTaxinvoice.aspx", false);
                 }
@@ -2695,6 +2730,99 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
         }
     }
     #endregion ddlState_SelectedIndexChanged
+
+    public void SendEmail(DataTable dt,string invoiceno, float taxamt,float grandAmt)
+    {
+        DataTable dtComp = CommonClasses.Execute("SELECT * FROM COMPANY_MASTER WHERE CM_ID='" + Session["CompanyId"] + "' AND ISNULL(CM_DELETE_FLAG,0) ='0'");
+        string BankName=dtComp.Rows[0]["CM_BANK_NAME"].ToString();
+        string AccountName=dtComp.Rows[0]["CM_NAME"].ToString();
+        string bankaccno=dtComp.Rows[0]["CM_BANK_ACC_NO"].ToString();
+        string branch=dtComp.Rows[0]["CM_B_SWIFT_CODE"].ToString();
+        string ifsccode=dtComp.Rows[0]["CM_IFSC_CODE"].ToString();
+        string AccountType=dtComp.Rows[0]["CM_ACC_TYPE"].ToString();
+
+        string pname = ddlCustomer.SelectedItem.Text;
+        string cmname = Session["CompanyName"].ToString();
+        string attachment = "";
+        DataTable dtPDetails = CommonClasses.Execute("select P_EMAIL from PARTY_MASTER where P_CODE=" + ddlCustomer.SelectedValue);
+
+        string FromEmail = ConfigurationManager.AppSettings["FromPurchaseEmail"].ToString();
+        string ToEmail = (dtPDetails.Rows[0]["P_EMAIL"]).ToString();//ConfigurationManager.AppSettings["ToEmail"].ToString();
+        if (ToEmail == "")
+        {
+            ToEmail = ConfigurationManager.AppSettings["FromPurchaseEmail"].ToString();
+        }
+        string Subject = cmname + " " + "Invoice " + invoiceno;//ConfigurationManager.AppSettings["Subject"].ToString();
+
+        string password = ConfigurationManager.AppSettings["PurchasenetworkCredential"].ToString();
+        string port = ConfigurationManager.AppSettings["port"].ToString();
+        using (MailMessage mail = new MailMessage(FromEmail, ToEmail))
+        {
+            mail.Subject = Subject;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+
+
+                int IWD_I_CODE = Convert.ToInt32(dt.Rows[0]["IND_I_CODE"]);
+
+                DataTable dtIDetails = CommonClasses.Execute("select I_CODENO,I_NAME,I_UOM_NAME from item_master i,ITEM_UNIT_MASTER u where i.I_UOM_CODE=u.I_UOM_CODE and u.ES_DELETE=0  and i.I_CODE=" + IWD_I_CODE);
+                string Icodeno = (dtIDetails.Rows[0]["I_CODENO"]).ToString();
+                string Iname = (dtIDetails.Rows[0]["I_NAME"]).ToString();
+                string Iunit = (dtIDetails.Rows[0]["I_UOM_NAME"]).ToString();
+
+                string Packing = (dt.Rows[i]["IND_PACK_DESC"]).ToString();
+                double IWD_RATE = Math.Round(float.Parse(dt.Rows[i]["RATE"].ToString()),2);
+
+                double IWD_Qty = Math.Round(float.Parse(dt.Rows[i]["INV_QTY"].ToString()),2);
+                double IWD_AMt = Math.Round(float.Parse(dt.Rows[i]["AMT"].ToString()), 2);
+
+                sb.Append("<tr><td>" + Icodeno + "</td> <td>  " + Iname + "  </td><td>  " + Iunit + "  </td><td>  " + Packing + "  </td><td>  " + IWD_RATE + "  </td><td>  " + IWD_Qty + "  </td><td>  " + IWD_AMt + "  </td></tr>");
+            }
+
+            string htmlString = @"<html>
+                          <body style=""color: blueviolet;font-style: italic;"">
+                          <p>" + pname + @",</p><br><p>We are writing to inform you that, we have dispatched your material as per details mentioned in the email.</p>
+                          </br><p>You are requested to :</p>
+</br></br>
+<p><pre>    1) Acknowledge the receipt of the same & communicate GRN. </pre></p>
+</br>
+<p><pre>    2) Confirm the receipt as per the Invoice</pre></p>
+</br>
+<p><pre>    3) Confirm Damages,Rejection, and Shortage if any immediately</pre></p>
+</br>
+<p><pre>    4) Please note, if we do not receive any communication with in a week it will be presumed that the material is accpeted by you.</pre></p>
+</br></br>
+<p>You are requested to release the payment as pre decided terms thorugh RTGS / NEFT / Demand Draft and confirm.</p>
+</br></br>
+<P>Our bank details are as follows:</P></br>
+<P><pre>    Bank Name      : <b>" + BankName + @"</b></pre></p>
+<P><pre>    Bank Acc Name  : <b>" + AccountName + @"</b></pre></P>
+<P><pre>    Bank Acc No    : <b>" + bankaccno + @"</b></pre></P>
+<P><pre>    Bank Branch    : <b>" + branch + @"</b></pre></P>
+<P><pre>    Bank IFSC Code : <b>" + ifsccode + @"</b></pre></P>
+<P><pre>    Bank Acc Type  : <b>" + AccountType + @"</b></pre></P></br></br></br>
+</br><p>Invoice Details are as follows :</p>
+                            <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> Unit </b> </th><th> <b> Packing </b> </th><th> <b> Rate </b> </th><th> <b> Qty </b> </th><th> <b> Amount </b> </th></tr>" + sb.ToString() + @"</table>
+                  <p><b>Grand Amount: " + grandAmt + @"</b></br></br></br></p>                          
+<p>Sincerely,<br><br>" + cmname + @"</br></p><p><br><br>This is system generated Email </p>
+                          </body>
+                          </html>
+                         ";
+            mail.Body = htmlString;
+            //mail.Attachments.Add(new Attachment(attachment));
+
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            NetworkCredential networkCredential = new NetworkCredential(FromEmail, password);
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = networkCredential;
+            smtp.Port = Convert.ToInt32(port);
+            smtp.Send(mail);
+        }
+    }
 
 }
 

@@ -33,17 +33,89 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        importResller();
         myLabel.Text = "Import Started......";
         lblmsz.Text = "Import Started......";
+
+    }
+    public void importResller()
+    {
+        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/Book1.xlsx");
+        // Create the connection object
+
+        System.Data.OleDb.OleDbConnection myConnection = new System.Data.OleDb.OleDbConnection(
+                            "Provider=Microsoft.ACE.OLEDB.12.0; " +
+                             "data source='" + SaveLocation + "';" +
+                                "Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1\" ");
+
+        try
+        {
+
+
+            List<string> CountryList = new List<string>();
+            
+
+            // Open connection
+            myConnection.Open();
+
+            // Create OleDbCommand object and select data from worksheet Sheet1
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Sheet1$]", myConnection);
+
+            // Create new OleDbDataAdapter
+            OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+            oleda.SelectCommand = cmd;
+
+            // Create a DataSet which will hold the data extracted from the worksheet.
+            DataSet ds = new DataSet();
+
+            // Fill the DataSet from the data extracted from the worksheet.
+            oleda.Fill(ds, "Outstanding");
+            DataTable dt = ds.Tables["Outstanding"];
+            //Austria
+            DataTable selectedTable = dt.AsEnumerable()
+                            .Where(r => r.Field<string>("F11") == "Austria")
+                            .CopyToDataTable();
+            var distinctValues = selectedTable.AsEnumerable()
+                        .Select(row => new
+                        {
+                            CountryList = row.Field<string>("F11"),
+                            Types = row.Field<string>("F2"),
+                            City = row.Field<string>("F9"),
+                            State = row.Field<string>("F10"),
+                            Certificates = row.Field<string>("F19"),
+                            
+                            PartnerType = row.Field<string>("F20")
+                        })
+                        .Distinct();
+
+            foreach (var item in distinctValues)
+            {
+                
+                CountryList.Add(item.CountryList);
+
+            }
+            
+            
+
+
+
+
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
 
     }
     public void imporSuupliertexcel()
     {
 
-        
 
 
-        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/supout.xlsx");
+
+        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/Book1.xlsx");
         // Create the connection object
 
         System.Data.OleDb.OleDbConnection myConnection = new System.Data.OleDb.OleDbConnection(
@@ -58,7 +130,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             myConnection.Open();
 
             // Create OleDbCommand object and select data from worksheet Sheet1
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Bills Payable$]", myConnection);
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Sheet1$]", myConnection);
 
             // Create new OleDbDataAdapter
             OleDbDataAdapter oleda = new OleDbDataAdapter();
