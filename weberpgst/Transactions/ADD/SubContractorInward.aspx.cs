@@ -1113,6 +1113,7 @@ public partial class Transactions_ADD_SubContractorInward : System.Web.UI.Page
 
                 ddlUom.SelectedValue = dt.Rows[0]["SPOD_UOM_CODE"].ToString();
             }
+            //NEW CODE
             if (dtchallan.Rows.Count > 0)
             {
                 txtPendingQty.Text = string.Format("{0:0.000}", Convert.ToDouble(dtchallan.Rows[0]["PENDING_QTY"].ToString()));
