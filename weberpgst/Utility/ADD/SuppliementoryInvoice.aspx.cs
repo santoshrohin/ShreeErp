@@ -269,7 +269,13 @@ public partial class Utility_ADD_SuppliementoryInvoice : System.Web.UI.Page
                 try
                 {
                     //Local varible for Store Invoice qty, Diff rate ,CSGT amount, IGST amount,SGST amount and Grand Total
-                    double inv_qty = 0, diff_Rate = 0, AMT = 0, CGST_AMT = 0, SGST_AMT = 0, IGST_AMT = 0, GRAND_TOTAL = 0;
+                    double inv_qty = 0, diff_Rate = 0, AMT = 0, CGST_AMT = 0, SGST_AMT = 0, IGST_AMT = 0, TCS_PER = 0, TCS_AMT = 0, GRAND_TOTAL = 0;
+
+                    if (dtCust.Rows.Count > 0)
+                    {
+                        TCS_PER = Convert.ToDouble(dtCust.Rows[0]["P_TCS_PER"].ToString());
+
+                    }
 
                     for (int d = 0; d < dt.Rows.Count; d++)
                     {
@@ -282,7 +288,9 @@ public partial class Utility_ADD_SuppliementoryInvoice : System.Web.UI.Page
                         CGST_AMT = Math.Round((AMT * CGST) / 100, 2);
                         SGST_AMT = Math.Round((AMT * SGST) / 100, 2);
                         IGST_AMT = Math.Round((AMT * IGST) / 100, 2);
-                        GRAND_TOTAL = AMT + CGST_AMT + SGST_AMT + IGST_AMT;
+
+                        TCS_AMT = Math.Round(((AMT + CGST_AMT + SGST_AMT + IGST_AMT) * TCS_PER) / 100, 2);
+                        GRAND_TOTAL = AMT + CGST_AMT + SGST_AMT + IGST_AMT + TCS_AMT;
 
                         int Po_Doc_no = 0;
                         //code for common series
@@ -301,9 +309,9 @@ public partial class Utility_ADD_SuppliementoryInvoice : System.Web.UI.Page
 
                         String strInvoiceNo = CommonClasses.GenBillNo(Po_Doc_no);
                         strInvoiceNo = "RD" + strInvoiceNo;
-                        
 
-                        SqlCommand command = new SqlCommand(" INSERT INTO INVOICE_MASTER ( INM_CM_CODE, INM_NO, INM_DATE, INM_INVOICE_TYPE, INM_TYPE, INM_P_CODE, INM_SUPPLEMENTORY, INM_NET_AMT, INM_S_TAX, INM_S_TAX_AMT, INM_BEXCISE, INM_BE_AMT, INM_EDUC_CESS, INM_EDUC_AMT, INM_H_EDUC_CESS, INM_H_EDUC_AMT, INM_DISC, INM_DISC_AMT, INM_PACK_AMT, INM_T_CODE, INM_T_AMT, INM_G_AMT, INM_G_AMORT_AMT, INM_TAX_TCS, INM_TAX_TCS_AMT, INM_FREIGHT, INM_VEH_NO, INM_TRANSPORT, INM_ISSUE_DATE, INM_REMOVAL_DATE, INM_STO_LOC, INM_REMARK, INM_REWORK_FLAG, INM_TALLYTNF, INM_TEMP_TALLYTNF, INM_TALLYTNF1, INM_TEMP_TALLYTNF1, INM_TRANS_AMT, INM_OTHER_AMT, INM_LR_NO, INM_LR_DATE, INM_INSURANCE, INM_ACCESSIBLE_AMT, INM_TAXABLE_AMT, INM_ROUNDING_AMT, INM_OCTRI_AMT, INM_IS_SUPPLIMENT, INM_ISSU_TIME, INM_REMOVEL_TIME, INM_TNO, INM_TRAY_CODE, INM_TRAY_QTY, INM_ELECTRREFNUM, INM_TERMSNCONDITIONS, INM_AUTHORIZEDNAME,INM_BUYER_NAME,INM_BUYTER_ADD,INM_PREPARE_BY,INM_LC_NO,INM_LC_DATE,INM_STATE)VALUES ( '" + (string)Session["CompanyCode"] + "','" + Po_Doc_no + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,'TAXINV','" + ddlCustomerName.SelectedValue + "',1,'" + AMT + "',0,0,'" + CGST + "','" + CGST_AMT + "','" + SGST + "','" + SGST_AMT + "','" + IGST + "','" + IGST_AMT + "',0,0,0,-2147483648,0,'" + GRAND_TOTAL + "',0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,0,0,0,0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,'" + AMT + "','" + GRAND_TOTAL + "',0,0,1 , (CONVERT(VARCHAR(5), GETDATE(), 108)  )  , (CONVERT(VARCHAR(5), GETDATE(), 108)  )  ,'" + strInvoiceNo + "',0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "','" + Session["UserCode"].ToString() + "','" + dt.Rows[d]["INVNO"].ToString() + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',(select P_SM_CODE from PARTY_MASTER where P_CODE='" + ddlCustomerName.SelectedValue + "'))", connection, trans);
+
+                        SqlCommand command = new SqlCommand(" INSERT INTO INVOICE_MASTER ( INM_CM_CODE, INM_NO, INM_DATE, INM_INVOICE_TYPE, INM_TYPE, INM_P_CODE, INM_SUPPLEMENTORY, INM_NET_AMT, INM_S_TAX, INM_S_TAX_AMT, INM_BEXCISE, INM_BE_AMT, INM_EDUC_CESS, INM_EDUC_AMT, INM_H_EDUC_CESS, INM_H_EDUC_AMT, INM_DISC, INM_DISC_AMT, INM_PACK_AMT, INM_T_CODE, INM_T_AMT, INM_G_AMT, INM_G_AMORT_AMT, INM_TAX_TCS, INM_TAX_TCS_AMT, INM_FREIGHT, INM_VEH_NO, INM_TRANSPORT, INM_ISSUE_DATE, INM_REMOVAL_DATE, INM_STO_LOC, INM_REMARK, INM_REWORK_FLAG, INM_TALLYTNF, INM_TEMP_TALLYTNF, INM_TALLYTNF1, INM_TEMP_TALLYTNF1, INM_TRANS_AMT, INM_OTHER_AMT, INM_LR_NO, INM_LR_DATE, INM_INSURANCE, INM_ACCESSIBLE_AMT, INM_TAXABLE_AMT, INM_ROUNDING_AMT, INM_OCTRI_AMT, INM_IS_SUPPLIMENT, INM_ISSU_TIME, INM_REMOVEL_TIME, INM_TNO, INM_TRAY_CODE, INM_TRAY_QTY, INM_ELECTRREFNUM, INM_TERMSNCONDITIONS, INM_AUTHORIZEDNAME,INM_BUYER_NAME,INM_BUYTER_ADD,INM_PREPARE_BY,INM_LC_NO,INM_LC_DATE,INM_STATE ,INM_TCS_PERCENTAGE,INM_TCS_PERCENTAGE_AMOUNT)VALUES ( '" + (string)Session["CompanyCode"] + "','" + Po_Doc_no + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,'TAXINV','" + ddlCustomerName.SelectedValue + "',1,'" + AMT + "',0,0,'" + CGST + "','" + CGST_AMT + "','" + SGST + "','" + SGST_AMT + "','" + IGST + "','" + IGST_AMT + "',0,0,0,-2147483648,0,'" + GRAND_TOTAL + "',0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,0,0,0,0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',0,'" + AMT + "','" + GRAND_TOTAL + "',0,0,1 , (CONVERT(VARCHAR(5), GETDATE(), 108)  )  , (CONVERT(VARCHAR(5), GETDATE(), 108)  )  ,'" + strInvoiceNo + "',0,0,0,0,0,0,'" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "','" + Session["UserCode"].ToString() + "','" + dt.Rows[d]["INVNO"].ToString() + "','" + CommonClasses.GetCurrentTime().ToString("dd/MMM/yyyy") + "',(select P_SM_CODE from PARTY_MASTER where P_CODE='" + ddlCustomerName.SelectedValue + "'),'" + TCS_PER + "','" + TCS_AMT + "')", connection, trans);
                         command.Transaction = trans;
                         command.ExecuteNonQuery();
 
