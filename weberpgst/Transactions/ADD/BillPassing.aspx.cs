@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -242,7 +243,7 @@ public partial class Transactions_ADD_BillPassing : System.Web.UI.Page
                     //lblmsg.Text = "Please, Select Item";
                     return;
                 }
-                if (string.Format("{0:0.00}", txtBasicAmount.Text) != VerifyCalucalte())
+                if (  Math.Floor(Convert.ToDouble( txtBasicAmount.Text))  != Math.Floor( Convert.ToDouble( VerifyCalucalte())))
                 {
                     lblerrormessagebasicamt.Text = "Basic Amount does not match";
                     ShowMessage("#Avisos", "Basic Amount Does not match", CommonClasses.MSG_Warning);
