@@ -1439,6 +1439,15 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
                             return;
                         }
+                        if (PO_CODE != ddlPONo.SelectedValue.ToString())
+                        {
+                            //ShowMessage("#Avisos", "Record Already Exist For This Item In Table", CommonClasses.MSG_Info);
+
+                            PanelMsg.Visible = true;
+                            lblmsg.Text = "Please Select Same PO";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
+                            return;
+                        }
                     }
                     else
                     {
@@ -1447,6 +1456,15 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             //ShowMessage("#Avisos", "Record Already Exist For This Item In Table", CommonClasses.MSG_Info);
                             PanelMsg.Visible = true;
                             lblmsg.Text = "Record Already Exist For This Item In Table";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
+                            return;
+                        }
+                        if (PO_CODE != ddlPONo.SelectedValue.ToString() && ((DataTable)ViewState["dt2"]).Rows.Count != 0)
+                        {
+                            //ShowMessage("#Avisos", "Record Already Exist For This Item In Table", CommonClasses.MSG_Info);
+
+                            PanelMsg.Visible = true;
+                            lblmsg.Text = "Please Select Same PO";
                             ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
                             return;
                         }
@@ -1536,7 +1554,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 txtNoPackaeg.Text = "0.00";
             }
             dr["IND_NO_PACK"] = txtNoPackaeg.Text;
-            dr["IND_PAK_QTY"] = string.Format("{0:0.00}", (txtQtyPerPack.Text == "" ? "0.00" : txtQtyPerPack.Text)); 
+            dr["IND_PAK_QTY"] = string.Format("{0:0.00}", (txtQtyPerPack.Text == "" ? "0.00" : txtQtyPerPack.Text));
             dr["IND_PACK_DESC"] = Description.ToString();
             dr["IND_SR_NO"] = txtsrNo.Text;
             #region ExciseCalculation
@@ -1566,10 +1584,10 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
 
             dtTCSPercentage = CommonClasses.Execute("select P_TCS_PER from PARTY_MASTER WHERE P_CODE='" + ddlCustomer.SelectedValue + "' AND PARTY_MASTER.P_CM_COMP_ID='" + Session["CompanyId"] + "' AND PARTY_MASTER.ES_DELETE=0");
 
-            if (dtTCSPercentage.Rows.Count>0)
+            if (dtTCSPercentage.Rows.Count > 0)
             {
                 txtTCSPer.Text = dtTCSPercentage.Rows[0]["P_TCS_PER"].ToString();
-                
+
             }
 
             if (dtCompState.Rows[0]["CM_STATE"].ToString() == dtCustState.Rows[0]["P_SM_CODE"].ToString())
@@ -1779,7 +1797,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             }
             txtNetAmount.Text = string.Format("{0:0.00}", Math.Round(decTotal, 2));
 
-           
+
             //userd for amort
             txtstroreloc.Text = string.Format("{0:0.00}", Math.Round(AmortAmount, 2));
             if (dgInvoiceAddDetail.Enabled)
@@ -2011,7 +2029,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 if (Convert.ToDouble(txtTCSPer.Text) > 0)
                 {
                     //txtPercAmt.Text = string.Format("{0:0.00}", Math.Round(((decTotal * Convert.ToDouble(txtTCSPer.Text)) / 100), 2));
-                    txtPercAmt.Text = string.Format("{0:0.00}",((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text)) * Convert.ToDouble(txtTCSPer.Text) / 100));
+                    txtPercAmt.Text = string.Format("{0:0.00}", ((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text)) * Convert.ToDouble(txtTCSPer.Text) / 100));
                 }
                 else
                 {
@@ -2022,7 +2040,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             {
                 txtPercAmt.Text = "0.00";
             }
-            
+
             //GrandAmount
             // txtGrandAmt.Text = string.Format("{0:0.00}", Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtSalesTaxAmount.Text) + Convert.ToDouble(txtstroreloc.Text)) + Convert.ToDouble(txtOtherCharges.Text) + Convert.ToDouble(txtFreight.Text) + Convert.ToDouble(txtIncurance.Text) + Convert.ToDouble(txtTransportAmt.Text) + Convert.ToDouble(txtOctri.Text) + Convert.ToDouble(txtTCSAmt.Text) + Convert.ToDouble(txtRoundingAmt.Text) - AmortAmount), 2));
             txtGrandAmt.Text = string.Format("{0:0.00}", Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtTCSAmount.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtPercAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text) + Convert.ToDouble(txtRoundingAmt.Text)) - AmortAmount), 2));
@@ -2468,7 +2486,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 {
                     dt = CommonClasses.Execute("Select isnull(max(INM_NO),0) as INM_NO FROM INVOICE_MASTER WHERE INM_CM_CODE = " + (string)Session["CompanyCode"] + "   AND  INM_IS_SUPPLIMENT=0 AND INM_SUPPLEMENTORY=0  AND INM_INVOICE_TYPE=0 AND INM_TYPE='TAXINV' and ES_DELETE=0");
 
-                } 
+                }
                 if (dt.Rows.Count > 0)
                 {
                     Inv_No = Convert.ToInt32(dt.Rows[0]["INM_NO"]);
@@ -2521,12 +2539,12 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             {
                                 result = CommonClasses.Execute1("UPDATE ITEM_MASTER SET I_CURRENT_BAL=I_CURRENT_BAL-" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + ",I_ISSUE_DATE='" + Convert.ToDateTime(txtDate.Text).ToString("dd/MMM/yyyy") + "',I_INV_RATE='" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "'    WHERE I_CODE='" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "'");
                             }
-                           
+
                         }
                     }
                     if (result == true)
                     {
-                        
+
                         try
                         {
                             float taxamt = float.Parse(txtBasicExcAmt.Text) + float.Parse(txtEdueceAmt.Text) + float.Parse(txtSHEExcAmt.Text);
@@ -2535,10 +2553,10 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                         }
                         catch (Exception)
                         {
-                            
-                            
+
+
                         }
-                        
+
                     }
                     CommonClasses.WriteLog("Tax Invoice", "Save", "Tax Invoice", Convert.ToString(Inv_No), Convert.ToInt32(Code), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                     result = true;
@@ -2620,7 +2638,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                         }
                         if (result == true)
                         {
-                            
+
                             try
                             {
                                 float taxamt = float.Parse(txtBasicExcAmt.Text) + float.Parse(txtEdueceAmt.Text) + float.Parse(txtSHEExcAmt.Text);
@@ -2629,10 +2647,10 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             }
                             catch (Exception)
                             {
-                                
-                                
+
+
                             }
-                            
+
                         }
                         //CommonClasses.Execute("UPDATE QUOTATION_ENTRY set QE_PO_FLAG = 1 where QE_CODE=" + ddlQuatation.SelectedValue + "");
                         CommonClasses.RemoveModifyLock("INVOICE_MASTER", "MODIFY", "INM_CODE", Convert.ToInt32(ViewState["mlCode"].ToString()));
@@ -2739,15 +2757,15 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
     }
     #endregion ddlState_SelectedIndexChanged
 
-    public void SendEmail(DataTable dt,string invoiceno, float taxamt,float grandAmt)
+    public void SendEmail(DataTable dt, string invoiceno, float taxamt, float grandAmt)
     {
         DataTable dtComp = CommonClasses.Execute("SELECT * FROM COMPANY_MASTER WHERE CM_ID='" + Session["CompanyId"] + "' AND ISNULL(CM_DELETE_FLAG,0) ='0'");
-        string BankName=dtComp.Rows[0]["CM_BANK_NAME"].ToString();
-        string AccountName=dtComp.Rows[0]["CM_NAME"].ToString();
-        string bankaccno=dtComp.Rows[0]["CM_BANK_ACC_NO"].ToString();
-        string branch=dtComp.Rows[0]["CM_B_SWIFT_CODE"].ToString();
-        string ifsccode=dtComp.Rows[0]["CM_IFSC_CODE"].ToString();
-        string AccountType=dtComp.Rows[0]["CM_ACC_TYPE"].ToString();
+        string BankName = dtComp.Rows[0]["CM_BANK_NAME"].ToString();
+        string AccountName = dtComp.Rows[0]["CM_NAME"].ToString();
+        string bankaccno = dtComp.Rows[0]["CM_BANK_ACC_NO"].ToString();
+        string branch = dtComp.Rows[0]["CM_B_SWIFT_CODE"].ToString();
+        string ifsccode = dtComp.Rows[0]["CM_IFSC_CODE"].ToString();
+        string AccountType = dtComp.Rows[0]["CM_ACC_TYPE"].ToString();
 
         string pname = ddlCustomer.SelectedItem.Text;
         string cmname = Session["CompanyName"].ToString();
@@ -2780,9 +2798,9 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                 string Iunit = (dtIDetails.Rows[0]["I_UOM_NAME"]).ToString();
 
                 string Packing = (dt.Rows[i]["IND_PACK_DESC"]).ToString();
-                double IWD_RATE = Math.Round(float.Parse(dt.Rows[i]["RATE"].ToString()),2);
+                double IWD_RATE = Math.Round(float.Parse(dt.Rows[i]["RATE"].ToString()), 2);
 
-                double IWD_Qty = Math.Round(float.Parse(dt.Rows[i]["INV_QTY"].ToString()),2);
+                double IWD_Qty = Math.Round(float.Parse(dt.Rows[i]["INV_QTY"].ToString()), 2);
                 double IWD_AMt = Math.Round(float.Parse(dt.Rows[i]["AMT"].ToString()), 2);
 
                 sb.Append("<tr><td>" + Icodeno + "</td> <td>  " + Iname + "  </td><td>  " + Iunit + "  </td><td>  " + Packing + "  </td><td>  " + IWD_RATE + "  </td><td>  " + IWD_Qty + "  </td><td>  " + IWD_AMt + "  </td></tr>");

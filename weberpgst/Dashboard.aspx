@@ -238,8 +238,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Group Basic Sale LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
-                        </span>
+                        <span class="info-box-number"> <asp:Label runat="server"  ID="totalLM"></asp:Label>                          </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -252,7 +251,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">SPC Basic Sale LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -266,7 +265,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Qualitat Basic Sale LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="QualitatLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -280,7 +279,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Calidad Basic Sale LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidadLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -299,7 +298,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Group Sales With Tax LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="totalTaxSales"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -313,7 +312,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">SPC Sales With Tax LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCTaxLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -327,7 +326,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Qualitat Sales With Tax LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="QualitatTaxLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -341,7 +340,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Calidad Sales With Tax LM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidadTaxLM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -353,7 +352,7 @@
                 
                 
                 </div>
-                <div class="row">
+                <div class="row" runat="server" visible="false">
                   <div class="col-md-3 col-sm-6 col-12">
                     <div class="info-box">
                       <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
@@ -423,7 +422,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Group Basic Sale TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="totalCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -437,7 +436,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">SPC Basic Sale TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -451,7 +450,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Qualitat Basic Sale TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="QualitatCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -465,7 +464,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Calidad Basic Sale TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidadCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -484,7 +483,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Group Sales With Tax TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="TotalTaxCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -498,7 +497,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">SPC Sales With Tax TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCTaxCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -512,7 +511,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Qualitat Sales With Tax TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="QualitatTaxCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -526,7 +525,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Calidad Sales With Tax TM</span>
-                        <span class="info-box-number">12345678901234<small>%</small>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidadTaxCM"></asp:Label>  
                         </span>
                       </div>
                       <!-- /.info-box-content -->
@@ -538,7 +537,7 @@
                 
                 
                 </div>
-                <div class="row">
+                <div class="row" runat="server" visible="false">
                   <div class="col-md-3 col-sm-6 col-12">
                     <div class="info-box">
                       <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
@@ -608,7 +607,7 @@
         
                       <div class="info-box-content">
                         <span class="info-box-text">Group Basic Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="basicSalesDiff"></asp:Label>  </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -620,8 +619,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Basic Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Basic Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCSalesDiff"></asp:Label>  </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -633,8 +632,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Basic Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Basic Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="qualitatSalesDiff"></asp:Label>  </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -645,8 +644,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Basic Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Basic Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidadSalesDiff"></asp:Label>  </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -659,8 +658,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Basic Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Basic Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="TotalSalesDiffTax"></asp:Label>  </span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -672,8 +671,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Part Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Part Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="SPCSalesDiffTax"></asp:Label>  </span> 
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -685,8 +684,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Part Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Part Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="QualitatSalesDiffTax"></asp:Label>  </span></span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
@@ -697,8 +696,8 @@
                       <span class="info-box-icon bg-warning"><i class="fas fa-bell"></i></span>
         
                       <div class="info-box-content">
-                        <span class="info-box-text">Group Part Sale DIff</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-text">Group Part Sale Diff</span>
+                        <span class="info-box-number"><asp:Label runat="server"  ID="CalidatSalesDiffTax"></asp:Label>  </span></span>
                       </div>
                       <!-- /.info-box-content -->
                     </div>
