@@ -2551,7 +2551,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
                             float grandamt = float.Parse(txtGrandAmt.Text);
                             SendEmail((DataTable)ViewState["dt2"], Invoice_No, taxamt, grandamt);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
 
 
