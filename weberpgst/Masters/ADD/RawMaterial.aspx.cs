@@ -730,6 +730,14 @@ public partial class Masters_ADD_RawMaterial : System.Web.UI.Page
     {
         try
         {
+
+            if (ddlSAC.SelectedValue=="0")
+            {
+                PanelMsg.Visible = true;
+                lblmsg.Text = "Select SAC Code";
+                ddlSAC.Focus();
+                return;
+            }
             if (CommonClasses.ValidRights(int.Parse(right.Substring(0, 1)), this, "For Save"))
             {
                 SaveRec();
