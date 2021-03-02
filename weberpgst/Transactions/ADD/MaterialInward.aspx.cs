@@ -575,11 +575,11 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
                         }
                         catch (Exception Ex)
                         {
-                            
-                            
+
+
                         }
-                        
-                        
+
+
                         Response.Redirect("~/Transactions/VIEW/ViewMaterialInward.aspx", false);
                     }
                     else
@@ -1592,7 +1592,7 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
 
         string FromEmail = ConfigurationManager.AppSettings["FromAccountsEmail"].ToString();
         string ToEmail = (dtPDetails.Rows[0]["P_EMAIL"]).ToString();//ConfigurationManager.AppSettings["ToEmail"].ToString();
-        if (ToEmail =="")
+        if (ToEmail == "")
         {
             ToEmail = ConfigurationManager.AppSettings["FromAccountsEmail"].ToString();
         }
@@ -1607,15 +1607,15 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
             for (int i = 0; i < XGrid.Rows.Count; i++)
             {
 
-                
+
                 int IWD_I_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblIWD_I_CODE")).Text);
 
-                DataTable dtIDetails = CommonClasses.Execute("select I_CODENO,I_NAME,I_UOM_NAME from item_master i,ITEM_UNIT_MASTER u where i.I_UOM_CODE=u.I_UOM_CODE and u.ES_DELETE=0  and i.I_CODE="+IWD_I_CODE);
+                DataTable dtIDetails = CommonClasses.Execute("select I_CODENO,I_NAME,I_UOM_NAME from item_master i,ITEM_UNIT_MASTER u where i.I_UOM_CODE=u.I_UOM_CODE and u.ES_DELETE=0  and i.I_CODE=" + IWD_I_CODE);
                 string Icodeno = (dtIDetails.Rows[0]["I_CODENO"]).ToString();
                 string Iname = (dtIDetails.Rows[0]["I_NAME"]).ToString();
                 string Iunit = (dtIDetails.Rows[0]["I_UOM_NAME"]).ToString();
                 double IWD_CH_QTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_CH_QTY")).Text), 2);
-                double IWD_REV_QTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text),2);
+                double IWD_REV_QTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text), 2);
                 double IWD_SQTY = Math.Round(float.Parse(((Label)XGrid.Rows[i].FindControl("lblIWD_REV_QTY")).Text), 2);
                 int IWD_CPOM_CODE = Convert.ToInt32(((Label)XGrid.Rows[i].FindControl("lblIWD_CPOM_CODE")).Text);
                 DataTable dtPODetails = CommonClasses.Execute("select SPOM_PONO from SUPP_PO_MASTER where SPOM_CODE=" + IWD_CPOM_CODE);
@@ -1626,15 +1626,15 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
                 string IWD_BATCH_NO = ((Label)XGrid.Rows[i].FindControl("lblIWD_BATCH_NO")).Text;
                 string IWD_PROCESS_CODE = ((Label)XGrid.Rows[i].FindControl("lblIWD_PROCESS_CODE")).Text;
                 string Doc_Name = "";
-                sb.Append("<tr><td>" + Icodeno + "</td> <td>  " + Iname + "  </td><td>  " + POName + "  </td><td>  " + IWD_REV_QTY + "  </td><td>  " + IWD_CH_QTY + "  </td><td>  " + IWD_RATE + "  </td><td>  " + Iunit + "  </td><td>  " + IWD_REMARK + "  </td></tr>");
+                sb.Append("<tr><td>" + Icodeno + "</td> <td>  " + Iname + "  </td><td>  " + POName + "  </td><td>  " + IWD_CH_QTY + "  </td><td>  " + IWD_REV_QTY + "  </td><td>  " + IWD_RATE + "  </td><td>  " + Iunit + "  </td><td>  " + IWD_REMARK + "  </td></tr>");
             }
 
             string htmlString = @"<html>
                           <body style=""color: blueviolet;font-style: italic;"">
                           <p>" + pname + @",</p>
-                          <p>Material inwarded against your invoice number : " + txtInvoiceNo.Text + @" . our compnay name GRN number  is " + txtGRNno.Text + @". Total invoice value booked 
-at our end is " + txtamt.Text + @".</p><br><p>You are requeted to achknowledge:</p><br><p>1. if any descrepticancy within 2 days of recieving this email </p><br><p>2. If we don not receive any communication in 2 days it will be presumed that GRN is accepted by you.<br> </p>
-                            <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Challan Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString() + @"</table>
+                          <p>We have recieved folowing material against your invoice number : " + txtInvoiceNo.Text + @" . " + cmname + @" GRN number  is " + txtGRNno.Text + @". Total invoice value booked 
+at our end is " + txtamt.Text + @".</p><br><p>You are requeted to achknowledge:</p><br><p>1. If any descrepticancy within 2 days of recieving this email </p><br><p>2. If we do not receive any communication in 2 days, descrepticancy informed as GRN, will be considered as acceptable to you.<br> </p>
+                            <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Invoice Qty </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString() + @"</table>
                           <p><br>Sincerely,<br><br>" + cmname + @"</br></p>
 <p><br><br>This is system generated Email </p>
                           </body>

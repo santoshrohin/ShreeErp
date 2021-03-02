@@ -2790,7 +2790,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
             {
 
 
-                int IWD_I_CODE = Convert.ToInt32(dt.Rows[0]["IND_I_CODE"]);
+                int IWD_I_CODE = Convert.ToInt32(dt.Rows[i]["IND_I_CODE"]);
 
                 DataTable dtIDetails = CommonClasses.Execute("select I_CODENO,I_NAME,I_UOM_NAME from item_master i,ITEM_UNIT_MASTER u where i.I_UOM_CODE=u.I_UOM_CODE and u.ES_DELETE=0  and i.I_CODE=" + IWD_I_CODE);
                 string Icodeno = (dtIDetails.Rows[0]["I_CODENO"]).ToString();
@@ -2821,16 +2821,10 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
 </br></br>
 <p>You are requested to release the payment as pre decided terms thorugh RTGS / NEFT / Demand Draft and confirm.</p>
 </br></br>
-<P>Our bank details are as follows:</P></br>
-<P><pre>    Bank Name      : <b>" + BankName + @"</b></pre></p>
-<P><pre>    Bank Acc Name  : <b>" + AccountName + @"</b></pre></P>
-<P><pre>    Bank Acc No    : <b>" + bankaccno + @"</b></pre></P>
-<P><pre>    Bank Branch    : <b>" + branch + @"</b></pre></P>
-<P><pre>    Bank IFSC Code : <b>" + ifsccode + @"</b></pre></P>
-<P><pre>    Bank Acc Type  : <b>" + AccountType + @"</b></pre></P></br></br></br>
+
 </br><p>Invoice Details are as follows :</p>
                             <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> Unit </b> </th><th> <b> Packing </b> </th><th> <b> Rate </b> </th><th> <b> Qty </b> </th><th> <b> Amount </b> </th></tr>" + sb.ToString() + @"</table>
-                  <p><b>Grand Amount: " + grandAmt + @"</b></br></br></br></p>                          
+                  <p><b>Total Amount: " + grandAmt + @"</b></br></br></br></p>  <p><b>Vehicle Number: " + txtVechicleNo.Text + @"</b></br></br></br></p>                          
 <p>Sincerely,<br><br>" + cmname + @"</br></p><p><br><br>This is system generated Email </p>
                           </body>
                           </html>
