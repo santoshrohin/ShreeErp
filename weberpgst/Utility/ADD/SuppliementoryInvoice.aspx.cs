@@ -240,7 +240,8 @@ public partial class Utility_ADD_SuppliementoryInvoice : System.Web.UI.Page
                 //to Compare   customer and Company state for GST calculation 
                 DataTable dtCust = new DataTable();
                 dtCust = CommonClasses.Execute(" SELECT * FROM PARTY_MASTER  where  P_SM_CODE= (SELECT CM_STATE  FROM COMPANY_MASTER where CM_CODE='" + Session["CompanyCode"].ToString() + "') AND P_CODE='" + ddlCustomerName.SelectedValue + "'");
-
+                DataTable dtTCSNEW = new DataTable();
+                dtTCSNEW = CommonClasses.Execute(" SELECT * FROM PARTY_MASTER  where P_CODE='" + ddlCustomerName.SelectedValue + "'");
                 //local variable declared for store  CGST,SGST and IGST Per for Selected Item
                 double CGST = 0, SGST = 0, IGST = 0;
 
@@ -271,9 +272,9 @@ public partial class Utility_ADD_SuppliementoryInvoice : System.Web.UI.Page
                     //Local varible for Store Invoice qty, Diff rate ,CSGT amount, IGST amount,SGST amount and Grand Total
                     double inv_qty = 0, diff_Rate = 0, AMT = 0, CGST_AMT = 0, SGST_AMT = 0, IGST_AMT = 0, TCS_PER = 0, TCS_AMT = 0, GRAND_TOTAL = 0;
 
-                    if (dtCust.Rows.Count > 0)
+                    if (dtTCSNEW.Rows.Count > 0)
                     {
-                        TCS_PER = Convert.ToDouble(dtCust.Rows[0]["P_TCS_PER"].ToString());
+                        TCS_PER = Convert.ToDouble(dtTCSNEW.Rows[0]["P_TCS_PER"].ToString());
 
                     }
 
