@@ -1632,8 +1632,8 @@ public partial class Transactions_ADD_MaterialInward : System.Web.UI.Page
             string htmlString = @"<html>
                           <body style=""color: blueviolet;font-style: italic;"">
                           <p>" + pname + @",</p>
-                          <p>We have recieved folowing material against your invoice number : " + txtInvoiceNo.Text + @" . " + cmname + @" GRN number  is " + txtGRNno.Text + @". Total invoice value booked 
-at our end is " + txtamt.Text + @".</p><br><p>You are requeted to achknowledge:</p><br><p>1. If any descrepticancy within 2 days of recieving this email </p><br><p>2. If we do not receive any communication in 2 days, descrepticancy informed as GRN, will be considered as acceptable to you.<br> </p>
+                          <p>We have recieved following material against your invoice number : " + txtInvoiceNo.Text + @" . " + cmname + @" GRN number  is " + txtGRNno.Text + @".<br><br> Basic invoice value 
+is " + txtamt.Text + @".</p><br><p>You are requeted to acknowledge:</p><br><p>1. If any descrepticancy inform us within 2 days of recieving this email </p><br><p>2. If we do not receive any communication in 2 days,it will be considered as accepted by you.<br> </p>
                             <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> PO NO </b> </th><th> <b> Invoice Qty </b> </th><th> <b> Recevied Qty </b> </th><th> <b> Item Rate </b> </th><th> <b> Unit </b> </th><th> <b> Remarks </b> </th></tr>" + sb.ToString() + @"</table>
                           <p><br>Sincerely,<br><br>" + cmname + @"</br></p>
 <p><br><br>This is system generated Email </p>

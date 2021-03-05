@@ -2808,23 +2808,22 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
 
             string htmlString = @"<html>
                           <body style=""color: blueviolet;font-style: italic;"">
-                          <p>" + pname + @",</p><br><p>We are writing to inform you that, we have dispatched your material as per details mentioned in the email.</p>
+                          <p>" + pname + @",</p><br><p>We have dispatched following material as per details mentioned below via Vehicle(<b>Vehicle Number: " + txtVechicleNo.Text + @"</b>) .</p>
                           </br><p>You are requested to :</p>
 </br></br>
 <p><pre>    1) Acknowledge the receipt of the same & communicate GRN. </pre></p>
 </br>
-<p><pre>    2) Confirm the receipt as per the Invoice</pre></p>
 </br>
-<p><pre>    3) Confirm Damages,Rejection, and Shortage if any immediately</pre></p>
+<p><pre>    2) Confirm Damages,Rejection, and Shortage if any immediately</pre></p>
 </br>
-<p><pre>    4) Please note, if we do not receive any communication with in a week it will be presumed that the material is accpeted by you.</pre></p>
+<p><pre>    3) Please note, if we do not receive any communication with in a week it will be presumed that the material is accpeted by you.</pre></p>
 </br></br>
 <p>You are requested to release the payment as pre decided terms thorugh RTGS / NEFT / Demand Draft and confirm.</p>
 </br></br>
 
 </br><p>Invoice Details are as follows :</p>
                             <table border=""+1+@""  width = ""100%"" bgcolor='floralwhite'><tr><th><b>Item Code</b></th> <th> <b> Item Name </b> </th><th> <b> Unit </b> </th><th> <b> Packing </b> </th><th> <b> Rate </b> </th><th> <b> Qty </b> </th><th> <b> Amount </b> </th></tr>" + sb.ToString() + @"</table>
-                  <p><b>Total Amount: " + grandAmt + @"</b></br></br></br></p>  <p><b>Vehicle Number: " + txtVechicleNo.Text + @"</b></br></br></br></p>                          
+                  <p><b>Gross Invoice Amount: " + grandAmt + @"</b></br></br></br></p>  <p></br></br></br></p>                          
 <p>Sincerely,<br><br>" + cmname + @"</br></p><p><br><br>This is system generated Email </p>
                           </body>
                           </html>
