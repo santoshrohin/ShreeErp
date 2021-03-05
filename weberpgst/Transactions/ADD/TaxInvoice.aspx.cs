@@ -2727,7 +2727,7 @@ public partial class Transactions_ADD_TaxInvoice : System.Web.UI.Page
     {
         if (chkTCS.Checked == true)
         {
-            txtTCSAmount.Text = Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text)) * 1 / 100), 0).ToString();
+            txtTCSAmount.Text = Math.Round(((Convert.ToDouble(txtTaxableAmt.Text) + Convert.ToDouble(txtBasicExcAmt.Text) + Convert.ToDouble(txtEdueceAmt.Text) + Convert.ToDouble(txtSHEExcAmt.Text)) * 0.75 / 100), 0).ToString();
             GetTotal();
         }
         else
