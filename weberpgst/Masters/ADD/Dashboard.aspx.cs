@@ -237,27 +237,29 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     #region Page_Load
     protected void Page_Load(object sender, EventArgs e)
     {
-          if (!IsPostBack)
+        try
         {
-            //DataTable dtRights = CommonClasses.Execute("SELECT UR_RIGHTS FROM USER_RIGHT WHERE UR_IS_DELETE=0 AND UR_UM_CODE='" + Convert.ToInt32(Session["UserCode"]) + "' AND UR_SM_CODE='139'");
-            //right = dtRights.Rows.Count == 0 ? "0000000" : dtRights.Rows[0][0].ToString();
-            //ViewState["right"] = right;
-
-            if (string.IsNullOrEmpty((string)Session["CompanyId"]) && string.IsNullOrEmpty((string)Session["Username"]))
+            if (!IsPostBack)
             {
-                Response.Redirect("~/Default.aspx", false);
-            }
-            else
-            {
-                //if (Session["DASHBOARD"].ToString() == "1")
-                //{
-                ////    LoadActivity();
-                //}
+                //DataTable dtRights = CommonClasses.Execute("SELECT UR_RIGHTS FROM USER_RIGHT WHERE UR_IS_DELETE=0 AND UR_UM_CODE='" + Convert.ToInt32(Session["UserCode"]) + "' AND UR_SM_CODE='139'");
+                //right = dtRights.Rows.Count == 0 ? "0000000" : dtRights.Rows[0][0].ToString();
+                //ViewState["right"] = right;
 
-                //if (CommonClasses.ValidRights(int.Parse(((string)ViewState["right"]).Substring(5, 1)), this, "For Print"))
-                //{
-                    
-                    
+                if (string.IsNullOrEmpty((string)Session["CompanyId"]) && string.IsNullOrEmpty((string)Session["Username"]))
+                {
+                    Response.Redirect("~/Default.aspx", false);
+                }
+                else
+                {
+                    //if (Session["DASHBOARD"].ToString() == "1")
+                    //{
+                    ////    LoadActivity();
+                    //}
+
+                    //if (CommonClasses.ValidRights(int.Parse(((string)ViewState["right"]).Substring(5, 1)), this, "For Print"))
+                    //{
+
+
                     Last8DaysSales();
                     Last8DaysPurchase();
                     Last8DaysRawPurchase();
@@ -269,13 +271,20 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
                     ShceduleCOmpliance100();
                     ShceduleCOmplianceG100();
                     sales();
-               // }
-                //else
-                //{
-                //    StockValuation.Visible = false;
-                //}
+                    // }
+                    //else
+                    //{
+                    //    StockValuation.Visible = false;
+                    //}
+                }
             }
         }
+        catch (Exception ex)
+        {
+            
+            
+        }
+          
     }
     #endregion Page_Load
 
