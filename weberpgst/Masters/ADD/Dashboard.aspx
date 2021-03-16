@@ -61,106 +61,14 @@
                 </div>
             </div>
             <br />
-            <div id="StockValuation" runat="server" class="row">
+            
+              <div id="Div10" runat="server" class="row">
                 <div class="col-md-12">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Stock Valuation
-                                </div>
-                                <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a></a>
-                                </div>
-                            </div>
-                            <div class="portlet-body">
-                                <div class="form-horizontal">
-                                    <div class="row" runat="server" visible="false">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label text-left">
-                                                    From Date:
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <asp:UpdatePanel runat="server" ID="UpdatePanel5">
-                                                        <ContentTemplate>
-                                                            <div class="input-group">
-                                                                <asp:TextBox ID="txtFromDate" AutoPostBack="true" OnTextChanged="txtFromDate_TextChanged"
-                                                                    runat="server" placeholder="dd MMM yyyy" CssClass="form-control" TabIndex="6"
-                                                                    ValidationGroup="Save"></asp:TextBox>
-                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                <cc1:CalendarExtender ID="txtFromDate_CalenderExtender" BehaviorID="calendar1" runat="server"
-                                                                    Enabled="True" TargetControlID="txtFromDate" PopupButtonID="txtFromDate" Format="dd MMM yyyy">
-                                                                </cc1:CalendarExtender>
-                                                            </div>
-                                                        </ContentTemplate>
-                                                    </asp:UpdatePanel>
-                                                </div>
-                                                <label class="col-md-2 control-label text-right">
-                                                    To Date:
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <asp:UpdatePanel runat="server" ID="UpdatePanel4">
-                                                        <ContentTemplate>
-                                                            <div class="input-group">
-                                                                <asp:TextBox ID="txtToDate" runat="server" AutoPostBack="true" OnTextChanged="txtToDate_TextChanged"
-                                                                    placeholder="dd MMM yyyy" CssClass="form-control" TabIndex="7" ValidationGroup="Save"></asp:TextBox>
-                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                <cc1:CalendarExtender ID="CalendarExtender1" BehaviorID="calendar2" runat="server"
-                                                                    Enabled="True" TargetControlID="txtToDate" PopupButtonID="txtToDate" Format="dd MMM yyyy">
-                                                                </cc1:CalendarExtender>
-                                                            </div>
-                                                        </ContentTemplate>
-                                                    </asp:UpdatePanel>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel100" runat="server">
-                                                <ContentTemplate>
-                                                    <div style="width: 100%; height: 500px; overflow: scroll">
-                                                        <asp:GridView ID="dgDashboard" Width="100%" AutoGenerateColumns="false" CellPadding="0"
-                                                            Font-Size="12px" ShowFooter="false" Font-Names="Verdana" GridLines="Both" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                            PageSize="15" DataKeyNames="I_CAT_CODE" runat="server" AllowPaging="false">
-                                                            <Columns>
-                                                                <asp:TemplateField HeaderText="Category" SortExpression="I_CAT_CODE" Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_CAT_CODE" runat="server" Text='<%# Bind("I_CAT_CODE") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Category" SortExpression="I_CAT_CODE" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_CAT_NAME" runat="server" Text='<%# Bind("I_CAT_NAME") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Value (Lacs)" SortExpression="VALUE" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblVALUE" CssClass="" runat="server" Text='<%# Eval("VALUE") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                            </Columns>
-                                                            <AlternatingRowStyle CssClass="alt" />
-                                                            <PagerStyle CssClass="pgr" />
-                                                        </asp:GridView>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4" runat="server" visible="false">
-                        <div class="portlet box green">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <i class="fa fa-reorder"></i>Store Wise Stock
+                                    <i class="fa fa-reorder"></i>Last Month Sale
                                 </div>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
@@ -168,482 +76,841 @@
                             </div>
                             <div class="portlet-body">
                                 <div class="form-horizontal">
+                                    
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                                <ContentTemplate>
-                                                    <div style="width: 100%; height: 570px; overflow: scroll">
-                                                        <asp:GridView ID="dgStoreWiseStock" Width="100%" AutoGenerateColumns="false" CellPadding="0"
-                                                            Font-Size="12px" ShowFooter="true" Font-Names="Verdana" GridLines="Both" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                            PageSize="15" runat="server" AllowPaging="false" OnRowDataBound="GridView1_RowDataBound">
-                                                            <Columns>
-                                                                <asp:TemplateField HeaderText="Store Name" SortExpression="STORE_NAME" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblSTORE_NAME" runat="server" Text='<%# Bind("STORE_NAME") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <FooterTemplate>
-                                                                        <asp:Label ID="abl" runat="server" Text="Total" />
-                                                                    </FooterTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <FooterStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="total Qty" SortExpression="I_CAT_CODE" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblQTY" runat="server" Text='<%# Bind("QTY") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <FooterTemplate>
-                                                                        <asp:Label ID="lblTOTQTY" runat="server" />
-                                                                    </FooterTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Tonnage (Tons)" SortExpression="INWARD_WT" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblINWARD_WT" CssClass="" runat="server" Text='<%# Eval("INWARD_WT") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <FooterTemplate>
-                                                                        <asp:Label ID="lblTOTWT" runat="server" />
-                                                                    </FooterTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <FooterStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Amount (Lacs)" SortExpression="INWARD_AMT" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblINWARD_AMT" DataFormatString="{0:N2}" CssClass="" runat="server"
-                                                                            Text='<%# Eval("INWARD_AMT") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <FooterTemplate>
-                                                                        <asp:Label ID="lblTOTAMT" runat="server" />
-                                                                    </FooterTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <FooterStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                            </Columns>
-                                                            <AlternatingRowStyle CssClass="alt" />
-                                                            <PagerStyle CssClass="pgr" />
-                                                        </asp:GridView>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Basic Sale LM</th>
+                                      
+                                      <th>SPC Basic Sale LM</th>
+                                      <th>Qualitat Basic Sale LM</th>
+                                      <th>Calidad Basic Sale LM</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="totalLM"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCLM"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="QualitatLM"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidadLM"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Sales With Tax LM</th>
+                                      
+                                      <th>SPC Sales With Tax LM</th>
+                                      <th>Qualitat Sales With Tax LM</th>
+                                      <th>Calidad Sales With Tax LM</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="totalTaxSales"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCTaxLM"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="QualitatTaxLM"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidadTaxLM"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                   
+                </div>
+                
+            </div>
+            
+            
+            <br />
+            
+            <div id="Div11" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Current Month Sale
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Basic Sale TM</th>
+                                      
+                                      <th>SPC Basic Sale TM</th>
+                                      <th>Qualitat Basic Sale TM</th>
+                                      <th>Calidad Basic Sale TM</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="totalCM"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCCM"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="QualitatCM"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidadCM"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Sales With Tax TM</th>
+                                      
+                                      <th>SPC Sales With Tax TM</th>
+                                      <th>Qualitat Sales With Tax TM</th>
+                                      <th>Calidad Sales With Tax TM</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="TotalTaxCM"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCTaxCM"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="QualitatTaxCM"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidadTaxCM"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            <br />
+            
+            <div id="Div12" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Sale Diff
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Basic Sale DIff</th>
+                                      
+                                      <th>SPC Basic Sale DIff</th>
+                                      <th>Qualitat Basic Sale DIff</th>
+                                      <th>Calidad Basic Sale DIff</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="basicSalesDiff"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCSalesDiff"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="qualitatSalesDiff"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidadSalesDiff"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                           
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Group Sales With Tax DIff</th>
+                                      
+                                      <th>SPC Sales With Tax DIff</th>
+                                      <th>Qualitat Sales With Tax DIff</th>
+                                      <th>Calidad Sales With Tax DIff</th>
+                                    </tr>
+                                  </thead>
+                                  
+                                  <tbody>
+                                    <tr>
+                                      <td><asp:Label runat="server"  ID="TotalSalesDiffTax"></asp:Label> </td>
+                                      
+                                      <td><asp:Label runat="server"  ID="SPCSalesDiffTax"></asp:Label>  </td>
+                                      <td><asp:Label runat="server"  ID="QualitatSalesDiffTax"></asp:Label> </td>
+                                      <td><asp:Label runat="server"  ID="CalidatSalesDiffTax"></asp:Label> </td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  
+                                </table>
+                               
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            
+            <br />
+            <div id="Div3" runat="server" class="row">
+                <div class="col-md-12">
                     <div class="col-md-4">
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Total Sales
+                                    <i class="fa fa-reorder"></i>Last 8 Days Sales
                                 </div>
                                 <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a></a>
+                                    <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
                             <div class="portlet-body">
                                 <div class="form-horizontal">
-                                    <div class="form-body">
-                                    </div>
-                                    <div id="Div1" class="row" runat="server" visible="false">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                                <ContentTemplate>
-                                                    <label class="col-md-4 text-right" id="lblTillDate" runat="server">
-                                                        Till Date</label>
-                                                    <label class="col-md-4 text-right" id="lblCurrMonth" runat="server">
-                                                        Current Month</label>
-                                                    <label class="col-md-4 text-right" id="lblOnDate" runat="server">
-                                                        On Date</label>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                                        </div>
-                                    </div>
-                                    <div id="Div2" class="row" runat="server" visible="false">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                                                <ContentTemplate>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblTillDateNetAmt" runat="server"></asp:Label>
-                                                    </div>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblCurrMonthNetAmt" runat="server"></asp:Label>
-                                                    </div>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblOnDateNetAmt" runat="server"></asp:Label>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                                        </div>
-                                    </div>
                                     
-                                     <div class="row">
+                                    <div class="row">
                                         <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel10" runat="server">
-                                                <ContentTemplate>
-                                                    <div style="width: 100%;">
-                                                        <asp:GridView ID="dgSales" Width="100%" AutoGenerateColumns="false" CellPadding="0"
-                                                            Font-Size="12px" ShowFooter="false" Font-Names="Verdana" GridLines="Both" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                            PageSize="15" runat="server" AllowPaging="false">
-                                                            <Columns>
-                                                                <asp:TemplateField HeaderText="Sales Category" SortExpression="I_CAT_NAME">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_CAT_NAME" runat="server" Text='<%# Bind("I_CAT_NAME") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Till Date" SortExpression="INM_NET_AMTYearly" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblINM_NET_AMTYearly" CssClass="" runat="server" Text='<%# Eval("INM_NET_AMTYearly") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText=" Current Month" SortExpression="INM_NET_AMTMonthly"
-                                                                    HeaderStyle-HorizontalAlign="Right" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblINM_NET_AMTMonthly" DataFormatString="{0:N2}" CssClass="" runat="server"
-                                                                            Text='<%# Eval("INM_NET_AMTMonthly") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="  On Date" SortExpression="INM_NET_AMTDaily" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblINM_NET_AMTDaily" DataFormatString="{0:N2}" CssClass="" runat="server"
-                                                                            Text='<%# Eval("INM_NET_AMTDaily") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                            </Columns>
-                                                            <AlternatingRowStyle CssClass="alt" />
-                                                            <PagerStyle CssClass="pgr" />
-                                                        </asp:GridView>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                            <asp:Repeater ID="RepterDetails" runat="server"> 
+                              <HeaderTemplate> 
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      
+                                      <th>Date</th>
+                                      <th>Amount</th>
+                                      
+                                    </tr>
+                                  </thead>
+                                  </HeaderTemplate> 
+                                  <ItemTemplate> 
+                                  <tbody>
+                                    <tr>
+                                      <td><%#Eval("RowNum")%></td>
+                                      
+                                      <td><%#Eval("INM_DATE")%></td>
+                                      <td><%#Eval("GrandAmt")%></td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  </ItemTemplate> 
+                                  <FooterTemplate> 
+                                </table>
+                                </FooterTemplate> 
+                                </asp:Repeater>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="col-md-4">
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Total SubContractor Inward
+                                    <i class="fa fa-reorder"></i>Last 8 Days Purchase
+
                                 </div>
                                 <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a></a>
+                                    <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
                             <div class="portlet-body">
                                 <div class="form-horizontal">
+                                    
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel6" runat="server">
-                                                <ContentTemplate>
-                                                    <label class="col-md-4 text-right" id="Label3" runat="server">
-                                                        Till Date</label>
-                                                    <label class="col-md-4 text-right" id="Label1" runat="server">
-                                                        Current Month</label>
-                                                    <label class="col-md-4 text-right" id="Label2" runat="server">
-                                                        On Date</label>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel8" runat="server">
-                                                <ContentTemplate>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblTillDateNetAmtSubCon" runat="server"></asp:Label>
-                                                    </div>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblCurrMonthNetAmtSubCon" runat="server"></asp:Label>
-                                                    </div>
-                                                    <div class="col-md-4 text-right">
-                                                        <asp:Label ID="lblOnDateNetAmtSubCon" runat="server"></asp:Label>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                            <asp:Repeater ID="Repeaterpurchase" runat="server"> 
+                              <HeaderTemplate> 
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      
+                                      <th>Date</th>
+                                      <th>Amount</th>
+                                      
+                                    </tr>
+                                  </thead>
+                                  </HeaderTemplate> 
+                                  <ItemTemplate> 
+                                  <tbody>
+                                    <tr>
+                                      <td><%#Eval("RowNum")%></td>
+                                      
+                                      <td><%#Eval("IWM_CHAL_DATE")%></td>
+                                      <td><%#Eval("GrandAmt")%></td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  </ItemTemplate> 
+                                  <FooterTemplate> 
+                                </table>
+                                </FooterTemplate> 
+                                </asp:Repeater>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-                         <div class="col-md-4">
+                    </div>
+                    
+                    
+                    <div class="col-md-4">
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Total Purchase
+                                    <i class="fa fa-reorder"></i>Last 8 Days Raw Purchase
+
                                 </div>
                                 <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a></a>
+                                    <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
                             <div class="portlet-body">
                                 <div class="form-horizontal">
+                                    
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
-                                                <ContentTemplate>
-                                                    <div style="width: 100%; height: 510px; overflow: scroll">
-                                                        <asp:GridView ID="dgTotPurchase" Width="100%" AutoGenerateColumns="false" CellPadding="0"
-                                                            Font-Size="12px" ShowFooter="false" Font-Names="Verdana" GridLines="Both" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                            PageSize="15" DataKeyNames="I_CODE" OnRowDataBound="dgTotPurchase_RowDataBound"
-                                                            runat="server" AllowPaging="false">
-                                                            <Columns>
-                                                                <asp:TemplateField>
-                                                                    <ItemTemplate>
-                                                                        <asp:Image alt="" Style="cursor: pointer" src="../../assets/img/plus.gif" ID="ImgP"
-                                                                            runat="server" />
-                                                                        <asp:Panel ID="pnlCustomerDetails" runat="server" Style="display: none">
-                                                                            <asp:GridView ID="dgMaterial" runat="server" CellPadding="4" Font-Size="12px" ShowFooter="false"
-                                                                                Font-Names="Verdana" GridLines="None" DataKeyNames="I_CODE" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                                                AllowPaging="false" AutoGenerateColumns="false" OnRowDataBound="dgMaterial_RowDataBound"
-                                                                                OnRowCommand="dgMaterial_RowCommand">
-                                                                                <Columns>
-                                                                                    <asp:TemplateField Visible="false">
-                                                                                        <ItemTemplate>
-                                                                                            <asp:Label ID="lblI_CODE" runat="server" Text='<%# Eval("I_CODE") %>'></asp:Label>
-                                                                                        </ItemTemplate>
-                                                                                    </asp:TemplateField>
-                                                                                    <asp:BoundField DataField="I_CODE" HeaderText="CODE" Visible="false" />
-                                                                                    <asp:BoundField DataField="I_CODENO" HeaderText="CODE No." />
-                                                                                    <asp:BoundField DataField="I_NAME" HeaderText="Raw material" />
-                                                                                    <asp:TemplateField HeaderText="ON Date Qty(Tons) " Visible="false">
-                                                                                        <ItemTemplate>
-                                                                                            <asp:Label ID="lblDAILYQTY1" runat="server" Text='<%# Eval("DAILYQTY") %>'></asp:Label>
-                                                                                        </ItemTemplate>
-                                                                                    </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="On Date Amt(Lacs)">
-                                                                                        <ItemTemplate>
-                                                                                            <asp:Label ID="lblDAILYAMT1" runat="server" Text='<%# Eval("DAILYAMT") %>'></asp:Label>
-                                                                                        </ItemTemplate>
-                                                                                    </asp:TemplateField>
-                                                                                    <asp:BoundField DataField="IWD_REV_QTY_MONTH"  HeaderText="Current Month Qty (Tons)" />
-                                                                                    <asp:TemplateField HeaderText="Current Month Amt(Lacs)">
-                                                                                        <ItemTemplate>
-                                                                                            <asp:Label ID="lblMONTHLYAMT1" runat="server" Text='<%# Eval("MONTHLYAMT") %>'></asp:Label>
-                                                                                        </ItemTemplate>
-                                                                                    </asp:TemplateField>
-                                                                                    <asp:BoundField DataField="IWD_REV_QTY" HeaderText="Till Date Qty(Tons)" />
-                                                                                    <asp:BoundField DataField="AMT" HeaderText="Till Date Amt(Lacs)" />
-                                                                                </Columns>
-                                                                            </asp:GridView>
-                                                                        </asp:Panel>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Category" SortExpression="I_CAT_CODE" Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_CODE" runat="server" Text='<%# Bind("I_CODE") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Raw material" SortExpression="I_CAT_CODE" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_CODENO" runat="server" Text='<%# Bind("I_CODENO") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Raw material Name" SortExpression="VALUE" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblI_NAME" CssClass="" runat="server" Text='<%# Eval("I_NAME") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="On Date Qty(Tons)" SortExpression="I_CAT_CODE" Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblDAILYQTY" runat="server" Text='<%# Bind("DAILYQTY") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="On Date Amt(Lacs)" SortExpression="VALUE" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblDAILYAMT" CssClass="" runat="server" Text='<%# Eval("DAILYAMT") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Current Month Qty (Tons)" SortExpression="VALUE" HeaderStyle-HorizontalAlign="Right"
-                                                                    Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblIWD_REV_QTY_MONTH" CssClass="" runat="server" Text='<%# Eval("IWD_REV_QTY_MONTH") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                    <HeaderStyle HorizontalAlign="Right" />
-                                                                    <ItemStyle HorizontalAlign="Right" />
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Current Month Amt(Lacs)" SortExpression="I_CAT_CODE"
-                                                                    Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblMONTHLYAMT" runat="server" Text='<%# Bind("MONTHLYAMT") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Till Date Qty(Tons)" SortExpression="I_CAT_CODE" Visible="false">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblIWD_REV_QTY" runat="server" Text='<%# Bind("IWD_REV_QTY") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                                <asp:TemplateField HeaderText="Till Date Amt(Lacs)" SortExpression="I_CAT_CODE" Visible="true">
-                                                                    <ItemTemplate>
-                                                                        <asp:Label ID="lblAMTE" runat="server" Text='<%# Bind("AMT") %>'></asp:Label>
-                                                                    </ItemTemplate>
-                                                                </asp:TemplateField>
-                                                            </Columns>
-                                                            <AlternatingRowStyle CssClass="alt" />
-                                                            <PagerStyle CssClass="pgr" />
-                                                        </asp:GridView>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                            <asp:Repeater ID="Repeaterpurchaseraw" runat="server"> 
+                              <HeaderTemplate> 
+                                <table class="table table-hover text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      
+                                      <th>Date</th>
+                                      <th>Amount</th>
+                                      
+                                    </tr>
+                                  </thead>
+                                  </HeaderTemplate> 
+                                  <ItemTemplate> 
+                                  <tbody>
+                                    <tr>
+                                      <td><%#Eval("RowNum")%></td>
+                                      
+                                      <td><%#Eval("IWM_CHAL_DATE")%></td>
+                                      <td><%#Eval("GrandAmt")%></td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                  </ItemTemplate> 
+                                  <FooterTemplate> 
+                                </table>
+                                </FooterTemplate> 
+                                </asp:Repeater>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       
-                        <%-- <div class="portlet box green">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <i class="fa fa-reorder"></i>Total Raw Material Stock
-                                </div>
-                                <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a></a>
-                                </div>
-                            </div>
-                           <div class="portlet-body">
-                                <div class="form-horizontal">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel10" runat="server">
-                                                <ContentTemplate>
-                                                    <label class="col-md-8 text-right" id="Label4" runat="server">
-                                                        Total Raw Material Stock</label>
-                                                    <label class="col-md-3 text-right" id="Label6" runat="server">
-                                                    </label>
-                                                </ContentTemplate>
-                                           </asp:UpdatePanel>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <asp:UpdatePanel ID="UpdatePanel11" runat="server">
-                                                <ContentTemplate>
-                                                    <div class="col-md-8 text-right">
-                                                        <asp:Label ID="lblrawMaterial" runat="server"></asp:Label>
-                                                    </div>
-                                                    <div class="col-md-3 text-right">
-                                                        <asp:Label ID="Label9" runat="server"></asp:Label>
-                                                    </div>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>--%>
-                    </div>
+                    </div>     
                     <!-- END PAGE CONTENT-->
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <asp:UpdatePanel runat="server" ID="UpdatePanel33">
-                            <ContentTemplate>
-                                <asp:LinkButton ID="CheckCondition" runat="server" BackColor="" CssClass="formlabel"></asp:LinkButton>
-                                <cc1:ModalPopupExtender runat="server" ID="ModalCancleConfirmation" BackgroundCssClass="modalBackground"
-                                    OnOkScript="oknumber1()" OnCancelScript="oncancel()" DynamicServicePath="" Enabled="True"
-                                    PopupControlID="popUpPanel5" TargetControlID="CheckCondition">
-                                </cc1:ModalPopupExtender>
-                                <asp:Panel ID="popUpPanel5" runat="server" ScrollBars="None" Height="260px" CssClass="responsive-width">
-                                    <div class="portlet box blue">
-                                        <div class="portlet-title">
-                                            <center>
-                                                <h4>
-                                                    Acceptance Pending
-                                                </h4>
-                                            </center>
-                                        </div>
-                                        <div class="portlet-body form">
-                                            <div class="form-horizontal">
-                                                <div class="form-body">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <asp:UpdatePanel ID="UpdatePanel20" runat="server">
-                                                                <ContentTemplate>
-                                                                    <asp:Panel ID="PnlMsgDailyAct" runat="server" Visible="false" Style="background-color: #feefb3;
-                                                                        height: 40px; width: 100%; border: 1px solid #9f6000">
-                                                                        <div style="vertical-align: middle; margin-top: 10px;">
-                                                                            <asp:Label ID="lblDailyActMsg" runat="server" Style="color: #9f6000; font-size: medium;
-                                                                                font-weight: bold; margin-top: 5px; margin-left: 10px;"></asp:Label>
-                                                                        </div>
-                                                                    </asp:Panel>
-                                                                </ContentTemplate>
-                                                            </asp:UpdatePanel>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <asp:UpdatePanel ID="UpdatePanel18" runat="server">
-                                                                <ContentTemplate>
-                                                                    <asp:GridView ID="dgActivity_Task" runat="server" AutoGenerateColumns="False" CellPadding="4"
-                                                                        Font-Size="12px" ShowFooter="false" Font-Names="Verdana" GridLines="Both" CssClass="table table-striped table-bordered table-advance table-hover"
-                                                                        AllowPaging="true">
-                                                                        <Columns>
-                                                                            <asp:TemplateField HeaderText="Store Name" Visible="true" SortExpression="STORE_NAME"
-                                                                                HeaderStyle-HorizontalAlign="Left">
-                                                                                <ItemTemplate>
-                                                                                    <asp:Label ID="lblACT_NO" CssClass="" runat="server" Text='<%# Eval("STORE_NAME") %>'></asp:Label>
-                                                                                </ItemTemplate>
-                                                                                <HeaderStyle HorizontalAlign="Left" />
-                                                                            </asp:TemplateField>
-                                                                            <asp:TemplateField HeaderText="Count" SortExpression="ACT_DATE" HeaderStyle-HorizontalAlign="Left">
-                                                                                <ItemTemplate>
-                                                                                    <asp:Label ID="lblACT_DATE" CssClass="" runat="server" Text='<%# Eval("RECOUNT") %>'></asp:Label>
-                                                                                </ItemTemplate>
-                                                                                <HeaderStyle HorizontalAlign="Left" />
-                                                                            </asp:TemplateField>
-                                                                        </Columns>
-                                                                        <AlternatingRowStyle CssClass="alt" />
-                                                                        <PagerStyle CssClass="pgr" />
-                                                                    </asp:GridView>
-                                                                </ContentTemplate>
-                                                            </asp:UpdatePanel>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="col-md-4">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <asp:LinkButton ID="Button6" CssClass="btn blue" TabIndex="26" runat="server" Visible="true"
-                                                                    OnClick="btnConfirm_Click">Continue</asp:LinkButton>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                </asp:Panel>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
+                
             </div>
+            
+            
+            <div id="Div4" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance All
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="RepeaterShceduleCOmpliance" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            <div id="Div5" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance 0- 25%
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="repeater025" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            <div id="Div6" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance 25- 50%
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="repeater050" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            <div id="Div7" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance 50- 75%
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="repeater075" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            <div id="Div8" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance 75- 100%
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="repeater100" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+           <div id="Div9" runat="server" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i>Schedule Compliance > 100%
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-horizontal">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <asp:Repeater ID="repeaterG100" runat="server"> 
+              <HeaderTemplate> 
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    
+                  </tr>
+                  </thead>
+                  </HeaderTemplate> 
+                  <ItemTemplate>
+                  <tbody>
+                  <tr>
+                    <td><%#Eval("p_name")%></td>
+                    <td><%#Eval("schdeuletQty")%>
+                    </td>
+                    <td><%#Eval("invoiceQty")%></td>
+                    <td> <%#Eval("Schedulecompliance")%></td>
+                    <td><%#Eval("schdeuletQtyInValue")%></td>
+                    <td><%#Eval("invoiceQtyInvalue")%></td>
+                    
+                  </tr>
+                  
+                  </tbody>
+                  </ItemTemplate>
+                  <FooterTemplate> 
+                  <tfoot>
+                    <tr>
+                      <th>Party Name </th>
+                    <th>Scheduled Qty</th>
+                    <th>Invoice Qty</th>
+                    <th>Schedule compliance %</th>
+                    <th>Scheduled Qty In Values</th>
+                    <th>Invoice Qty In Values</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                </FooterTemplate> 
+                  </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+            </div>
+            
+            <br />
+            
         </div>
         <!-- END CONTENT -->
         <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will
