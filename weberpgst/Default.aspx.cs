@@ -89,7 +89,7 @@ public partial class _Default : System.Web.UI.Page
         {
             DataTable dt1 = new DataTable();
             //dt = CommonClasses.Execute("select SM_CODE,SM_NAME from STATE_MASTER where ES_DELETE=0 and SM_CM_COMP_ID=" + Session["CompanyId"] + "");
-            dt1 = CommonClasses.Execute("select  distinct CM_CODE, 'From  ' +convert(varchar(10),CM_OPENING_DATE,103)+' To '+ convert(varchar(10),CM_CLOSING_DATE,103)as FINANCIAL from COMPANY_MASTER where CM_ID=" + ddlCompName.SelectedValue + " order by CM_CODE desc");
+            dt1 = CommonClasses.Execute("select  distinct CM_CODE, 'From  ' +convert(varchar(10),CM_OPENING_DATE,103)+' To '+ convert(varchar(10),CM_CLOSING_DATE,103)as FINANCIAL from COMPANY_MASTER where CM_ID=" + ddlCompName.SelectedValue + " and CM_ACTIVE_IND=1 order by CM_CODE desc");
             //dt1 = CommonClasses.Execute("select  distinct CM_CODE, CM_NAME from COMPANY_MASTER where CM_ID=" + ddlCompName.SelectedValue + " and CM_OPENING_DATE<'" + DateTime.Now.ToString("dd/MMM/yyyy") + "' order by CM_CODE desc");
             ddlFinancialYear.DataSource = dt1;
             ddlFinancialYear.DataTextField = "FINANCIAL";

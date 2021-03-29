@@ -14,7 +14,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysSales()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY INM_DATE) AS RowNum,Cast(INM_DATE as date) as INM_DATE,FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by INM_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY INM_DATE) AS RowNum,CONVERT(varchar, Cast(INM_DATE as date), 103) as INM_DATE ,CONVERT(varchar, Cast(INM_DATE as date), 103),FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by INM_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         RepterDetails.DataSource = ds;
@@ -23,7 +23,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         Repeaterpurchase.DataSource = ds;
@@ -32,7 +32,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysRawPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         Repeaterpurchaseraw.DataSource = ds;
@@ -129,58 +129,11 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
 
         DataTable dtfirst = new DataTable();
         dtfirst = dtLoadStock;
-        string strConnString = ConfigurationManager.ConnectionStrings["CONNECT_TO_ERP1"].ToString();
-        SqlConnection conn1 = null;
-        SqlCommand cmd1 = null;
-        SqlDataAdapter adapter1 = null;
-        DataTable _dt1 = new DataTable();
-
-        DatabaseAccessLayer DL_DBAccess1 = new DatabaseAccessLayer();
-        DL_DBAccess1 = new DatabaseAccessLayer();
-        SqlParameter[] par2 = new SqlParameter[1];
-        par2[0] = new SqlParameter("@CompanyId", Session["CompanyId"].ToString());
-        conn1 = new SqlConnection(strConnString);
-        conn1.Open();
-        cmd1 = new SqlCommand("LoadSales", conn1);
-        cmd1.CommandType = CommandType.StoredProcedure;
-        if (par2 != null)
-        {
-            for (int index = 0; index < par2.Length; index++)
-            {
-                cmd1.Parameters.Add(par2[index]);
-            }
-        }
-        adapter1 = new SqlDataAdapter(cmd1);
-        adapter1.Fill(_dt1);
+        
+        
 
 
-        dtfirst.Merge(_dt1);
-
-
-        string strConnString2 = ConfigurationManager.ConnectionStrings["CONNECT_TO_ERP2"].ToString();
-        SqlConnection conn2 = null;
-        SqlCommand cmd2 = null;
-        SqlDataAdapter adapter2 = null;
-        DataTable _dt2 = new DataTable();
-
-        DatabaseAccessLayer DL_DBAccess2 = new DatabaseAccessLayer();
-        DL_DBAccess2 = new DatabaseAccessLayer();
-        SqlParameter[] par3 = new SqlParameter[1];
-        par3[0] = new SqlParameter("@CompanyId", Session["CompanyId"].ToString());
-        conn2 = new SqlConnection(strConnString2);
-        conn2.Open();
-        cmd2 = new SqlCommand("LoadSales", conn2);
-        cmd2.CommandType = CommandType.StoredProcedure;
-        if (par3 != null)
-        {
-            for (int index = 0; index < par3.Length; index++)
-            {
-                cmd2.Parameters.Add(par3[index]);
-            }
-        }
-        adapter2 = new SqlDataAdapter(cmd2);
-        adapter2.Fill(_dt2);
-        dtfirst.Merge(_dt2);
+       
 
         DataTable dtresult = new DataTable();
         DataView dv1 = dtfirst.DefaultView;
@@ -194,37 +147,28 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
 
 
         SPCLM.Text = dtresult.Rows[0]["BasicAmtLM"].ToString();
-        QualitatLM.Text = dtresult.Rows[1]["BasicAmtLM"].ToString();
-        CalidadLM.Text = dtresult.Rows[2]["BasicAmtLM"].ToString();
-        totalLM.Text = (Convert.ToDouble(SPCLM.Text) + Convert.ToDouble(QualitatLM.Text) + Convert.ToDouble(CalidadLM.Text)).ToString();
+        totalLM.Text = (Convert.ToDouble(SPCLM.Text)).ToString();
 
         SPCTaxLM.Text = dtresult1.Rows[0]["BasicAmtLM"].ToString();
-        QualitatTaxLM.Text = dtresult1.Rows[1]["BasicAmtLM"].ToString();
-        CalidadTaxLM.Text = dtresult1.Rows[2]["BasicAmtLM"].ToString();
-        totalTaxSales.Text = (Convert.ToDouble(SPCTaxLM.Text) + Convert.ToDouble(QualitatTaxLM.Text) + Convert.ToDouble(CalidadTaxLM.Text)).ToString();
+        totalTaxSales.Text = (Convert.ToDouble(SPCTaxLM.Text)).ToString();
 
 
         SPCCM.Text = dtresult.Rows[0]["BasicAmtCM"].ToString();
-        QualitatCM.Text = dtresult.Rows[1]["BasicAmtCM"].ToString();
-        CalidadCM.Text = dtresult.Rows[2]["BasicAmtCM"].ToString();
-        totalCM.Text = (Convert.ToDouble(SPCCM.Text) + Convert.ToDouble(QualitatCM.Text) + Convert.ToDouble(CalidadCM.Text)).ToString();
+        totalCM.Text = (Convert.ToDouble(SPCCM.Text)).ToString();
 
         SPCTaxCM.Text = dtresult1.Rows[0]["BasicAmtCM"].ToString();
-        QualitatTaxCM.Text = dtresult1.Rows[1]["BasicAmtCM"].ToString();
-        CalidadTaxCM.Text = dtresult1.Rows[2]["BasicAmtCM"].ToString();
-        TotalTaxCM.Text = (Convert.ToDouble(SPCTaxCM.Text) + Convert.ToDouble(QualitatTaxCM.Text) + Convert.ToDouble(CalidadTaxCM.Text)).ToString();
+        
+        TotalTaxCM.Text = (Convert.ToDouble(SPCTaxCM.Text)).ToString();
 
 
         basicSalesDiff.Text = (Convert.ToDouble(totalCM.Text) - Convert.ToDouble(totalLM.Text)).ToString();
         SPCSalesDiff.Text = (Convert.ToDouble(SPCCM.Text) - Convert.ToDouble(SPCLM.Text)).ToString();
-        qualitatSalesDiff.Text = (Convert.ToDouble(QualitatCM.Text) - Convert.ToDouble(QualitatLM.Text)).ToString();
-        CalidadSalesDiff.Text = (Convert.ToDouble(CalidadCM.Text) - Convert.ToDouble(CalidadLM.Text)).ToString();
+        
 
 
         TotalSalesDiffTax.Text = (Convert.ToDouble(TotalTaxCM.Text) - Convert.ToDouble(totalTaxSales.Text)).ToString();
         SPCSalesDiffTax.Text = (Convert.ToDouble(SPCTaxCM.Text) - Convert.ToDouble(SPCTaxLM.Text)).ToString();
-        QualitatSalesDiffTax.Text = (Convert.ToDouble(QualitatTaxCM.Text) - Convert.ToDouble(QualitatTaxLM.Text)).ToString();
-        CalidatSalesDiffTax.Text = (Convert.ToDouble(CalidadTaxCM.Text) - Convert.ToDouble(CalidadTaxLM.Text)).ToString();
+        
 
     }
     #region general
