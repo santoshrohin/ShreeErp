@@ -14,7 +14,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysSales()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY INM_DATE) AS RowNum,CONVERT(varchar, Cast(INM_DATE as date), 103) as INM_DATE ,CONVERT(varchar, Cast(INM_DATE as date), 103),FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by INM_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY INM_DATE) AS RowNum,CONVERT(varchar, Cast(INM_DATE as date), 103) as INM_DATE ,CONVERT(varchar, Cast(INM_DATE as date), 103),FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by INM_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         RepterDetails.DataSource = ds;
@@ -23,7 +23,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         Repeaterpurchase.DataSource = ds;
@@ -32,7 +32,7 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysRawPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -10, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
         Repeaterpurchaseraw.DataSource = ds;
@@ -161,13 +161,13 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
         TotalTaxCM.Text = (Convert.ToDouble(SPCTaxCM.Text)).ToString();
 
 
-        basicSalesDiff.Text = (Convert.ToDouble(totalCM.Text) - Convert.ToDouble(totalLM.Text)).ToString();
-        SPCSalesDiff.Text = (Convert.ToDouble(SPCCM.Text) - Convert.ToDouble(SPCLM.Text)).ToString();
+        basicSalesDiff.Text = (Convert.ToDouble(totalLM.Text) - Convert.ToDouble(totalCM.Text)).ToString();
+        SPCSalesDiff.Text = (Convert.ToDouble(SPCLM.Text) - Convert.ToDouble(SPCCM.Text)).ToString();
         
 
 
-        TotalSalesDiffTax.Text = (Convert.ToDouble(TotalTaxCM.Text) - Convert.ToDouble(totalTaxSales.Text)).ToString();
-        SPCSalesDiffTax.Text = (Convert.ToDouble(SPCTaxCM.Text) - Convert.ToDouble(SPCTaxLM.Text)).ToString();
+        TotalSalesDiffTax.Text = (Convert.ToDouble(totalTaxSales.Text) - Convert.ToDouble(TotalTaxCM.Text) ).ToString();
+        SPCSalesDiffTax.Text = (Convert.ToDouble(SPCTaxLM.Text) - Convert.ToDouble(SPCTaxCM.Text)  ).ToString();
         
 
     }
