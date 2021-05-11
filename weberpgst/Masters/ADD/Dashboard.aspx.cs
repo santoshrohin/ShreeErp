@@ -14,27 +14,40 @@ public partial class Masters_ADD_Dashboard : System.Web.UI.Page
     protected void Last8DaysSales()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY INM_DATE) AS RowNum,CONVERT(varchar, Cast(INM_DATE as date), 103) as INM_DATE ,CONVERT(varchar, Cast(INM_DATE as date), 103),FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by INM_DATE");
+        dt = CommonClasses.Execute("declare @sumvalue table (RowNum int identity(1,1),INM_DATE varchar(500),GrandAmt nvarchar(1000),Total nvarchar(1000),GrandAmtwithoutformat float,Totalsaletilldate nvarchar(1000))insert into @sumvalue select CONVERT(varchar, Cast(INM_DATE as date), 103) as INM_DATE ,FORMAT(SUM(INM_G_AMT),'C', 'en-IN') AS GrandAmt,0,SUM(INM_G_AMT),(select FORMAT(SUM(INM_G_AMT),'C', 'en-IN') from INVOICE_MASTER where INM_CM_CODE in (select top 1 CM_CODE from COMPANY_MASTER  order by CM_CODE desc)) from INVOICE_MASTER where INM_TYPE='TAXINV' and ES_DELETE=0 and  INM_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by INM_DATE order by INM_DATE desc declare @Totalvalue float select @Totalvalue=sum(GrandAmtwithoutformat) from @sumvalue update @sumvalue set total= FORMAT(@Totalvalue,'C', 'en-IN') select * from @sumvalue");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
+        if (dt.Rows.Count>0)
+        {
+            lbltotal8dayssale.Text = dt.Rows[0]["Total"].ToString();
+            lbltilldateSale.Text = dt.Rows[0]["Totalsaletilldate"].ToString();
+        }
         RepterDetails.DataSource = ds;
         RepterDetails.DataBind();
     }
     protected void Last8DaysPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("declare @sumvalue table (RowNum int identity(1,1),INM_DATE varchar(500),GrandAmt nvarchar(1000),Total nvarchar(1000),GrandAmtwithoutformat float) insert into @sumvalue select CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS GrandAmt,0,ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2) from INWARD_MASTER,INWARD_DETAIL where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE order by IWM_CHAL_DATE desc declare @Totalvalue float select @Totalvalue=sum(GrandAmtwithoutformat) from @sumvalue update @sumvalue set total= FORMAT(@Totalvalue,'C', 'en-IN') select * from @sumvalue");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
+        if (dt.Rows.Count > 0)
+        {
+            lbltotal8daysPurchase.Text = dt.Rows[0]["Total"].ToString();
+        }
         Repeaterpurchase.DataSource = ds;
         Repeaterpurchase.DataBind();
     }
     protected void Last8DaysRawPurchase()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("select ROW_NUMBER() OVER (ORDER BY IWM_CHAL_DATE) AS RowNum,CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE");
+        dt = CommonClasses.Execute("declare @sumvalue table (RowNum int identity(1,1),INM_DATE varchar(500),GrandAmt nvarchar(1000),Total nvarchar(1000),GrandAmtwithoutformat float)insert into @sumvalue select CONVERT(varchar, Cast(IWM_CHAL_DATE as date), 103) as IWM_CHAL_DATE,FORMAT(ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2),'C', 'en-IN') AS  GrandAmt,0,ROUND(SUM(IWD_CH_QTY*ROUND(IWD_RATE,2)),2) from INWARD_MASTER,INWARD_DETAIL,SUPP_PO_MASTER where IWM_CODE=IWD_IWM_CODE and INWARD_MASTER.ES_DELETE=0 and SPOM_CODE=IWD_CPOM_CODE and SPOM_TYPE=-2147483637 and IWM_CHAL_DATE between DATEADD(DAY, -9, getdate())  and GETDATE() group by IWM_CHAL_DATE order by IWM_CHAL_DATE desc declare @Totalvalue float select @Totalvalue=sum(GrandAmtwithoutformat) from @sumvalue update @sumvalue set total= FORMAT(@Totalvalue,'C', 'en-IN') select * from @sumvalue");
         DataSet ds = new DataSet();
         ds.Tables.Add(dt);
+        if (dt.Rows.Count > 0)
+        {
+            lbltotal8daysRawPurchase.Text = dt.Rows[0]["Total"].ToString();
+        }
         Repeaterpurchaseraw.DataSource = ds;
         Repeaterpurchaseraw.DataBind();
     }

@@ -61,7 +61,18 @@
                 </div>
             </div>
             <br />
+            <div class="row">
+            <div class="col-md-12">
             
+                                
+                                
+                                    <div class="name text-center">
+                                        Till Date Sale <br />(<b><asp:Label runat="server" style="color: black;font-size: xx-large;"   ID="lbltilldateSale"></asp:Label></b>)
+                                    
+                                
+                            
+                            </div>
+                            </div>
               <div id="Div10" runat="server" class="row">
                 <div class="col-md-12">
                     <div class="col-md-12">
@@ -86,8 +97,8 @@
                                       <th>Group Basic Sale LM</th>
                                       
                                       <th>SPC Basic Sale LM</th>
-                                      <th>Qualitat Basic Sale LM</th>
-                                      <th>Calidad Basic Sale LM</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -115,8 +126,8 @@
                                       <th>Group Sales With Tax LM</th>
                                       
                                       <th>SPC Sales With Tax LM</th>
-                                      <th>Qualitat Sales With Tax LM</th>
-                                      <th>Calidad Sales With Tax LM</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -172,8 +183,8 @@
                                       <th>Group Basic Sale TM</th>
                                       
                                       <th>SPC Basic Sale TM</th>
-                                      <th>Qualitat Basic Sale TM</th>
-                                      <th>Calidad Basic Sale TM</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -201,8 +212,8 @@
                                       <th>Group Sales With Tax TM</th>
                                       
                                       <th>SPC Sales With Tax TM</th>
-                                      <th>Qualitat Sales With Tax TM</th>
-                                      <th>Calidad Sales With Tax TM</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -256,8 +267,8 @@
                                       <th>Group Basic Sale DIff</th>
                                       
                                       <th>SPC Basic Sale DIff</th>
-                                      <th>Qualitat Basic Sale DIff</th>
-                                      <th>Calidad Basic Sale DIff</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -285,8 +296,8 @@
                                       <th>Group Sales With Tax DIff</th>
                                       
                                       <th>SPC Sales With Tax DIff</th>
-                                      <th>Qualitat Sales With Tax DIff</th>
-                                      <th>Calidad Sales With Tax DIff</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   
@@ -322,7 +333,7 @@
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Last 8 Days Sales
+                                    <i class="fa fa-reorder"></i>Last 8 Days Sales(<asp:Label ID="lbltotal8dayssale" style="color: black;" runat="server"></asp:Label>)
                                 </div>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
@@ -372,7 +383,7 @@
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Last 8 Days Purchase
+                                    <i class="fa fa-reorder"></i>Last 8 Days Purchase (<asp:Label ID="lbltotal8daysPurchase" style="color: black;" runat="server"></asp:Label>)
 
                                 </div>
                                 <div class="tools">
@@ -402,7 +413,7 @@
                                     <tr>
                                       <td><%#Eval("RowNum")%></td>
                                       
-                                      <td><%#Eval("IWM_CHAL_DATE")%></td>
+                                      <td><%#Eval("INM_DATE")%></td>
                                       <td><%#Eval("GrandAmt")%></td>
                                     </tr>
                                     
@@ -424,7 +435,7 @@
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-reorder"></i>Last 8 Days Raw Purchase
+                                    <i class="fa fa-reorder"></i>Last 8 Days RAW (<asp:Label ID="lbltotal8daysRawPurchase" style="color: black;" runat="server"></asp:Label>)
 
                                 </div>
                                 <div class="tools">
@@ -454,7 +465,7 @@
                                     <tr>
                                       <td><%#Eval("RowNum")%></td>
                                       
-                                      <td><%#Eval("IWM_CHAL_DATE")%></td>
+                                      <td><%#Eval("INM_DATE")%></td>
                                       <td><%#Eval("GrandAmt")%></td>
                                     </tr>
                                     
@@ -498,7 +509,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -526,7 +537,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -570,7 +581,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -598,7 +609,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -642,7 +653,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -670,7 +681,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -714,7 +725,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -742,7 +753,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -786,7 +797,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -814,7 +825,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -858,7 +869,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Party Name </th>
+                    <th>Item  Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
@@ -886,7 +897,7 @@
                   <FooterTemplate> 
                   <tfoot>
                     <tr>
-                      <th>Party Name </th>
+                      <th>Item Name </th>
                     <th>Scheduled Qty</th>
                     <th>Invoice Qty</th>
                     <th>Schedule compliance %</th>
