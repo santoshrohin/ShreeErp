@@ -322,7 +322,7 @@
                                                         </asp:UpdatePanel>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-1">
                                                     <div class="form-group">
                                                         <label class="control-label label-sm">
                                                             Unit
@@ -340,9 +340,9 @@
                                                     </div>
                                                 </div>
                                                 <!--/span-->
-                                                <div class="col-md-2">
+                                                <div class="col-md-1">
                                                     <div class="form-group">
-                                                        <label class="control-label label-sm">
+                                                        <label class="control-label label-sm" style="margin-top: 20px;">
                                                         </label>
                                                         <asp:UpdatePanel ID="UpdatePanel13" runat="server">
                                                             <ContentTemplate>
@@ -358,6 +358,20 @@
                                                         </asp:UpdatePanel>
                                                     </div>
                                                 </div>
+                                                
+                                                
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label class="control-label label-sm" style="margin-top: 40px;">
+                                                        </label>
+                                                       
+                                                                <asp:LinkButton  ID="btnReport" CssClass="btn blue  btn-sm"
+                                                                    runat="server" OnClick="btnReport_Click">Bom Report</asp:LinkButton>
+                                                                
+                                                          
+                                                    </div>
+                                                </div>
+                                                
                                                 <!--/span -->
                                             </div>
                                         </div>

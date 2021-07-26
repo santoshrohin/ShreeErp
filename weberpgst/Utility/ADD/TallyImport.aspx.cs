@@ -10,6 +10,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Data.Sql;
 using System.Text;
+using System.IO;
 
 
 public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
@@ -33,9 +34,19 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        importResller();
-        myLabel.Text = "Import Started......";
-        lblmsz.Text = "Import Started......";
+        try
+        {
+            
+            myLabel.Text = "Import Started......";
+            lblmsz.Text = "Import Started......";
+        }
+        catch (Exception ex)
+        {
+            
+            
+        }
+        //importResller();
+        
 
     }
     public void importResller()
@@ -59,7 +70,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             myConnection.Open();
 
             // Create OleDbCommand object and select data from worksheet Sheet1
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Sheet1$]", myConnection);
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Bills Receivable$]", myConnection);
 
             // Create new OleDbDataAdapter
             OleDbDataAdapter oleda = new OleDbDataAdapter();
@@ -115,7 +126,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
 
 
 
-        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/Book1.xlsx");
+        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/supout.xlsx");
         // Create the connection object
 
         System.Data.OleDb.OleDbConnection myConnection = new System.Data.OleDb.OleDbConnection(
@@ -130,7 +141,7 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
             myConnection.Open();
 
             // Create OleDbCommand object and select data from worksheet Sheet1
-            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Sheet1$]", myConnection);
+            OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Bills Payable$]", myConnection);
 
             // Create new OleDbDataAdapter
             OleDbDataAdapter oleda = new OleDbDataAdapter();
@@ -315,9 +326,86 @@ public partial class Account_ReportForms_VIEW_TallyImport : System.Web.UI.Page
         DL_DBAccess.Insertion_Updation_Delete("insertintotallyouttable", par);
     }
 
+   
 
+    public DataTable GetDataTableFromExcel(string path, bool hasHeader )
+        {
+            hasHeader = true;
+            using (var pck = new OfficeOpenXml.ExcelPackage())
+            {
+                using (var stream = File.OpenRead(path))
+                {
+                    pck.Load(stream);
+                }
+                var ws = pck.Workbook.Worksheets.First();
+                DataTable tbl = new DataTable();
+                foreach (var firstRowCell in ws.Cells[1, 1, 1, ws.Dimension.End.Column])
+                {
+                    tbl.Columns.Add(hasHeader ? firstRowCell.Text : string.Format("Column {0}", firstRowCell.Start.Column));
+                }
+                var startRow = hasHeader ? 2 : 1;
+                for (int rowNum = startRow; rowNum <= ws.Dimension.End.Row; rowNum++)
+                {
+                    var wsRow = ws.Cells[rowNum, 1, rowNum, ws.Dimension.End.Column];
+                    DataRow row = tbl.Rows.Add();
+                    foreach (var cell in wsRow)
+                    {
+                        row[cell.Start.Column - 1] = cell.Text;
+                    }
+                }
+                return tbl;
+            }
+        }
+    public void insertintoBanktable(DateTime importdate, string partyname, string vouchertype, string transactiontype, string InstrumentNumber, DateTime InstrumentDate, DateTime BankDate, float DebitAmount, float CreditAmount)
+    {
+        DL_DBAccess = new DatabaseAccessLayer();
+        DataSet ds = new DataSet();
+        ds = null;
+
+        string impodate =String.Format("{0:MM/dd/yyyy}", importdate);
+        string InstrumentDat=String.Format("{0:MM/dd/yyyy}", InstrumentDate);
+        string BankDat=String.Format("{0:MM/dd/yyyy}", BankDate) ;
+        SqlParameter[] par = new SqlParameter[9];
+        par[0] = new SqlParameter("@importdate", impodate);
+        par[1] = new SqlParameter("@partyname", partyname);
+        par[2] = new SqlParameter("@vouchertype", vouchertype);
+        par[3] = new SqlParameter("@transactiontype", transactiontype);
+        par[4] = new SqlParameter("@InstrumentNumber", InstrumentNumber);
+        par[5] = new SqlParameter("@InstrumentDate",InstrumentDat );
+        par[6] = new SqlParameter("@BankDate", BankDat);
+        par[7] = new SqlParameter("@DebitAmount", DebitAmount);
+        par[8] = new SqlParameter("@CreditAmount", CreditAmount);
+
+
+        DL_DBAccess.Insertion_Updation_Delete("insertintobankdetails", par);
+    }
+    protected void btnBankImport_Click(object sender, EventArgs e)
+    {
+        string SaveLocation = Server.MapPath("~/UpLoadPath/Accounts/Bank1.xls");
+        DataTable dt = new DataTable();
+        dt = GetDataTableFromExcel(SaveLocation, true);
+
+        
+        int i = 0;
+        foreach (DataRow dc in dt.Rows)
+        {
+            if (i>6)
+            {
+                if (dc[0].ToString() != "")
+                {
+                    insertintoBanktable(Convert.ToDateTime(dc[0].ToString() == "" ? null : dc[0].ToString()), dc[1].ToString(), dc[2].ToString(), dc[3].ToString(), dc[4].ToString(), Convert.ToDateTime(dc[5].ToString() == "" ? null : dc[5].ToString()), Convert.ToDateTime(dc[6].ToString() == "" ? null : dc[6].ToString()), float.Parse(dc[7].ToString() == "" ? "0" : dc[7].ToString()), float.Parse(dc[8].ToString() == "" ? "0" : dc[8].ToString()));    
+                }
+                
+            }
+            i = i + 1;
+        }
+        
+    }
     protected void btnTransaction_Click(object sender, EventArgs e)
     {
+
+
+
         TruncateTallyAccountTable();
         imporSuupliertexcel();
         imporCustomerexcel();

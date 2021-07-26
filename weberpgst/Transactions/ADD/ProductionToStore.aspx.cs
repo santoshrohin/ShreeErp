@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 
-
 public partial class Transactions_ADD_ProductionToStore : System.Web.UI.Page
 {
     #region Variable
@@ -194,6 +193,20 @@ public partial class Transactions_ADD_ProductionToStore : System.Web.UI.Page
     }
     #endregion
 
+    #region btnReport_Click
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            generatebomreport();
+        }
+        catch (Exception ex)
+        {
+            
+            
+        }
+    }
+    #endregion
     #region btnInsert_Click
     protected void btnInsert_Click(object sender, EventArgs e)
     {
@@ -217,6 +230,26 @@ public partial class Transactions_ADD_ProductionToStore : System.Web.UI.Page
                 }
             }
             InserRecord();
+
+
+            try
+            {
+                if (dgvProductionStoreDetails.Enabled)
+                {
+                    SaveRec();
+                }
+                else
+                {
+                    ShowMessage("#Avisos", "Record Not Exists", CommonClasses.MSG_Info);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert1();", true);
+                    return;
+                }
+            }
+            catch (Exception Ex)
+            {
+
+                CommonClasses.SendError("Production To Store", "btnSubmit_Click", Ex.Message);
+            }
 
         }
         catch (Exception Ex)
@@ -925,7 +958,7 @@ public partial class Transactions_ADD_ProductionToStore : System.Web.UI.Page
                         }
                         CommonClasses.WriteLog("Production To Store", "Save", "Production To Store", productionStore_BL.PS_GIN_NO.ToString(), Convert.ToInt32(Code), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
                         result = true;
-                        Response.Redirect("~/Transactions/VIEW/ViewProductionToStore.aspx", false);
+                        Response.Redirect("~/Transactions/ADD/ProductionToStore.aspx?c_name=INSERT", false);
                     }
                     else
                     {
@@ -1474,5 +1507,84 @@ public partial class Transactions_ADD_ProductionToStore : System.Web.UI.Page
                 return;
             }
         }
+    }
+
+
+    public void generatebomreport()
+    {
+        int itemcode = 0;
+        if (ddlSubComponentName.SelectedIndex != 0)
+        {
+            itemcode = Convert.ToInt32(ddlSubComponentName.SelectedValue);
+        }
+        DataTable dtExport = new DataTable();
+        DatabaseAccessLayer DL_DBAccess = new DatabaseAccessLayer();
+        try
+        {
+            SqlParameter[] par = new SqlParameter[1];
+            par[0] = new SqlParameter("@itemcode", itemcode);
+
+            dtExport = DL_DBAccess.SelectData("bomreport", par);
+        }
+        catch (Exception Ex)
+        {
+        }
+
+        exportreport("customerMaster.xls", dtExport);
+    }
+    public  void exportreport(string filename, DataTable dt)
+    {
+        try
+        {
+            string attachment = "attachment; filename=exportbom.xls";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.ms-excel";
+            string tab = "";
+            foreach (DataColumn dc in dt.Columns)
+            {
+                Response.Write(tab + dc.ColumnName);
+                tab = "\t";
+            }
+            Response.Write("\n");
+            int i;
+            foreach (DataRow dr in dt.Rows)
+            {
+                tab = "";
+                for (i = 0; i < dt.Columns.Count; i++)
+                {
+                    Response.Write(tab + dr[i].ToString());
+                    tab = "\t";
+                }
+                Response.Write("\n");
+            }
+            Response.End();
+
+
+
+
+            System.IO.StringWriter tw = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            DataGrid dgGrid = new DataGrid();
+            dgGrid.DataSource = dt;
+            dgGrid.DataBind();
+
+            //Get the HTML for the control.
+            dgGrid.RenderControl(hw);
+            //Write the HTML back to the browser.
+            //Response.ContentType = application/vnd.ms-excel;
+            HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
+            HttpContext.Current.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+
+            HttpContext.Current.Response.Write(tw.ToString());
+            HttpContext.Current.Response.End();
+        }
+        catch (Exception ex)
+        {
+            
+            
+        }
+        
+
     }
 }

@@ -23,6 +23,10 @@
          <asp:Button ID="btnTransaction" runat="server" onclick="btnTransaction_Click"  Text="Submit" style="width:85px" />
          <br /><br />
          <asp:Label ID="Label1" runat="server" />
+         
+           <br /><br /><br /><br /><br /><br />
+         <asp:Button ID="btnBankImport" runat="server" onclick="btnBankImport_Click"  Text="Bank Import" style="width:85px" />
+         <br /><br />
       </div>
       
    
