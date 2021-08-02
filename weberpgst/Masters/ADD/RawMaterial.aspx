@@ -537,6 +537,19 @@
                                                         </ContentTemplate>
                                                     </asp:UpdatePanel>
                                                 </div>
+                                                <label class="col-md-2 control-label">
+                                                    SR No
+                                                </label>
+                                                <div class="col-md-2">
+                                                    <asp:UpdatePanel ID="UpdatePanel19" runat="server">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right" MaxLength="2" ID="txtSrNo" placeholder="0.00"
+                                                                TabIndex="32" runat="server">0</asp:TextBox>
+                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender19" TargetControlID="txtSrNo"
+                                                                ValidChars="0123456789" runat="server" />
+                                                        </ContentTemplate>
+                                                    </asp:UpdatePanel>
+                                                </div>
                                                 <label class="col-md-1 control-label">
                                                     <%--Item Pigment--%>
                                                 </label>

@@ -109,6 +109,16 @@ public partial class Masters_UtilityDefault : System.Web.UI.Page
     }
     #endregion
 
+    #region tallyImport_click
+    protected void tallyImport_click(object sender, EventArgs e)
+    {
+       
+            string type = "INSERT";
+            Response.Redirect("~/Utility/ADD/TallyImport.aspx", false);
+       
+    }
+    #endregion
+
     #region btnTallyPurchase_click
     protected void btnTallyPurchase_click(object sender, EventArgs e)
     {

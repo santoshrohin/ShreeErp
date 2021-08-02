@@ -65,7 +65,7 @@ public class RawMaterial_BL
     private int _I_WEIGHT_UOM;
     private bool _I_DEVELOMENT;
     private double _I_TARGET_WEIGHT;
-
+    private int _I_SR_NO;
     #endregion
 
     #region Public Properties
@@ -268,7 +268,11 @@ public class RawMaterial_BL
         get { return _I_TARGET_WEIGHT; }
         set { _I_TARGET_WEIGHT = value; }
     }
-
+    public int I_SR_NO
+    {
+        get { return _I_SR_NO; }
+        set { _I_SR_NO = value; }
+    }
     #endregion
 
     #region "Constructor"
@@ -293,7 +297,7 @@ public class RawMaterial_BL
     public void GetInfo()
     {
         DataTable dt = new DataTable();
-        dt = CommonClasses.Execute("Select I_CODE,I_CM_COMP_ID,I_CAT_CODE,I_SUBCAT_CODE,ISNULL(I_SCAT_CODE,0) AS I_SCAT_CODE,I_CODENO,I_DRAW_NO,I_NAME,I_MATERIAL,I_SPECIFICATION,ISNULL(I_E_CODE,0) as I_E_CODE,I_ACCOUNT_SALES,I_ACCOUNT_PURCHASE,I_UOM_CODE,I_INV_CAT,I_MAX_LEVEL,I_MIN_LEVEL,I_REORDER_LEVEL,I_OP_BAL,I_OP_BAL_RATE,I_STORE_LOC,I_INV_RATE,I_RECEIPT_DATE,I_ISSUE_DATE,ISNULL(I_CURRENT_BAL,0)  AS I_CURRENT_BAL,I_ACTIVE_IND,ES_DELETE,MODIFY,I_UWEIGHT,I_UW_UOM_CODE,I_COSTING_HEAD,I_SIZE,I_DOC_NAME,I_DOC_PATH,I_WC_CODE,I_INV_CAT,I_WEIGHT,cast(isnull(I_OPEN_RATE,0) as numeric(20,2)) as I_OPEN_RATE,cast(isnull(I_DENSITY,0)  as numeric(20,2)) as I_DENSITY,cast(isnull(I_PIGMENT,0)  as numeric(20,2)) as I_PIGMENT,cast(isnull(I_SOLIDS,0)  as numeric(20,2)) as I_SOLIDS,cast(isnull(I_VOLATILE,0)  as numeric(20,2)) as I_VOLATILE  ,ISNULL(I_WEIGHT_UOM,0) AS I_WEIGHT_UOM,ISNULL(I_DEVELOMENT,0) AS I_DEVELOMENT,ISNULL(I_TARGET_WEIGHT,0) AS I_TARGET_WEIGHT FROM ITEM_MASTER WHERE I_CODE=" + I_CODE + " AND I_CM_COMP_ID = " + I_CM_COMP_ID + " and ES_DELETE=0");
+        dt = CommonClasses.Execute("Select I_CODE,I_CM_COMP_ID,I_CAT_CODE,I_SUBCAT_CODE,ISNULL(I_SCAT_CODE,0) AS I_SCAT_CODE,I_CODENO,I_DRAW_NO,I_NAME,I_MATERIAL,I_SPECIFICATION,ISNULL(I_E_CODE,0) as I_E_CODE,I_ACCOUNT_SALES,I_ACCOUNT_PURCHASE,I_UOM_CODE,I_INV_CAT,I_MAX_LEVEL,I_MIN_LEVEL,I_REORDER_LEVEL,I_OP_BAL,I_OP_BAL_RATE,I_STORE_LOC,I_INV_RATE,I_RECEIPT_DATE,I_ISSUE_DATE,ISNULL(I_CURRENT_BAL,0)  AS I_CURRENT_BAL,I_ACTIVE_IND,ES_DELETE,MODIFY,I_UWEIGHT,I_UW_UOM_CODE,I_COSTING_HEAD,I_SIZE,I_DOC_NAME,I_DOC_PATH,I_WC_CODE,I_INV_CAT,I_WEIGHT,cast(isnull(I_OPEN_RATE,0) as numeric(20,2)) as I_OPEN_RATE,cast(isnull(I_DENSITY,0)  as numeric(20,2)) as I_DENSITY,cast(isnull(I_PIGMENT,0)  as numeric(20,2)) as I_PIGMENT,cast(isnull(I_SOLIDS,0)  as numeric(20,2)) as I_SOLIDS,cast(isnull(I_VOLATILE,0)  as numeric(20,2)) as I_VOLATILE  ,ISNULL(I_WEIGHT_UOM,0) AS I_WEIGHT_UOM,ISNULL(I_DEVELOMENT,0) AS I_DEVELOMENT,ISNULL(I_TARGET_WEIGHT,0) AS I_TARGET_WEIGHT,I_SR_NO FROM ITEM_MASTER WHERE I_CODE=" + I_CODE + " AND I_CM_COMP_ID = " + I_CM_COMP_ID + " and ES_DELETE=0");
 
 
         if (dt.Rows.Count > 0)
@@ -353,7 +357,7 @@ public class RawMaterial_BL
             I_WEIGHT_UOM = Convert.ToInt32(dt.Rows[0]["I_WEIGHT_UOM"]);
             I_DEVELOMENT = Convert.ToBoolean(dt.Rows[0]["I_DEVELOMENT"].ToString());
             I_TARGET_WEIGHT = Convert.ToDouble(dt.Rows[0]["I_TARGET_WEIGHT"].ToString());
-
+            I_SR_NO = Convert.ToInt32(dt.Rows[0]["I_SR_NO"]);
         }
     }
     #endregion
@@ -452,7 +456,7 @@ public class RawMaterial_BL
             {
                 string Code = CommonClasses.GetMaxId("Select Max(I_CODE) from ITEM_MASTER");
 
-                result = CommonClasses.Execute1("INSERT INTO ITEM_MASTER(I_CM_COMP_ID,I_CAT_CODE,I_SCAT_CODE,I_CODENO,I_DRAW_NO,I_NAME,I_MATERIAL,I_SPECIFICATION,I_SIZE,I_E_CODE,I_ACCOUNT_SALES,I_ACCOUNT_PURCHASE,I_COSTING_HEAD,I_UOM_CODE,I_INV_CAT,I_ACTIVE_IND,I_UWEIGHT,I_MAX_LEVEL,I_MIN_LEVEL,I_REORDER_LEVEL,I_OP_BAL,I_OPEN_RATE,I_INV_RATE,I_STORE_LOC,I_RECEIPT_DATE,I_ISSUE_DATE,I_DENSITY,I_PIGMENT,I_SOLIDS,I_VOLATILE,I_WEIGHT_UOM,I_DEVELOMENT,I_TARGET_WEIGHT,I_SUBCAT_CODE) VALUES('" + I_CM_COMP_ID + "','" + I_CAT_CODE + "','" + I_SCAT_CODE + "','" + I_CODENO + "','" + I_DRAW_NO + "','" + I_NAME + "','" + I_MATERIAL + "','" + I_SPECIFICATION + "','" + I_SIZE + "','" + I_E_CODE + "','" + I_ACCOUNT_SALES + "','" + I_ACCOUNT_PURCHASE + "','" + I_COSTING_HEAD + "','" + I_UOM_CODE + "','" + I_INV_CAT + "','" + I_ACTIVE_IND + "','" + I_UWEIGHT + "','" + I_MAX_LEVEL + "','" + I_MIN_LEVEL + "','" + I_REORDER_LEVEL + "','" + I_OP_BAL + "','" + I_OP_BAL_RATE + "','" + I_INV_RATE + "','" + I_STORE_LOC + "','" + I_RECEIPT_DATE.ToString("dd/MMM/yyyy") + "','" + I_ISSUE_DATE.ToString("dd/MMM/yyyy") + "','" + I_DENSITY + "','" + I_PIGMENT + "','" + I_SOLIDS + "','" + I_VOLATILE + "','" + I_WEIGHT_UOM + "','" + I_DEVELOMENT + "','" + I_TARGET_WEIGHT + "','" + I_SUBCAT_CODE + "')");
+                result = CommonClasses.Execute1("INSERT INTO ITEM_MASTER(I_CM_COMP_ID,I_CAT_CODE,I_SCAT_CODE,I_CODENO,I_DRAW_NO,I_NAME,I_MATERIAL,I_SPECIFICATION,I_SIZE,I_E_CODE,I_ACCOUNT_SALES,I_ACCOUNT_PURCHASE,I_COSTING_HEAD,I_UOM_CODE,I_INV_CAT,I_ACTIVE_IND,I_UWEIGHT,I_MAX_LEVEL,I_MIN_LEVEL,I_REORDER_LEVEL,I_OP_BAL,I_OPEN_RATE,I_INV_RATE,I_STORE_LOC,I_RECEIPT_DATE,I_ISSUE_DATE,I_DENSITY,I_PIGMENT,I_SOLIDS,I_VOLATILE,I_WEIGHT_UOM,I_DEVELOMENT,I_TARGET_WEIGHT,I_SUBCAT_CODE,I_SR_NO) VALUES('" + I_CM_COMP_ID + "','" + I_CAT_CODE + "','" + I_SCAT_CODE + "','" + I_CODENO + "','" + I_DRAW_NO + "','" + I_NAME + "','" + I_MATERIAL + "','" + I_SPECIFICATION + "','" + I_SIZE + "','" + I_E_CODE + "','" + I_ACCOUNT_SALES + "','" + I_ACCOUNT_PURCHASE + "','" + I_COSTING_HEAD + "','" + I_UOM_CODE + "','" + I_INV_CAT + "','" + I_ACTIVE_IND + "','" + I_UWEIGHT + "','" + I_MAX_LEVEL + "','" + I_MIN_LEVEL + "','" + I_REORDER_LEVEL + "','" + I_OP_BAL + "','" + I_OP_BAL_RATE + "','" + I_INV_RATE + "','" + I_STORE_LOC + "','" + I_RECEIPT_DATE.ToString("dd/MMM/yyyy") + "','" + I_ISSUE_DATE.ToString("dd/MMM/yyyy") + "','" + I_DENSITY + "','" + I_PIGMENT + "','" + I_SOLIDS + "','" + I_VOLATILE + "','" + I_WEIGHT_UOM + "','" + I_DEVELOMENT + "','" + I_TARGET_WEIGHT + "','" + I_SUBCAT_CODE + "','" + I_SR_NO + "')");
             }
             else
             {
@@ -512,7 +516,7 @@ public class RawMaterial_BL
                 //result = DL_DBAccess.Insertion_Updation_Delete("SP_ITEM_MASTER_Update", Params); 
                 #endregion
 
-                result = CommonClasses.Execute1("UPDATE ITEM_MASTER SET I_CAT_CODE='" + I_CAT_CODE + "',I_SCAT_CODE='" + I_SCAT_CODE + "',I_CODENO='" + I_CODENO + "',I_DRAW_NO='" + I_DRAW_NO + "',I_NAME='" + I_NAME + "',I_MATERIAL='" + I_MATERIAL + "',I_SPECIFICATION='" + I_SPECIFICATION + "',I_SIZE='" + I_SIZE + "',I_E_CODE='" + I_E_CODE + "',I_ACCOUNT_SALES='" + I_ACCOUNT_SALES + "',I_ACCOUNT_PURCHASE='" + I_ACCOUNT_PURCHASE + "',I_COSTING_HEAD='" + I_COSTING_HEAD + "',I_UOM_CODE='" + I_UOM_CODE + "',I_INV_CAT='" + I_INV_CAT + "',I_ACTIVE_IND='" + I_ACTIVE_IND + "',I_UWEIGHT='" + I_UWEIGHT + "',I_MAX_LEVEL='" + I_MAX_LEVEL + "',I_MIN_LEVEL='" + I_MIN_LEVEL + "', I_REORDER_LEVEL='" + I_REORDER_LEVEL + "',I_OP_BAL='" + I_OP_BAL + "',I_OPEN_RATE='" + I_OP_BAL_RATE + "',I_INV_RATE='" + I_INV_RATE + "',I_STORE_LOC='" + I_STORE_LOC + "',I_RECEIPT_DATE='" + I_RECEIPT_DATE.ToString("dd/MMM/yyyy") + "',I_ISSUE_DATE='" + I_ISSUE_DATE.ToString("dd/MMM/yyyy") + "',I_DENSITY='" + I_DENSITY + "',I_PIGMENT='" + I_PIGMENT + "',I_SOLIDS='" + I_SOLIDS + "',I_VOLATILE='" + I_VOLATILE + "',I_WEIGHT_UOM='" + I_WEIGHT_UOM + "' ,I_DEVELOMENT='" + I_DEVELOMENT + "' ,I_TARGET_WEIGHT='" + I_TARGET_WEIGHT + "' ,I_SUBCAT_CODE='" + I_SUBCAT_CODE + "'   WHERE I_CODE= '" + I_CODE + "'");
+                result = CommonClasses.Execute1("UPDATE ITEM_MASTER SET I_CAT_CODE='" + I_CAT_CODE + "',I_SCAT_CODE='" + I_SCAT_CODE + "',I_CODENO='" + I_CODENO + "',I_DRAW_NO='" + I_DRAW_NO + "',I_NAME='" + I_NAME + "',I_MATERIAL='" + I_MATERIAL + "',I_SPECIFICATION='" + I_SPECIFICATION + "',I_SIZE='" + I_SIZE + "',I_E_CODE='" + I_E_CODE + "',I_ACCOUNT_SALES='" + I_ACCOUNT_SALES + "',I_ACCOUNT_PURCHASE='" + I_ACCOUNT_PURCHASE + "',I_COSTING_HEAD='" + I_COSTING_HEAD + "',I_UOM_CODE='" + I_UOM_CODE + "',I_INV_CAT='" + I_INV_CAT + "',I_ACTIVE_IND='" + I_ACTIVE_IND + "',I_UWEIGHT='" + I_UWEIGHT + "',I_MAX_LEVEL='" + I_MAX_LEVEL + "',I_MIN_LEVEL='" + I_MIN_LEVEL + "', I_REORDER_LEVEL='" + I_REORDER_LEVEL + "',I_OP_BAL='" + I_OP_BAL + "',I_OPEN_RATE='" + I_OP_BAL_RATE + "',I_INV_RATE='" + I_INV_RATE + "',I_STORE_LOC='" + I_STORE_LOC + "',I_RECEIPT_DATE='" + I_RECEIPT_DATE.ToString("dd/MMM/yyyy") + "',I_ISSUE_DATE='" + I_ISSUE_DATE.ToString("dd/MMM/yyyy") + "',I_DENSITY='" + I_DENSITY + "',I_PIGMENT='" + I_PIGMENT + "',I_SOLIDS='" + I_SOLIDS + "',I_VOLATILE='" + I_VOLATILE + "',I_WEIGHT_UOM='" + I_WEIGHT_UOM + "' ,I_DEVELOMENT='" + I_DEVELOMENT + "' ,I_TARGET_WEIGHT='" + I_TARGET_WEIGHT + "' ,I_SUBCAT_CODE='" + I_SUBCAT_CODE + "',I_SR_NO='" + I_SR_NO + "'   WHERE I_CODE= '" + I_CODE + "'");
 
             }
             else

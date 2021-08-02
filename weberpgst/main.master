@@ -71,7 +71,7 @@ window.onunload = function() {
             <!-- BEGIN HORIZANTAL MENU -->
             <div class="hor-menu hidden-sm hidden-xs">
                 <ul runat="server" id="Menus" class="nav navbar-nav">
-                    <li id="Dashboard"><a href="~/Masters/ADD/Dashboard.aspx" runat="server"><i class="fa fa-home">
+                    <li id="Dashboard"><a href="~/Masters/ADD/AdminDashboard.aspx" runat="server"><i class="fa fa-home">
                     </i><span class="selected"></span>Dashboard </a></li>
                     <li id="Masters" runat="server"><a id="A6" href="~/Masters/ADD/MasterDefault.aspx"
                         runat="server"><i class="fa fa-github-square"></i>Masters </a></li>

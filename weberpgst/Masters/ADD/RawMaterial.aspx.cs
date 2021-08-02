@@ -516,6 +516,7 @@ public partial class Masters_ADD_RawMaterial : System.Web.UI.Page
             ChkActiveInd.Checked = BL_RawMaterial.I_ACTIVE_IND;
             chkDevelopment.Checked = BL_RawMaterial.I_DEVELOMENT;
             txtTargetWeight.Text = BL_RawMaterial.I_TARGET_WEIGHT.ToString();
+            txtSrNo.Text = BL_RawMaterial.I_SR_NO.ToString();
             //imgEmpImage = dt.Rows[0]["I_DOC_NAME"].ToString();
 
 
@@ -642,6 +643,7 @@ public partial class Masters_ADD_RawMaterial : System.Web.UI.Page
             BL_RawMaterial.I_WEIGHT_UOM = Convert.ToInt32(ddlWeightUOM.SelectedValue);
             BL_RawMaterial.I_DEVELOMENT = Convert.ToBoolean(chkDevelopment.Checked);
             BL_RawMaterial.I_TARGET_WEIGHT = Convert.ToDouble(txtTargetWeight.Text == "" ? "0" : txtTargetWeight.Text);
+            BL_RawMaterial.I_SR_NO = Convert.ToInt32(txtSrNo.Text == "" ? "0" : txtSrNo.Text);
 
             res = true;
         }
