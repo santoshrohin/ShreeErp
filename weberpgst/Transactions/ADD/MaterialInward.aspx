@@ -1,9 +1,6 @@
-﻿
 ﻿<%@ Page Title="Material Inward" Language="C#" MasterPageFile="~/main.master" AutoEventWireup="true"
     CodeFile="MaterialInward.aspx.cs" Inherits="Transactions_ADD_MaterialInward"
     EnableEventValidation="true" %>
-
-<%--<%@ Page Title="Supplier PO - ADD" Language="C#" MasterPageFile="~/main.master" AutoEventWireup="true" CodeFile="SupplierPO.aspx.cs" Inherits="Transactions_ADD_SupplierPO"  EnableEventValidation="true"%>--%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register TagPrefix="Ajaxified" Assembly="Ajaxified" Namespace="Ajaxified" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
