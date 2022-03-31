@@ -249,6 +249,7 @@
                                                                                 <asp:ListItem Value="0" Text="Select Print Option"></asp:ListItem>
                                                                                 <asp:ListItem Value="1" Text="Printed Material"></asp:ListItem>
                                                                                 <asp:ListItem Value="2" Selected="True" Text="Plain Print"></asp:ListItem>
+                                                                                <asp:ListItem Value="3"  Text="E Invoice Print"></asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </ContentTemplate>
                                                                     </asp:UpdatePanel>

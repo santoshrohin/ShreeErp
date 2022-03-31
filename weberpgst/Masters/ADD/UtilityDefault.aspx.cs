@@ -88,6 +88,29 @@ public partial class Masters_UtilityDefault : System.Web.UI.Page
     #endregion
 
 
+
+    #region Einv_click
+    protected void Einv_click(object sender, EventArgs e)
+    {
+        checkRights(66);
+        if (CommonClasses.ValidRights(int.Parse(right.Substring(0, 1)), this, "For Menu"))
+        {
+            //Response.Redirect("../../Utility/VIEW/ViewTallyTransferSales.aspx", false);
+            // Hiten 
+            // Direct Shows Tally Transfer Screen
+            string type = "INSERT";
+            Response.Redirect("~/Utility/ADD/EInvoice.aspx?c_name=" + type, false);
+        }
+        else
+        {
+            Response.Write("<script> alert('You Have No Rights To View.');</script>");
+            ModalPopupMsg.Show();
+            return;
+        }
+    }
+    #endregion
+
+
     #region SuppliInvoice_click
     protected void SuppliInvoice_click(object sender, EventArgs e)
     {

@@ -73,6 +73,9 @@
                                     runat="server"><i class="fa fa-tasks"></i>Clear Temp Balance</a> </li>
                                      <li id="Li3" visible="true" runat="server"><a id="A8" href="#" onserverclick="tallyImport_click"
                                     runat="server"><i class="fa fa-tasks"></i>Tally Import</a> </li>
+                                    
+                                      <li id="Li4" visible="true" runat="server"><a id="A9" href="#" onserverclick="Einv_click"
+                                    runat="server"><i class="fa fa-tasks"></i>E Invoice</a> </li>
                             </ul>
                         </div>
                     </div>

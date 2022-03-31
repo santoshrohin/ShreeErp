@@ -88,6 +88,14 @@
               <xs:element name="P_VEND_CODE" type="xs:string" minOccurs="0" />
               <xs:element name="INM_TCS_PERCENTAGE" type="xs:decimal" minOccurs="0" />
               <xs:element name="INM_TCS_PERCENTAGE_AMOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="AckNo" type="xs:string" minOccurs="0" />
+              <xs:element name="AckDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="InvValue" type="xs:string" minOccurs="0" />
+              <xs:element name="ReciptGSTIn" type="xs:string" minOccurs="0" />
+              <xs:element name="EInvStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="IRN" type="xs:string" minOccurs="0" />
+              <xs:element name="QRCode" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="EwayBill" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

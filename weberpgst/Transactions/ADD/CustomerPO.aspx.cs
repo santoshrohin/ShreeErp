@@ -1011,15 +1011,15 @@ public partial class Transactions_ADD_CustomerPO : System.Web.UI.Page
             }
             if (ddlPOType.SelectedIndex == 2)
             {
-                if (ddlCurrancy.SelectedIndex == 0)
-                {
-                    ShowMessage("#Avisos", "Select Currancy Name", CommonClasses.MSG_Warning);
+                //if (ddlCurrancy.SelectedIndex == 0)
+                //{
+                //    ShowMessage("#Avisos", "Select Currancy Name", CommonClasses.MSG_Warning);
 
-                    //PanelMsg.Visible = true;
-                    //lblmsg.Text = "Select Currancy Name";
-                    ddlCustomer.Focus();
-                    return;
-                }
+                //    //PanelMsg.Visible = true;
+                //    //lblmsg.Text = "Select Currancy Name";
+                //    ddlCustomer.Focus();
+                //    return;
+                //}
             }
             if (txtOrderQty.Text == "")
             {
