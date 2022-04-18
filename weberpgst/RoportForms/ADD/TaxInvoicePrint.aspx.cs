@@ -133,11 +133,7 @@ public partial class RoportForms_ADD_TaxInvoicePrint : System.Web.UI.Page
                     dtTaxInvoice.Columns.Add("QRCode", typeof(byte[]));
 
                     foreach (DataRow row in dtTaxInvoice.Rows)
-                    {
-                         
-
-                        
-
+                    {  
                         string strEQR = row["QRCodeEinv"].ToString();
                         var Ewriter = new BarcodeWriter();
                         Ewriter.Format = BarcodeFormat.QR_CODE;
@@ -150,17 +146,12 @@ public partial class RoportForms_ADD_TaxInvoicePrint : System.Web.UI.Page
                         {
                             using (FileStream efs = new FileStream(Epath, FileMode.Create, FileAccess.ReadWrite))
                             {
-
                                 EbarcodeBitmap.Save(Ememory, ImageFormat.Png);
-
                                 Ebytes = Ememory.ToArray();
                                 efs.Write(Ebytes, 0, Ebytes.Length);
-
                             }
                         }
-
-                        row["QRCode"] = (byte[])Ebytes;
- 
+                        row["QRCode"] = (byte[])Ebytes; 
                     }
 
 
