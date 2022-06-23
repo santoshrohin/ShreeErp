@@ -432,7 +432,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             if (ddlItemCode.SelectedIndex != 0)
             {
                 ddlItemName.SelectedValue = ddlItemCode.SelectedValue;
-                DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS   I_CURRENT_BAL from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
+                DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS   I_CURRENT_BAL  ,ISNULL(I_INV_RATE,0) AS I_INV_RATE from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
                 DataTable dtPO = new DataTable();
                 if (ddlConsPatt.SelectedIndex == 0)
                 {
@@ -464,6 +464,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
 
                 if (dt1.Rows.Count > 0)
                 {
+                    txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["I_INV_RATE"]);
                     txtUOM.Text = dt1.Rows[0]["I_UOM_NAME"].ToString();
                     //  txtActWght.Text = dt1.Rows[0]["I_UWEIGHT"].ToString();
                     txtStockQty.Text = dt1.Rows[0]["I_CURRENT_BAL"].ToString();
@@ -540,7 +541,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
 
                 if (dt1.Rows.Count > 0)
                 {
-                    txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["SPOD_RATE"]);
+                  //  txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["SPOD_RATE"]);
                     ddlProcessType.SelectedValue = dt1.Rows[0]["SPOD_PROCESS_CODE"].ToString();
                     txtActWght.Text = dt1.Rows[0]["SPOD_CONV_RATIO"].ToString();
                     txtPoUnit.Text = dt1.Rows[0]["I_UOM_NAME"].ToString();
@@ -548,7 +549,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 else
                 {
                     txtActWght.Text = "0.00";
-                    txtRate.Text = "0.00";
+                   // txtRate.Text = "0.00";
                 }
                 if (dtQty.Rows.Count > 0)
                 {
@@ -698,7 +699,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             if (ddlItemName.SelectedIndex != 0)
             {
                 ddlItemCode.SelectedValue = ddlItemName.SelectedValue;
-                DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS I_CURRENT_BAL from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
+                DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS I_CURRENT_BAL   ,ISNULL(I_INV_RATE,0) AS I_INV_RATE from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
                 DataTable dtPO = new DataTable();
                 if (ddlConsPatt.SelectedIndex == 0)
                 {
@@ -730,6 +731,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
 
                 if (dt1.Rows.Count > 0)
                 {
+                    txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["I_INV_RATE"]);
                     txtUOM.Text = dt1.Rows[0]["I_UOM_NAME"].ToString();
                     //txtActWght.Text = dt1.Rows[0]["I_UWEIGHT"].ToString();
                     txtStockQty.Text = dt1.Rows[0]["I_CURRENT_BAL"].ToString();
