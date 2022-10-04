@@ -241,7 +241,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" runat="server" visible="false">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">
@@ -278,7 +278,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" runat="server" visible="false">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">
@@ -291,6 +291,9 @@
                                                                 <asp:TextBox CssClass="form-control input-sm" ID="txtSpecialInst" placeholder="Special Inst"
                                                                     TabIndex="3" runat="server"></asp:TextBox>
                                                             </ContentTemplate>
+                                                            <Triggers>
+                                                                <asp:AsyncPostBackTrigger ControlID="ddlCustomer" EventName="SelectedIndexChanged" />
+                                                            </Triggers>
                                                         </asp:UpdatePanel>
                                                     </div>
                                                 </div>
@@ -596,7 +599,24 @@
                                                     </asp:UpdatePanel>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4" runat="server" visible="false">
+                                                <div class="form-group">
+                                                    <label class="control-label label-sm">
+                                                    </label>
+                                                    <asp:UpdatePanel ID="UpdatePanel14" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" Enabled="false" ID="txtHSNCode"
+                                                                placeholder="PO Unit" TabIndex="17" runat="server" MsgObrigatorio="Qty Per Pack"
+                                                                AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
                                             </div>
                                             <div class="col-md-1">
                                                 <div class="form-group">
@@ -638,6 +658,123 @@
                                                         </Triggers>
                                                     </asp:UpdatePanel>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label label-sm">
+                                                        CGST %</label>
+                                                    <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" ID="txtCGstPer" placeholder="0.000"
+                                                                runat="server" AutoPostBack="true" ReadOnly="true" TabIndex="9"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label label-sm">
+                                                        CGST Amount</label>
+                                                    <asp:UpdatePanel ID="UpdatePanel9" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" ID="txtCGstAmt" placeholder="0.000"
+                                                                ReadOnly="true" TabIndex="10" runat="server" AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtVQty" EventName="TextChanged" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label label-sm">
+                                                        SGST %</label>
+                                                    <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" ID="txtSGstPer" placeholder="0.000"
+                                                                ReadOnly="true" TabIndex="11" runat="server" AutoPostBack="true" MsgObrigatorio="Disp Qty"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <!--/span-->
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label label-sm">
+                                                        SGST Amount
+                                                    </label>
+                                                    <asp:UpdatePanel ID="UpdatePanel11" runat="server" UpdateMode="Conditional">
+                                                        <ContentTemplate>
+                                                            <asp:TextBox CssClass="form-control text-right input-sm" ID="txtSGstAmt" placeholder="0.00"
+                                                                runat="server" ReadOnly="true" AutoPostBack="true" TabIndex="12" MsgObrigatorio="Actual Wght"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                            <asp:AsyncPostBackTrigger ControlID="txtVQty" EventName="TextChanged" />
+                                                        </Triggers>
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-2">
+                                                <label class="control-label label-sm">
+                                                    IGST %</label>
+                                                <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox CssClass="form-control text-right input-sm" ID="txtIGSTPer" Text="0.00"
+                                                            placeholder="0.00" ReadOnly="true" runat="server" AutoPostBack="true" MsgObrigatorio="Rate"
+                                                            TabIndex="13"></asp:TextBox>
+                                                    </ContentTemplate>
+                                                    <Triggers>
+                                                        <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                        <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                        <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                        <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                    </Triggers>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-2">
+                                                <label class="control-label label-sm">
+                                                    IGST Amount
+                                                </label>
+                                                <asp:UpdatePanel ID="UpdatePanel13" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox CssClass="form-control text-right input-sm" ID="txtIGstAmt" placeholder="0.00"
+                                                            TabIndex="14" runat="server" ReadOnly="true"></asp:TextBox>
+                                                    </ContentTemplate>
+                                                    <Triggers>
+                                                        <asp:AsyncPostBackTrigger ControlID="ddlItemCode" EventName="SelectedIndexChanged" />
+                                                        <asp:AsyncPostBackTrigger ControlID="ddlItemName" EventName="SelectedIndexChanged" />
+                                                        <asp:AsyncPostBackTrigger ControlID="btnInsert" EventName="Click" />
+                                                        <asp:AsyncPostBackTrigger ControlID="dgInvoiceAddDetail" EventName="RowCommand" />
+                                                        <asp:AsyncPostBackTrigger ControlID="txtVQty" EventName="TextChanged" />
+                                                    </Triggers>
+                                                </asp:UpdatePanel>
                                             </div>
                                         </div>
                                         <div class="row" style="overflow: auto; width: 100%">
@@ -762,6 +899,59 @@
                                                                     <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
                                                                     <ItemStyle HorizontalAlign="Right" />
                                                                 </asp:TemplateField>
+                                                                
+                                                                
+                                                                
+                                                                <asp:TemplateField HeaderText="IND_HSN_CODE" SortExpression="IND_HSN_CODE" Visible="false" HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblIND_HSN_CODE" runat="server" Text='<%# Eval("IND_HSN_CODE") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="SGST %" SortExpression="E_BASIC_CentralT"  HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblE_BASIC_CentralT" runat="server" Text='<%# Eval("E_BASIC_CentralT") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="CGST %" SortExpression="E_EDU_CESS_State"   HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblE_EDU_CESS_State" runat="server" Text='<%# Eval("E_EDU_CESS_State") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="IGST %" SortExpression="E_H_EDU_Integrated"   HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblE_H_EDU_Integrated" runat="server" Text='<%# Eval("E_H_EDU_Integrated") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="SGST Amount" SortExpression="IND_EX_AMT"   HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblIND_EX_AMT" runat="server" Text='<%# Eval("IND_EX_AMT") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="CGST Amount" SortExpression="IND_E_CESS_AMT"   HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblIND_E_CESS_AMT" runat="server" Text='<%# Eval("IND_E_CESS_AMT") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="IGST Amount" SortExpression="IND_SH_CESS_AMT"   HeaderStyle-HorizontalAlign="Left">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblIND_SH_CESS_AMT" runat="server" Text='<%# Eval("IND_SH_CESS_AMT") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                    <HeaderStyle HorizontalAlign="Right" CssClass=" Control-text text-right" />
+                                                                    <ItemStyle HorizontalAlign="Right" />
+                                                                </asp:TemplateField> 
+                                                                
                                                             </Columns>
                                                             <AlternatingRowStyle CssClass="alt" />
                                                             <PagerStyle CssClass="pgr" />

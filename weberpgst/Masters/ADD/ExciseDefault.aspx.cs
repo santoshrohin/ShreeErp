@@ -147,6 +147,23 @@ public partial class Masters_ADD_ExciseDefault : System.Web.UI.Page
         }
     }
 
+
+
+    protected void btITC04_click(object sender, EventArgs e)
+    {
+        //checkRights(105);
+        //if (CommonClasses.ValidRights(int.Parse(right.Substring(0, 1)), this, "For Menu"))
+        //{
+        Response.Redirect("~/RoportForms/VIEW/ViewGST_ITC_04.aspx", false);
+        //}
+        //else
+        //{
+        //    //Response.Write("<script> alert('You Have No Rights To View.');</script>");
+        //    ModalPopupMsg.Show();
+        //    return;
+        //}
+    }
+
     protected void btnDailyRegister_click(object sender, EventArgs e)
     {
         checkRights(109);

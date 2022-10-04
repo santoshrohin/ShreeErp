@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -41,7 +42,7 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
         try
         {
             DataTable FromInv = new DataTable();
-            FromInv = CommonClasses.Execute("select distinct INM_CODE,INM_NO FROM INVOICE_MASTER WHERE  INM_CM_CODE=" + Session["CompanyCode"].ToString() + " and ES_DELETE=0 and INM_TYPE='TAXINV' ORDER BY INM_NO ");
+            FromInv = CommonClasses.Execute("select distinct INM_CODE,INM_NO FROM INVOICE_MASTER WHERE  INM_CM_CODE=" + Session["CompanyCode"].ToString() + " and ES_DELETE=0 and INM_TYPE='TAXINV' ORDER BY INM_NO DESC ");
             ddlFromInvNo.DataSource = FromInv;
             ddlFromInvNo.DataTextField = "INM_NO";
             ddlFromInvNo.DataValueField = "INM_CODE";
@@ -191,11 +192,11 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
             string toNo = ddlToInvNo.SelectedItem.ToString(); 
                 #region Export_Excel
                 DataTable dtResult = new DataTable();
-                DataTable dt = CommonClasses.Execute("SELECT   '' AS BLANK, INM_TAX_TCS_AMT,  'B2B' AS SUPPLY_TYPE,'NO' AS REV,'' AS E_GST,'NO' IGST_ONINTRA,'Tax Invoice' AS DOC_TYPE,INM_TNO, convert(varchar,INM_DATE,105) AS INM_DATE,P_GST_NO,P_NAME,P_NAME,SM_NAME,P_ADD1,'' As P_ADD2,CITY_NAME AS BUY_LOCATION,P_PIN_CODE,SM_NAME AS BUY_STATE,P_MOB,P_EMAIL,'' AS DISPATCH_NAME,'' AS DIS_ADD1,'' AS DIS_ADD2,'' AS DIS_LOCATION,'' AS DIS_PIN,'' AS DIS_STATE,'' AS SHIPPING_GST,'' AS SHIPPING_LNAME,'' AS SHIPPING_TNAME,'' AS SHIPPING_ADD1,'' AS SHIPPING_ADD2,'' AS SHIPPING_LOCATION,'' AS SHIPPING_PIN,'' AS SHIPPING_STATE,'1' AS SR_NO,I_CODENO,case when INM_TYPE='OutJWINM' then 'YES' ELSE 'NO' END as ISSERVICE,EXCISE_TARIFF_MASTER.E_TARIFF_NO AS   IND_E_TARIFF_NO,'' AS BARCODE,IND_INQTY ,'' AS FREE_QTY,I_UOM_DESC,IND_RATE,IND_AMT,INM_ACCESSIBLE_AMT,INM_EDUC_CESS+INM_H_EDUC_CESS+INM_BEXCISE  AS GST_PER,IND_EX_AMT,	IND_E_CESS_AMT,	IND_SH_CESS_AMT , INM_DISC_AMT,'' As CESS_RATE,'' As CESS_AMT,'' As CESS_NON_ADV,'' As STATE_CESS_RATE,'' As STAE_CESS_AMT,'' As STATE_CESS_NON_ADV,'' As OTHER_CHARGES, INM_TAXABLE_AMT As ITEM_TOTAL,'' AS ORDER_LINE,'' AS ORIGIN_COUNTRY,'' AS UNI_SR_NO, INM_BE_AMT,INM_EDUC_AMT,INM_H_EDUC_AMT ,INM_ROUNDING_AMT,INM_G_AMT,INM_TRANSPORT,INM_VEH_NO  FROM         INVOICE_MASTER INNER JOIN                      INVOICE_DETAIL ON INVOICE_MASTER.INM_CODE = INVOICE_DETAIL.IND_INM_CODE INNER JOIN                      PARTY_MASTER ON INVOICE_MASTER.INM_P_CODE = PARTY_MASTER.P_CODE INNER JOIN                      ITEM_MASTER ON INVOICE_DETAIL.IND_I_CODE = ITEM_MASTER.I_CODE INNER JOIN                      ITEM_UNIT_MASTER ON ITEM_MASTER.I_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE INNER JOIN                      STATE_MASTER ON PARTY_MASTER.P_SM_CODE = STATE_MASTER.SM_CODE INNER JOIN                      CITY_MASTER ON PARTY_MASTER.P_CITY_CODE = CITY_MASTER.CITY_CODE INNER JOIN                      COUNTRY_MASTER ON PARTY_MASTER.P_COUNTRY_CODE = COUNTRY_MASTER.COUNTRY_CODE   INNER JOIN EXCISE_TARIFF_MASTER ON EXCISE_TARIFF_MASTER.E_CODE =ITEM_MASTER.I_E_CODE  WHERE     (INVOICE_MASTER.INM_TYPE = 'TAXINV') AND (INVOICE_MASTER.INM_CM_CODE = '" + Session["CompanyCode"].ToString() + "') AND (INVOICE_MASTER.INM_NO between '" + FromNo + "' AND '" + toNo + "')");
+                DataTable dt = CommonClasses.Execute("SELECT   '' AS BLANK, INM_TAX_TCS_AMT,  'B2B' AS SUPPLY_TYPE,'NO' AS REV,'' AS E_GST,'NO' IGST_ONINTRA,'Tax Invoice' AS DOC_TYPE,INM_TNO, INM_DATE  AS INM_DATE,P_LBT_NO AS P_GST_NO,P_NAME,P_NAME,SM_NAME,P_ADD1,'' As P_ADD2,CITY_NAME AS BUY_LOCATION,P_PIN_CODE,SM_NAME AS BUY_STATE,P_MOB,P_EMAIL,'' AS DISPATCH_NAME,'' AS DIS_ADD1,'' AS DIS_ADD2,'' AS DIS_LOCATION,'' AS DIS_PIN,'' AS DIS_STATE,'' AS SHIPPING_GST,'' AS SHIPPING_LNAME,'' AS SHIPPING_TNAME,'' AS SHIPPING_ADD1,'' AS SHIPPING_ADD2,'' AS SHIPPING_LOCATION,'' AS SHIPPING_PIN,'' AS SHIPPING_STATE,'1' AS SR_NO,I_CODENO,case when INM_TYPE='OutJWINM' then 'YES' ELSE 'NO' END as ISSERVICE,EXCISE_TARIFF_MASTER.E_TARIFF_NO AS   IND_E_TARIFF_NO,'' AS BARCODE,IND_INQTY ,'' AS FREE_QTY,I_UOM_DESC,IND_RATE,IND_AMT,INM_ACCESSIBLE_AMT,INM_EDUC_CESS+INM_H_EDUC_CESS+INM_BEXCISE  AS GST_PER,IND_EX_AMT,	IND_E_CESS_AMT,	IND_SH_CESS_AMT , INM_DISC_AMT,'' As CESS_RATE,'' As CESS_AMT,'' As CESS_NON_ADV,'' As STATE_CESS_RATE,'' As STAE_CESS_AMT,'' As STATE_CESS_NON_ADV,'' As OTHER_CHARGES, INM_TAXABLE_AMT As ITEM_TOTAL,'' AS ORDER_LINE,'' AS ORIGIN_COUNTRY,'' AS UNI_SR_NO, INM_BE_AMT,INM_EDUC_AMT,INM_H_EDUC_AMT ,INM_ROUNDING_AMT,INM_G_AMT,INM_TRANSPORT,INM_VEH_NO  FROM         INVOICE_MASTER INNER JOIN                      INVOICE_DETAIL ON INVOICE_MASTER.INM_CODE = INVOICE_DETAIL.IND_INM_CODE INNER JOIN                      PARTY_MASTER ON INVOICE_MASTER.INM_P_CODE = PARTY_MASTER.P_CODE INNER JOIN                      ITEM_MASTER ON INVOICE_DETAIL.IND_I_CODE = ITEM_MASTER.I_CODE INNER JOIN                      ITEM_UNIT_MASTER ON ITEM_MASTER.I_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE INNER JOIN                      STATE_MASTER ON PARTY_MASTER.P_SM_CODE = STATE_MASTER.SM_CODE INNER JOIN                      CITY_MASTER ON PARTY_MASTER.P_CITY_CODE = CITY_MASTER.CITY_CODE INNER JOIN                      COUNTRY_MASTER ON PARTY_MASTER.P_COUNTRY_CODE = COUNTRY_MASTER.COUNTRY_CODE   INNER JOIN EXCISE_TARIFF_MASTER ON EXCISE_TARIFF_MASTER.E_CODE =ITEM_MASTER.I_E_CODE  WHERE     (INVOICE_MASTER.INM_TYPE = 'TAXINV') AND (INVOICE_MASTER.INM_CM_CODE = '" + Session["CompanyCode"].ToString() + "') AND (INVOICE_MASTER.INM_NO between '" + FromNo + "' AND '" + toNo + "')");
 
-
-                //DataTable dt = CommonClasses.Execute("SELECT   '' AS BLANK, INM_TAX_TCS_AMT,  'B2B' AS SUPPLY_TYPE,'NO' AS REV,'' AS E_GST,'NO' IGST_ONINTRA,'Tax Invoice' AS DOC_TYPE,INM_TNO, convert(varchar,INM_DATE,105) AS INM_DATE,P_GST_NO,P_NAME,P_NAME,SM_NAME,P_ADD1,'' As P_ADD2,CITY_NAME AS BUY_LOCATION,P_PIN_CODE,SM_NAME AS BUY_STATE,P_MOB,P_EMAIL,'' AS DISPATCH_NAME,'' AS DIS_ADD1,'' AS DIS_ADD2,'' AS DIS_LOCATION,'' AS DIS_PIN,'' AS DIS_STATE,'' AS SHIPPING_GST,'' AS SHIPPING_LNAME,'' AS SHIPPING_TNAME,'' AS SHIPPING_ADD1,'' AS SHIPPING_ADD2,'' AS SHIPPING_LOCATION,'' AS SHIPPING_PIN,'' AS SHIPPING_STATE,'1' AS SR_NO,I_CODENO,case when INM_TYPE='OutJWINM' then 'YES' ELSE 'NO' END as ISSERVICE,IND_E_TARIFF_NO,'' AS BARCODE,IND_INQTY ,'' AS FREE_QTY,I_UOM_DESC,IND_RATE,IND_AMT,INM_ACCESSIBLE_AMT,INM_EDUC_CESS+INM_H_EDUC_CESS+INM_BEXCISE  AS GST_PER,IND_EX_AMT,	IND_E_CESS_AMT,	IND_SH_CESS_AMT , INM_DISC_AMT,'' As CESS_RATE,'' As CESS_AMT,'' As CESS_NON_ADV,'' As STATE_CESS_RATE,'' As STAE_CESS_AMT,'' As STATE_CESS_NON_ADV,'' As OTHER_CHARGES, INM_TAXABLE_AMT As ITEM_TOTAL,'' AS ORDER_LINE,'' AS ORIGIN_COUNTRY,'' AS UNI_SR_NO, INM_BE_AMT,INM_EDUC_AMT,INM_H_EDUC_AMT ,INM_ROUNDING_AMT,INM_G_AMT,INM_TRANSPORT,INM_VEH_NO  FROM         INVOICE_MASTER INNER JOIN                      INVOICE_DETAIL ON INVOICE_MASTER.INM_CODE = INVOICE_DETAIL.IND_INM_CODE INNER JOIN                      PARTY_MASTER ON INVOICE_MASTER.INM_P_CODE = PARTY_MASTER.P_CODE INNER JOIN                      ITEM_MASTER ON INVOICE_DETAIL.IND_I_CODE = ITEM_MASTER.I_CODE INNER JOIN                      ITEM_UNIT_MASTER ON ITEM_MASTER.I_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE INNER JOIN                      STATE_MASTER ON PARTY_MASTER.P_SM_CODE = STATE_MASTER.SM_CODE INNER JOIN                      CITY_MASTER ON PARTY_MASTER.P_CITY_CODE = CITY_MASTER.CITY_CODE INNER JOIN                      COUNTRY_MASTER ON PARTY_MASTER.P_COUNTRY_CODE = COUNTRY_MASTER.COUNTRY_CODE WHERE     (INVOICE_MASTER.INM_TYPE = 'TAXINV') AND (INVOICE_MASTER.INM_CM_CODE = '" + Session["CompanyCode"].ToString() + "') AND (INVOICE_MASTER.INM_NO between '" + FromNo + "' AND '" + toNo + "')");
                 dtResult = dt;
+                //DataTable dt = CommonClasses.Execute("SELECT   '' AS BLANK, INM_TAX_TCS_AMT,  'B2B' AS SUPPLY_TYPE,'NO' AS REV,'' AS E_GST,'NO' IGST_ONINTRA,'Tax Invoice' AS DOC_TYPE,INM_TNO, convert(varchar,INM_DATE,105) AS INM_DATE,P_GST_NO,P_NAME,P_NAME,SM_NAME,P_ADD1,'' As P_ADD2,CITY_NAME AS BUY_LOCATION,P_PIN_CODE,SM_NAME AS BUY_STATE,P_MOB,P_EMAIL,'' AS DISPATCH_NAME,'' AS DIS_ADD1,'' AS DIS_ADD2,'' AS DIS_LOCATION,'' AS DIS_PIN,'' AS DIS_STATE,'' AS SHIPPING_GST,'' AS SHIPPING_LNAME,'' AS SHIPPING_TNAME,'' AS SHIPPING_ADD1,'' AS SHIPPING_ADD2,'' AS SHIPPING_LOCATION,'' AS SHIPPING_PIN,'' AS SHIPPING_STATE,'1' AS SR_NO,I_CODENO,case when INM_TYPE='OutJWINM' then 'YES' ELSE 'NO' END as ISSERVICE,IND_E_TARIFF_NO,'' AS BARCODE,IND_INQTY ,'' AS FREE_QTY,I_UOM_DESC,IND_RATE,IND_AMT,INM_ACCESSIBLE_AMT,INM_EDUC_CESS+INM_H_EDUC_CESS+INM_BEXCISE  AS GST_PER,IND_EX_AMT,	IND_E_CESS_AMT,	IND_SH_CESS_AMT , INM_DISC_AMT,'' As CESS_RATE,'' As CESS_AMT,'' As CESS_NON_ADV,'' As STATE_CESS_RATE,'' As STAE_CESS_AMT,'' As STATE_CESS_NON_ADV,'' As OTHER_CHARGES, INM_TAXABLE_AMT As ITEM_TOTAL,'' AS ORDER_LINE,'' AS ORIGIN_COUNTRY,'' AS UNI_SR_NO, INM_BE_AMT,INM_EDUC_AMT,INM_H_EDUC_AMT ,INM_ROUNDING_AMT,INM_G_AMT,INM_TRANSPORT,INM_VEH_NO  FROM         INVOICE_MASTER INNER JOIN                      INVOICE_DETAIL ON INVOICE_MASTER.INM_CODE = INVOICE_DETAIL.IND_INM_CODE INNER JOIN                      PARTY_MASTER ON INVOICE_MASTER.INM_P_CODE = PARTY_MASTER.P_CODE INNER JOIN                      ITEM_MASTER ON INVOICE_DETAIL.IND_I_CODE = ITEM_MASTER.I_CODE INNER JOIN                      ITEM_UNIT_MASTER ON ITEM_MASTER.I_UOM_CODE = ITEM_UNIT_MASTER.I_UOM_CODE INNER JOIN                      STATE_MASTER ON PARTY_MASTER.P_SM_CODE = STATE_MASTER.SM_CODE INNER JOIN                      CITY_MASTER ON PARTY_MASTER.P_CITY_CODE = CITY_MASTER.CITY_CODE INNER JOIN                      COUNTRY_MASTER ON PARTY_MASTER.P_COUNTRY_CODE = COUNTRY_MASTER.COUNTRY_CODE WHERE     (INVOICE_MASTER.INM_TYPE = 'TAXINV') AND (INVOICE_MASTER.INM_CM_CODE = '" + Session["CompanyCode"].ToString() + "') AND (INVOICE_MASTER.INM_NO between '" + FromNo + "' AND '" + toNo + "')");
+                 
                 DataTable dtExport = new DataTable();
                 if (dt.Rows.Count > 0)
                 {
@@ -256,14 +257,14 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
                     dtExport.Columns.Add("State Cess Non-Adval Amt (Rs)");
                     dtExport.Columns.Add("Other Charges  ");
                     dtExport.Columns.Add("Item Total *");
-                    dtExport.Columns.Add("Order line reference");
-                    dtExport.Columns.Add("Orgin country");
-                    dtExport.Columns.Add(" Unique item Sl. No.");
+                    //dtExport.Columns.Add("Order line reference");
+                    //dtExport.Columns.Add("Orgin country");
+                    //dtExport.Columns.Add(" Unique item Sl. No.");
                     dtExport.Columns.Add("Batch Name");
                     dtExport.Columns.Add("Batch Expiry Dt");
                     dtExport.Columns.Add("Warranty Dt");
-                    dtExport.Columns.Add("Attribute Details of the items");
-                    dtExport.Columns.Add("Attribute Value of the Items");
+                    //dtExport.Columns.Add("Attribute Details of the items");
+                    //dtExport.Columns.Add("Attribute Value of the Items");
                     dtExport.Columns.Add("Total Taxable value *");
                     dtExport.Columns.Add("Sgst Amt");
                     dtExport.Columns.Add("Cgst Amt");
@@ -274,7 +275,7 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
                     dtExport.Columns.Add("Other charges");
                     dtExport.Columns.Add("Round off");
                     dtExport.Columns.Add("Total Invoice value *");
-                    dtExport.Columns.Add("Total Invoice value  in Additional Currency");
+                    // dtExport.Columns.Add("Total Invoice value  in Additional Currency");
                     dtExport.Columns.Add("Shipping Bill No");
                     dtExport.Columns.Add("Shipping Bill Dt");
                     dtExport.Columns.Add("Port");
@@ -290,34 +291,34 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
                     dtExport.Columns.Add("Trans Doc Date");
                     dtExport.Columns.Add("Vehicle No.");
                     dtExport.Columns.Add("Vehicle Type");
-                    dtExport.Columns.Add("Payee Name");
-                    dtExport.Columns.Add("Account Number");
-                    dtExport.Columns.Add("Mode");
-                    dtExport.Columns.Add("Branch/IFSC Code");
-                    dtExport.Columns.Add("Term  of payment");
-                    dtExport.Columns.Add("Payment instruction");
-                    dtExport.Columns.Add("Credit Transfer");
-                    dtExport.Columns.Add("direct debit");
-                    dtExport.Columns.Add("credit days");
-                    dtExport.Columns.Add("Paided amount");
-                    dtExport.Columns.Add("Due amount");
-                    dtExport.Columns.Add("Remarks");
-                    dtExport.Columns.Add("Invoice period start date");
-                    dtExport.Columns.Add("Invoice period end date");
-                    dtExport.Columns.Add("Original Invoice");
-                    dtExport.Columns.Add("Preceding Invoice Date");
-                    dtExport.Columns.Add("Other Reference");
-                    dtExport.Columns.Add("Receipt Advice Number");
-                    dtExport.Columns.Add("Date of Receipt Advice");
-                    dtExport.Columns.Add("Lot/Batch Reference Number");
-                    dtExport.Columns.Add("Contract Reference Number");
-                    dtExport.Columns.Add("Any other reference");
-                    dtExport.Columns.Add("Project Reference Number");
-                    dtExport.Columns.Add("Vendor PO Reference Number");
-                    dtExport.Columns.Add("Vendor PO Reference date");
-                    dtExport.Columns.Add("Supporting Doc URL");
-                    dtExport.Columns.Add("Supporting Doc in Base 64 format");
-                    dtExport.Columns.Add("Any additional information");
+                    //dtExport.Columns.Add("Payee Name");
+                    //dtExport.Columns.Add("Account Number");
+                    //dtExport.Columns.Add("Mode");
+                    //dtExport.Columns.Add("Branch/IFSC Code");
+                    //dtExport.Columns.Add("Term  of payment");
+                    //dtExport.Columns.Add("Payment instruction");
+                    //dtExport.Columns.Add("Credit Transfer");
+                    //dtExport.Columns.Add("direct debit");
+                    //dtExport.Columns.Add("credit days");
+                    //dtExport.Columns.Add("Paided amount");
+                    //dtExport.Columns.Add("Due amount");
+                    //dtExport.Columns.Add("Remarks");
+                    //dtExport.Columns.Add("Invoice period start date");
+                    //dtExport.Columns.Add("Invoice period end date");
+                    //dtExport.Columns.Add("Original Invoice");
+                    //dtExport.Columns.Add("Preceding Invoice Date");
+                    //dtExport.Columns.Add("Other Reference");
+                    //dtExport.Columns.Add("Receipt Advice Number");
+                    //dtExport.Columns.Add("Date of Receipt Advice");
+                    //dtExport.Columns.Add("Lot/Batch Reference Number");
+                    //dtExport.Columns.Add("Contract Reference Number");
+                    //dtExport.Columns.Add("Any other reference");
+                    //dtExport.Columns.Add("Project Reference Number");
+                    //dtExport.Columns.Add("Vendor PO Reference Number");
+                    //dtExport.Columns.Add("Vendor PO Reference date");
+                    //dtExport.Columns.Add("Supporting Doc URL");
+                    //dtExport.Columns.Add("Supporting Doc in Base 64 format");
+                    //dtExport.Columns.Add("Any additional information");
                     dtExport.Columns.Add("Error List");
 
 
@@ -329,6 +330,7 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
         dtResult.Rows[i]["IGST_ONINTRA"].ToString(),
         dtResult.Rows[i]["DOC_TYPE"].ToString(),
         dtResult.Rows[i]["INM_TNO"].ToString(),
+         //Convert.ToDateTime(Convert.ToDateTime(dtResult.Rows[i]["INM_DATE"].ToString()).ToString("dd/MMM/yyyy")).ToString("dd/MM/yyyy"),
          Convert.ToDateTime(dtResult.Rows[i]["INM_DATE"].ToString()).ToString("dd/MM/yyyy"),
         dtResult.Rows[i]["P_GST_NO"].ToString(),
         dtResult.Rows[i]["P_NAME"].ToString(),
@@ -379,15 +381,17 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
         dtResult.Rows[i]["STAE_CESS_AMT"].ToString(),
         dtResult.Rows[i]["STATE_CESS_NON_ADV"].ToString(),
         dtResult.Rows[i]["OTHER_CHARGES"].ToString(),
-        dtResult.Rows[i]["ITEM_TOTAL"].ToString(),
-        dtResult.Rows[i]["ORDER_LINE"].ToString(),
-        dtResult.Rows[i]["ORIGIN_COUNTRY"].ToString(),
-        dtResult.Rows[i]["UNI_SR_NO"].ToString(),
+        (Convert.ToDouble(dtResult.Rows[i]["INM_G_AMT"].ToString())-
+                         Convert.ToDouble(dtResult.Rows[i]["INM_TAX_TCS_AMT"].ToString())).ToString(),
+                            //dtResult.Rows[i]["ITEM_TOTAL"].ToString(),
+                            //dtResult.Rows[i]["ORDER_LINE"].ToString(),
+                            //dtResult.Rows[i]["ORIGIN_COUNTRY"].ToString(),
+                            //dtResult.Rows[i]["UNI_SR_NO"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["INM_ACCESSIBLE_AMT"].ToString(),
         dtResult.Rows[i]["INM_BE_AMT"].ToString(),
         dtResult.Rows[i]["INM_EDUC_AMT"].ToString(),
@@ -398,6 +402,7 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
         dtResult.Rows[i]["INM_TAX_TCS_AMT"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["INM_G_AMT"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
@@ -413,39 +418,39 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
-        dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
+                            //dtResult.Rows[i]["BLANK"].ToString(),
         dtResult.Rows[i]["BLANK"].ToString()
                                          );
                     }
                 }
+
 
                 HttpContext.Current.Response.Clear();
                 HttpContext.Current.Response.ClearContent();
@@ -647,16 +652,21 @@ public partial class Utility_ADD_EInvoice : System.Web.UI.Page
             oleAdapter = null;
             oleConn.Dispose();
             oleConn = null;
+            bool res = false;
 
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                CommonClasses.Execute("UPDATE  INVOICE_MASTER SET AckNo='" + dt.Rows[i][1].ToString() + "', AckDate='" + dt.Rows[i][2].ToString() + "' , InvValue='" + dt.Rows[i][6].ToString() + "', ReciptGSTIn='" + dt.Rows[i][7].ToString() + "' , EInvStatus='" + dt.Rows[i][8].ToString() + "', IRN='" + dt.Rows[i][9].ToString() + "' , QRCode='" + dt.Rows[i][10].ToString() + "', EwayBill='" + dt.Rows[i][11].ToString() + "'   where  INM_TNO='" + dt.Rows[i][3].ToString() + "'    AND INM_CM_CODE='" + Session["CompanyCode"].ToString() + "'");
-
-                // CommonClasses.Execute("UPDATE  INVOICE_MASTER SET AckNo='" + dt.Rows[i][1].ToString() + "', AckDate='" + Convert.ToDateTime(Convert.ToDateTime(dt.Rows[i][2].ToString())).ToString("dd/MMM/yyyy hh:mm:ss") + "' , InvValue='" + dt.Rows[i][6].ToString() + "', ReciptGSTIn='" + dt.Rows[i][7].ToString() + "' , EInvStatus='" + dt.Rows[i][8].ToString() + "', IRN='" + dt.Rows[i][9].ToString() + "' , QRCode='" + dt.Rows[i][10].ToString() + "', EwayBill='" + dt.Rows[i][11].ToString() + "'   where  INM_TNO='" + dt.Rows[i][3].ToString() + "'  AND CONVERT (varchar,INM_DATE,106)='" + Convert.ToDateTime(dt.Rows[i][4].ToString()).ToString("dd MMM yyyy") + "'  AND INM_CM_CODE='" + Session["CompanyCode"].ToString() + "'");
-
-                CommonClasses.WriteLog("IRN Upload", "Upload", "IRN Upload", dt.Rows[i][3].ToString(), Convert.ToInt32(dt.Rows[i][0].ToString()), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
-
+                if (CommonClasses.Execute1("UPDATE  INVOICE_MASTER SET AckNo='" + dt.Rows[i][2].ToString() + "', AckDate='" + dt.Rows[i][3].ToString() + "' , InvValue='" + dt.Rows[i][7].ToString() + "', ReciptGSTIn='" + dt.Rows[i][8].ToString() + "' , EInvStatus='" + dt.Rows[i][9].ToString() + "', IRN='" + dt.Rows[i][1].ToString() + "' , QRCode='" + dt.Rows[i][10].ToString() + "', EwayBill='" + dt.Rows[i][11].ToString() + "'   where  INM_TNO='" + dt.Rows[i][4].ToString() + "'  AND      INM_CM_CODE='" + Session["CompanyCode"].ToString() + "'"))
+                {
+                    res = true;
+                    CommonClasses.WriteLog("IRN Upload", "Upload", "IRN Upload", dt.Rows[i][3].ToString(), Convert.ToInt32(dt.Rows[i][0].ToString()), Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["CompanyCode"]), (Session["Username"].ToString()), Convert.ToInt32(Session["UserCode"]));
+                }
+                else
+                {
+                    res = false;
+                    break;
+                }
             }
             PanelMsg.Visible = true;
             lblmsg.Text = "E Invoice Added Successfully...";

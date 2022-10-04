@@ -105,6 +105,9 @@
                                 <li id="Li4" runat="server"><a href="../../RoportForms/VIEW/ViewAnnexureVGST.aspx"
                                     onserverclick="btnAnnexureV_click"><i class="fa fa-tasks"></i>Annexure V</a>
                                 </li>
+                                <li id="Li5" runat="server"><a href="../../RoportForms/VIEW/ViewGST_ITC_04.aspx"
+                                    onserverclick="btITC04_click"><i class="fa fa-tasks"></i>ITC 04</a>
+                                </li>
                             </ul>
                         </div>
                     </div>

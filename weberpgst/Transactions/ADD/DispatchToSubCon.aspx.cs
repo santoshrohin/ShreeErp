@@ -124,7 +124,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
         //    txtDate.Focus();
         //    return;
         //}
-        if (((Convert.ToDateTime(Session["OpeningDate"]) <= (Convert.ToDateTime(txtDate.Text))) && (Convert.ToDateTime(Session["ClosingDate"]) >= Convert.ToDateTime(txtDate.Text)))  )
+        if (((Convert.ToDateTime(Session["OpeningDate"]) <= (Convert.ToDateTime(txtDate.Text))) && (Convert.ToDateTime(Session["ClosingDate"]) >= Convert.ToDateTime(txtDate.Text))))
         {
             if (dgInvoiceAddDetail.Enabled == false)
             {
@@ -396,6 +396,15 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 //dtFilter.Columns.Add(new System.Data.DataColumn("IND_SH_CESS_AMT", typeof(String)));
                 //dtFilter.Columns.Add(new System.Data.DataColumn("IND_PACK_DESC", typeof(String)));
 
+                dtFilter.Columns.Add(new System.Data.DataColumn("IND_HSN_CODE", typeof(String)));
+                dtFilter.Columns.Add(new System.Data.DataColumn("E_BASIC_CentralT", typeof(String)));
+                dtFilter.Columns.Add(new System.Data.DataColumn("E_EDU_CESS_State", typeof(String)));
+                dtFilter.Columns.Add(new System.Data.DataColumn("E_H_EDU_Integrated", typeof(String)));
+
+                dtFilter.Columns.Add(new System.Data.DataColumn("IND_EX_AMT", typeof(String)));
+                dtFilter.Columns.Add(new System.Data.DataColumn("IND_E_CESS_AMT", typeof(String)));
+                dtFilter.Columns.Add(new System.Data.DataColumn("IND_SH_CESS_AMT", typeof(String)));
+
                 dtFilter.Rows.Add(dtFilter.NewRow());
                 dgInvoiceAddDetail.DataSource = dtFilter;
                 dgInvoiceAddDetail.DataBind();
@@ -424,6 +433,72 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
     }
     #endregion
 
+    #region LoadGST
+    private void LoadGST()
+    {
+        try
+        {
+            DataTable dtGST = CommonClasses.Execute("select * from ITEM_MASTER,EXCISE_TARIFF_MASTER where ITEM_MASTER.I_E_CODE=EXCISE_TARIFF_MASTER.E_CODE AND ITEM_MASTER.I_CODE='" + ddlItemCode.SelectedValue + "'");
+            if (dtGST.Rows.Count > 0)
+            {
+                if (txtSpecialInst.Text == "1")
+                {
+                    txtCGstPer.Text = dtGST.Rows[0]["E_BASIC"].ToString();
+                    txtSGstPer.Text = dtGST.Rows[0]["E_EDU_CESS"].ToString();
+                    txtIGSTPer.Text = "0";
+                }
+                else
+                {
+                    txtCGstPer.Text = "0";
+                    txtSGstPer.Text = "0";
+                    txtIGSTPer.Text = dtGST.Rows[0]["E_H_EDU"].ToString();
+                }
+                txtHSNCode.Text = dtGST.Rows[0]["I_E_CODE"].ToString();
+            }
+            else
+            {
+                txtCGstPer.Text = "0";
+                txtSGstPer.Text = "0";
+                txtIGSTPer.Text = "0";
+            }
+
+        }
+        catch (Exception Ex)
+        {
+            CommonClasses.SendError("Customer Order ", "LoadIName", Ex.Message);
+        }
+
+    }
+    #endregion
+
+    #region CalculateGST
+    private void CalculateGST()
+    {
+        try
+        {
+            if (txtVQty.Text == "0")
+            {
+                txtVQty.Text = "0";
+            }
+            if (txtRate.Text == "0")
+            {
+                txtRate.Text = "0";
+            }
+            double qty = Convert.ToDouble(txtVQty.Text);
+            double rate = Convert.ToDouble(txtRate.Text);
+            double accValue = qty * rate;
+            txtSGstAmt.Text = Math.Round((Convert.ToDouble(txtSGstPer.Text) * accValue) / 100, 2).ToString();
+            txtCGstAmt.Text = Math.Round((Convert.ToDouble(txtCGstPer.Text) * accValue) / 100, 2).ToString();
+            txtIGstAmt.Text = Math.Round((Convert.ToDouble(txtIGSTPer.Text) * accValue) / 100, 2).ToString();
+        }
+        catch (Exception Ex)
+        {
+            CommonClasses.SendError("Customer Order ", "LoadIName", Ex.Message);
+        }
+
+    }
+    #endregion
+
     #region ddlItemCode_SelectedIndexChanged
     protected void ddlItemCode_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -432,6 +507,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             if (ddlItemCode.SelectedIndex != 0)
             {
                 ddlItemName.SelectedValue = ddlItemCode.SelectedValue;
+                LoadGST();
                 DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS   I_CURRENT_BAL  ,ISNULL(I_INV_RATE,0) AS I_INV_RATE from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
                 DataTable dtPO = new DataTable();
                 if (ddlConsPatt.SelectedIndex == 0)
@@ -541,7 +617,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
 
                 if (dt1.Rows.Count > 0)
                 {
-                  //  txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["SPOD_RATE"]);
+                    //  txtRate.Text = string.Format("{0:0.00}", dt1.Rows[0]["SPOD_RATE"]);
                     ddlProcessType.SelectedValue = dt1.Rows[0]["SPOD_PROCESS_CODE"].ToString();
                     txtActWght.Text = dt1.Rows[0]["SPOD_CONV_RATIO"].ToString();
                     txtPoUnit.Text = dt1.Rows[0]["I_UOM_NAME"].ToString();
@@ -549,7 +625,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 else
                 {
                     txtActWght.Text = "0.00";
-                   // txtRate.Text = "0.00";
+                    // txtRate.Text = "0.00";
                 }
                 if (dtQty.Rows.Count > 0)
                 {
@@ -649,11 +725,37 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
     #endregion
 
 
+    #region LoadGSTInfo
+    private void LoadGSTInfo()
+    {
+        try
+        {
+            DataTable dtGSTParty = CommonClasses.Execute(" select * from PARTY_MASTER WHERE P_CODE='" + ddlCustomer.SelectedValue + "'");
+            DataTable dtGSTCompany = CommonClasses.Execute(" select * from COMPANY_MASTER WHERE CM_CODE='" + Session["CompanyCode"].ToString() + "'");
+            if (dtGSTParty.Rows[0]["P_SM_CODE"].ToString() == dtGSTCompany.Rows[0]["CM_STATE"].ToString())
+            {
+                txtSpecialInst.Text = "1";
+            }
+            else
+            {
+                txtSpecialInst.Text = "0";
+            }
+
+        }
+        catch (Exception Ex)
+        {
+            CommonClasses.SendError("Customer Order ", "LoadIName", Ex.Message);
+        }
+
+    }
+    #endregion
+
     #region ddlCustomer_SelectedIndexChanged
     protected void ddlCustomer_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
         {
+            LoadGSTInfo();
             if (ddlConsPatt.SelectedIndex.ToString() == "0")
             {
                 LoadICodeMaterial();
@@ -699,6 +801,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             if (ddlItemName.SelectedIndex != 0)
             {
                 ddlItemCode.SelectedValue = ddlItemName.SelectedValue;
+                LoadGST();
                 DataTable dt1 = CommonClasses.Execute("Select ITEM_UNIT_MASTER.I_UOM_CODE,I_UOM_NAME,I_UWEIGHT, ISNULL(ROUND(( SELECT SUM(STL_DOC_QTY) FROM STOCK_LEDGER where STL_I_CODE=I_CODE),2),0) AS I_CURRENT_BAL   ,ISNULL(I_INV_RATE,0) AS I_INV_RATE from ITEM_UNIT_MASTER,ITEM_MASTER where ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE and ITEM_MASTER.ES_DELETE=0 and I_CODE='" + ddlItemCode.SelectedValue + "'");
                 DataTable dtPO = new DataTable();
                 if (ddlConsPatt.SelectedIndex == 0)
@@ -789,12 +892,12 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 if (Convert.ToInt32(dtMast.Rows[0]["INM_INVOICE_TYPE"].ToString()) == 0)
                 {
                     //dtInvoiceDetail = CommonClasses.Execute("SELECT DISTINCT IND_I_CODE,I_CODENO as IND_I_CODENO,I_NAME as IND_I_NAME,I_UOM_NAME as UOM,IND_CPOM_CODE as PO_CODE,SPOM_PO_NO as PO_NO,I_CURRENT_BAL as STOCK_QTY,cast(( ISNULL(SPOD_ORDER_QTY,0)-ISNULL(SPOD_DISPACH,0)) as numeric(10,3)) as PEND_QTY, cast(IND_INQTY as  numeric(10,3)) as INV_QTY,cast(I_UWEIGHT as  numeric(10,2)) as ACT_WGHT,cast(IND_RATE as numeric(20,2)) as RATE,cast(0 as numeric(20,2)) as AMT,IND_PROCESS_CODE,PROCESS_NAME AS IND_PROCESS_NAME,IND_CON_QTY from INVOICE_DETAIL,INVOICE_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER,SUPP_PO_DETAILS,SUPP_PO_MASTER,PROCESS_MASTER  WHERE INM_CODE=IND_INM_CODE and IND_CPOM_CODE=SPOM_CODE AND  SPOM_CODE=SPOD_SPOM_CODE  AND  ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  and  INVOICE_MASTER.ES_DELETE=0 and IND_I_CODE=I_CODE AND PROCESS_CODE=IND_PROCESS_CODE and INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'");
-                    dtInvoiceDetail = CommonClasses.Execute("SELECT DISTINCT IND_I_CODE,I_CODENO as IND_I_CODENO,I_NAME as IND_I_NAME,I_UOM_NAME as UOM,IND_CPOM_CODE as PO_CODE,SPOM_PONO as PO_NO,I_CURRENT_BAL as STOCK_QTY,0 as PEND_QTY, cast(IND_INQTY as  numeric(10,3)) as INV_QTY,cast(I_UWEIGHT as  numeric(10,2)) as ACT_WGHT,cast(IND_RATE as numeric(20,2)) as RATE,cast(0 as numeric(20,2)) as AMT,IND_PROCESS_CODE,PROCESS_NAME AS IND_PROCESS_NAME,IND_CON_QTY from INVOICE_DETAIL,INVOICE_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER,SUPP_PO_DETAILS,SUPP_PO_MASTER,PROCESS_MASTER  WHERE INM_CODE=IND_INM_CODE and IND_CPOM_CODE=SPOM_CODE AND  SPOM_CODE=SPOD_SPOM_CODE  AND  ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  and  INVOICE_MASTER.ES_DELETE=0 and IND_I_CODE=I_CODE AND PROCESS_CODE=IND_PROCESS_CODE and INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'");
+                    dtInvoiceDetail = CommonClasses.Execute("SELECT DISTINCT IND_I_CODE,I_CODENO as IND_I_CODENO,I_NAME as IND_I_NAME,I_UOM_NAME as UOM,IND_CPOM_CODE as PO_CODE,SPOM_PONO as PO_NO,I_CURRENT_BAL as STOCK_QTY,0 as PEND_QTY, cast(IND_INQTY as  numeric(10,3)) as INV_QTY,cast(I_UWEIGHT as  numeric(10,2)) as ACT_WGHT,cast(IND_RATE as numeric(20,2)) as RATE,cast(0 as numeric(20,2)) as AMT,IND_PROCESS_CODE,PROCESS_NAME AS IND_PROCESS_NAME,IND_CON_QTY  ,   ISNULL(IND_HSN_CODE,0) AS IND_HSN_CODE  ,ISNULL(E_BASIC_CentralT,0) AS E_BASIC_CentralT  ,ISNULL(E_EDU_CESS_State,0) AS E_EDU_CESS_State  ,ISNULL(E_H_EDU_Integrated,0) AS E_H_EDU_Integrated  ,ISNULL(IND_EX_AMT,0) AS IND_EX_AMT  , ISNULL(IND_E_CESS_AMT,0) AS IND_E_CESS_AMT ,ISNULL(IND_SH_CESS_AMT,0) AS IND_SH_CESS_AMT        from INVOICE_DETAIL,INVOICE_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER,SUPP_PO_DETAILS,SUPP_PO_MASTER,PROCESS_MASTER  WHERE INM_CODE=IND_INM_CODE and IND_CPOM_CODE=SPOM_CODE AND  SPOM_CODE=SPOD_SPOM_CODE  AND  ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  and  INVOICE_MASTER.ES_DELETE=0 and IND_I_CODE=I_CODE AND PROCESS_CODE=IND_PROCESS_CODE and INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'");
 
                 }
                 else
                 {
-                    dtInvoiceDetail = CommonClasses.Execute("SELECT DISTINCT IND_I_CODE,I_CODENO as IND_I_CODENO,I_NAME as IND_I_NAME,I_UOM_NAME as UOM,IND_CPOM_CODE as PO_CODE,SPOM_PONO as PO_NO,I_CURRENT_BAL as STOCK_QTY,cast(( ISNULL(SPOD_ORDER_QTY,0)-ISNULL(SPOD_DISPACH,0)) as numeric(10,3)) as PEND_QTY, cast(IND_INQTY as  numeric(10,3)) as INV_QTY,cast(I_UWEIGHT as  numeric(10,2)) as ACT_WGHT,cast(IND_RATE as numeric(20,2)) as RATE,cast(0 as numeric(20,2)) as AMT,IND_PROCESS_CODE,PROCESS_NAME AS IND_PROCESS_NAME,IND_CON_QTY from INVOICE_DETAIL,INVOICE_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER,SUPP_PO_DETAILS,SUPP_PO_MASTER,PROCESS_MASTER  WHERE INM_CODE=IND_INM_CODE and IND_CPOM_CODE=SPOM_CODE AND  SPOM_CODE=SPOD_SPOM_CODE  AND  ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  and  INVOICE_MASTER.ES_DELETE=0 and IND_I_CODE=I_CODE AND PROCESS_CODE=IND_PROCESS_CODE   AND  IND_I_CODE=SPOD_I_CODE  and INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'");
+                    dtInvoiceDetail = CommonClasses.Execute("SELECT DISTINCT IND_I_CODE,I_CODENO as IND_I_CODENO,I_NAME as IND_I_NAME,I_UOM_NAME as UOM,IND_CPOM_CODE as PO_CODE,SPOM_PONO as PO_NO,I_CURRENT_BAL as STOCK_QTY,cast(( ISNULL(SPOD_ORDER_QTY,0)-ISNULL(SPOD_DISPACH,0)) as numeric(10,3)) as PEND_QTY, cast(IND_INQTY as  numeric(10,3)) as INV_QTY,cast(I_UWEIGHT as  numeric(10,2)) as ACT_WGHT,cast(IND_RATE as numeric(20,2)) as RATE,cast(0 as numeric(20,2)) as AMT,IND_PROCESS_CODE,PROCESS_NAME AS IND_PROCESS_NAME,IND_CON_QTY, ISNULL(IND_HSN_CODE,0) AS IND_HSN_CODE  ,ISNULL(E_BASIC_CentralT,0) AS E_BASIC_CentralT  ,ISNULL(E_EDU_CESS_State,0) AS E_EDU_CESS_State  ,ISNULL(E_H_EDU_Integrated,0) AS E_H_EDU_Integrated  ,ISNULL(IND_EX_AMT,0) AS IND_EX_AMT  , ISNULL(IND_E_CESS_AMT,0) AS IND_E_CESS_AMT ,ISNULL(IND_SH_CESS_AMT,0) AS IND_SH_CESS_AMT  from INVOICE_DETAIL,INVOICE_MASTER,ITEM_MASTER,ITEM_UNIT_MASTER,SUPP_PO_DETAILS,SUPP_PO_MASTER,PROCESS_MASTER  WHERE INM_CODE=IND_INM_CODE and IND_CPOM_CODE=SPOM_CODE AND  SPOM_CODE=SPOD_SPOM_CODE  AND  ITEM_MASTER.I_UOM_CODE=ITEM_UNIT_MASTER.I_UOM_CODE  and  INVOICE_MASTER.ES_DELETE=0 and IND_I_CODE=I_CODE AND PROCESS_CODE=IND_PROCESS_CODE   AND  IND_I_CODE=SPOD_I_CODE  and INM_CODE='" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "'");
 
                 }
 
@@ -1248,7 +1351,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 ((DataTable)ViewState["dt2"]).Columns.Add("IND_I_NAME", typeof(String));
                 ((DataTable)ViewState["dt2"]).Columns.Add("UOM", typeof(String));
                 ((DataTable)ViewState["dt2"]).Columns.Add("PO_CODE", typeof(String));
-                ((DataTable)ViewState["dt2"]).Columns.Add("PO_NO",typeof(String));
+                ((DataTable)ViewState["dt2"]).Columns.Add("PO_NO", typeof(String));
                 ((DataTable)ViewState["dt2"]).Columns.Add("STOCK_QTY", typeof(String));
                 ((DataTable)ViewState["dt2"]).Columns.Add("PEND_QTY", typeof(String));
                 ((DataTable)ViewState["dt2"]).Columns.Add("INV_QTY", typeof(String));
@@ -1268,10 +1371,15 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 // ((DataTable)ViewState["dt2"]).Columns.Add("IND_NO_PACK");
                 // ((DataTable)ViewState["dt2"]).Columns.Add("IND_PAK_QTY");
 
-                // ((DataTable)ViewState["dt2"]).Columns.Add("IND_EX_AMT");
-                // ((DataTable)ViewState["dt2"]).Columns.Add("IND_E_CESS_AMT");
-                // ((DataTable)ViewState["dt2"]).Columns.Add("IND_SH_CESS_AMT");
-                // ((DataTable)ViewState["dt2"]).Columns.Add("IND_PACK_DESC");
+                ((DataTable)ViewState["dt2"]).Columns.Add("IND_HSN_CODE");
+                ((DataTable)ViewState["dt2"]).Columns.Add("E_BASIC_CentralT");
+                ((DataTable)ViewState["dt2"]).Columns.Add("E_EDU_CESS_State");
+                ((DataTable)ViewState["dt2"]).Columns.Add("E_H_EDU_Integrated");
+
+                ((DataTable)ViewState["dt2"]).Columns.Add("IND_EX_AMT");
+                ((DataTable)ViewState["dt2"]).Columns.Add("IND_E_CESS_AMT");
+                ((DataTable)ViewState["dt2"]).Columns.Add("IND_SH_CESS_AMT");
+
             }
             #endregion
 
@@ -1284,7 +1392,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             dr["PO_CODE"] = ddlPONo.SelectedValue.ToString();
             dr["PO_NO"] = ddlPONo.SelectedItem.ToString();
             //dr["PO_NO"] = ddlPONo.Text.ToString();
-            
+
             dr["STOCK_QTY"] = string.Format("{0:0.000}", (Convert.ToDouble(txtStockQty.Text == "" ? "0.00" : txtStockQty.Text) - Convert.ToDouble(txtVQty.Text)));
             //dr["PEND_QTY"] = string.Format("{0:0.000}", (Convert.ToDouble(txtPendingQty.Text) - Convert.ToDouble(txtVQty.Text)));
             if (Convert.ToDouble(txtPendingQty.Text) == 0)
@@ -1329,7 +1437,14 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             dr["IND_CON_QTY"] = txtConvertQty.Text;
 
 
+            dr["IND_HSN_CODE"] = txtHSNCode.Text;
+            dr["E_BASIC_CentralT"] = txtSGstPer.Text;
+            dr["E_EDU_CESS_State"] = txtCGstPer.Text;
+            dr["E_H_EDU_Integrated"] = txtIGSTPer.Text;
 
+            dr["IND_EX_AMT"] = txtSGstAmt.Text;
+            dr["IND_E_CESS_AMT"] = txtCGstAmt.Text;
+            dr["IND_SH_CESS_AMT"] = txtIGstAmt.Text;
 
             #endregion
 
@@ -1423,6 +1538,13 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 ViewState["ItemUpdateIndex"] = e.CommandArgument.ToString();
                 //LoadICode();
                 //LoadIName();
+
+                txtHSNCode.Text = ((Label)(row.FindControl("lblIND_HSN_CODE"))).Text;
+                txtSGstPer.Text = ((Label)(row.FindControl("lblE_BASIC_CentralT"))).Text;
+                txtCGstPer.Text = ((Label)(row.FindControl("lblE_EDU_CESS_State"))).Text;
+                txtIGSTPer.Text = ((Label)(row.FindControl("lblE_H_EDU_Integrated"))).Text;
+                
+                
                 ddlItemCode.SelectedValue = ((Label)(row.FindControl("lblIND_I_CODE"))).Text;
                 ddlItemName.SelectedValue = ((Label)(row.FindControl("lblIND_I_CODE"))).Text;
                 ddlItemCode_SelectedIndexChanged(null, null);
@@ -1432,7 +1554,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
 
                 ddlPONo_SelectedIndexChanged(null, null);
                 txtStockQty.Text = string.Format("{0:0.000}", Math.Round((Convert.ToDouble(((Label)(row.FindControl("lblSTOCK_QTY"))).Text) + Convert.ToDouble(((Label)(row.FindControl("lblINV_QTY"))).Text)), 3));
-
+             
                 double pendQty = Convert.ToDouble(((Label)(row.FindControl("lblPEND_QTY"))).Text) + Convert.ToDouble(((Label)(row.FindControl("lblINV_QTY"))).Text);
                 txtPendingQty.Text = string.Format("{0:0.000}", Math.Round(pendQty, 3));
                 txtVQty.Text = string.Format("{0:0.000}", Math.Round(Convert.ToDouble(((Label)(row.FindControl("lblINV_QTY"))).Text), 3));
@@ -1450,6 +1572,14 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                 //txtNoPackaeg.Text = (Convert.ToInt32(((Label)(row.FindControl("lblNoPack"))).Text)).ToString();
                 //txtQtyPerPack.Text = string.Format("{0:0.00}", Math.Round(Convert.ToDouble(((Label)(row.FindControl("lblPakQty"))).Text), 2));
                 //txtPackDesc.Text = ((Label)(row.FindControl("lblIND_PACK_DESC"))).Text;
+
+
+            
+
+                txtSGstAmt.Text = ((Label)(row.FindControl("lblIND_EX_AMT"))).Text;
+                txtCGstAmt.Text = ((Label)(row.FindControl("lblIND_E_CESS_AMT"))).Text;
+                txtIGstAmt.Text = ((Label)(row.FindControl("lblIND_SH_CESS_AMT"))).Text;
+                CalculateGST();
             }
 
         }
@@ -1502,7 +1632,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                     for (int i = 0; i < ((DataTable)ViewState["dt2"]).Rows.Count; i++)
                     {
                         //result = CommonClasses.Execute1("INSERT INTO INVOICE_DETAIL(IND_INM_CODE,IND_I_CODE,IND_CPOM_CODE,IND_INQTY,IND_RATE,IND_AMT,IND_SUBHEADING,IND_BACHNO,IND_NO_PACK,IND_PAK_QTY,IND_EX_AMT,IND_E_CESS_AMT,IND_SH_CESS_AMT,IND_REFUNDABLE_QTY,IND_PACK_DESC) values ('" + Code + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["AMT"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_SUBHEADING"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_BACHNO"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_NO_PACK"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_PAK_QTY"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_EX_AMT"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_E_CESS_AMT"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_SH_CESS_AMT"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_PACK_DESC"] + "')");
-                        result = CommonClasses.Execute1("INSERT INTO INVOICE_DETAIL(IND_INM_CODE,IND_I_CODE,IND_CPOM_CODE,IND_INQTY,IND_RATE,IND_CON_QTY,IND_PROCESS_CODE,IND_ACT_WEIGHT) values ('" + Code + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_CON_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_PROCESS_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["ACT_WGHT"] + "')");
+                        result = CommonClasses.Execute1("INSERT INTO INVOICE_DETAIL(IND_INM_CODE,IND_I_CODE,IND_CPOM_CODE,IND_INQTY,IND_RATE,IND_CON_QTY,IND_PROCESS_CODE,IND_ACT_WEIGHT,IND_HSN_CODE,E_BASIC_CentralT,E_EDU_CESS_State,E_H_EDU_Integrated,IND_EX_AMT,IND_E_CESS_AMT,IND_SH_CESS_AMT) values ('" + Code + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_CON_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_PROCESS_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["ACT_WGHT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_HSN_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_BASIC_CentralT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_EDU_CESS_State"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_H_EDU_Integrated"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_EX_AMT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_E_CESS_AMT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_SH_CESS_AMT"] + "')");
                         //CommonClasses.Execute("update CUSTPO_DETAIL set CPOD_DISPACH = CPOD_DISPACH + " +  ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + " where CPOD_CPOM_CODE='" +  ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "' and CPOD_I_CODE='" +  ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "'");
 
                         if (!chkIsSuppliement.Checked)
@@ -1580,7 +1710,7 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
                         for (int i = 0; i < ((DataTable)ViewState["dt2"]).Rows.Count; i++)
                         {
 
-                            result = CommonClasses.Execute1("INSERT INTO INVOICE_DETAIL (IND_INM_CODE,IND_I_CODE,IND_CPOM_CODE,IND_INQTY,IND_RATE,IND_CON_QTY,IND_PROCESS_CODE,IND_ACT_WEIGHT) values ('" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_CON_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_PROCESS_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["ACT_WGHT"] + "')");
+                            result = CommonClasses.Execute1("INSERT INTO INVOICE_DETAIL (IND_INM_CODE,IND_I_CODE,IND_CPOM_CODE,IND_INQTY,IND_RATE,IND_CON_QTY,IND_PROCESS_CODE,IND_ACT_WEIGHT,IND_HSN_CODE,E_BASIC_CentralT,E_EDU_CESS_State,E_H_EDU_Integrated,IND_EX_AMT,IND_E_CESS_AMT,IND_SH_CESS_AMT) values ('" + Convert.ToInt32(ViewState["mlCode"].ToString()) + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_I_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["PO_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["INV_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["RATE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_CON_QTY"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_PROCESS_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["ACT_WGHT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_HSN_CODE"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_BASIC_CentralT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_EDU_CESS_State"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["E_H_EDU_Integrated"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_EX_AMT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_E_CESS_AMT"] + "','" + ((DataTable)ViewState["dt2"]).Rows[i]["IND_SH_CESS_AMT"] + "')");
 
                             if (result == true)
                             {
@@ -1745,6 +1875,8 @@ public partial class Transactions_ADD_DispatchToSubCon : System.Web.UI.Page
             {
                 txtConvertQty.Text = txtVQty.Text;
             }
+
+            CalculateGST();
         }
         catch (Exception)
         {
