@@ -125,6 +125,11 @@
                                                 <HeaderStyle HorizontalAlign="Left" />
                                                 <ItemStyle HorizontalAlign="Left" />
                                             </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="P_CODE" SortExpression="P_CODE" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblP_CODE" CssClass="formlabel" runat="server" Text='<%# Bind("P_CODE") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Supplier Name" SortExpression="INM_CODE" HeaderStyle-HorizontalAlign="Left">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblP_NAME" runat="server" Text='<%# Eval("P_NAME") %>'></asp:Label>

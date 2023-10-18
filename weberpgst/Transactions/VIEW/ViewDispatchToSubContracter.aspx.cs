@@ -39,6 +39,7 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
                         {
                             dtFilter.Columns.Add(new System.Data.DataColumn("INM_CODE", typeof(String)));
                             dtFilter.Columns.Add(new System.Data.DataColumn("INM_NO", typeof(String)));
+                            dtFilter.Columns.Add(new System.Data.DataColumn("P_CODE", typeof(String)));
                             dtFilter.Columns.Add(new System.Data.DataColumn("P_NAME", typeof(String)));
                             dtFilter.Columns.Add(new System.Data.DataColumn("INM_DATE", typeof(String)));
 
@@ -66,7 +67,7 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
         {
             DataTable dt = new DataTable();
 
-            dt = CommonClasses.Execute("select P_NAME,INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE from INVOICE_MASTER,PARTY_MASTER where INVOICE_MASTER.ES_DELETE=0 and INM_P_CODE=P_CODE  and INM_CM_CODE=" + (string)Session["CompanyCode"] + " and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
+            dt = CommonClasses.Execute("select P_CODE,P_NAME,INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE from INVOICE_MASTER,PARTY_MASTER where INVOICE_MASTER.ES_DELETE=0 and INM_P_CODE=P_CODE  and INM_CM_CODE=" + (string)Session["CompanyCode"] + " and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
             dgInvoiceDettail.DataSource = dt;
             dgInvoiceDettail.DataBind();
             if (dgInvoiceDettail.Rows.Count > 0)
@@ -161,8 +162,9 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
 
                         string varName1 = ((Label)row.FindControl("lblINM_DATE")).Text; //this store the  value in varName1
 
+                        string PartyCode = ((Label)row.FindControl("lblP_CODE")).Text;
                         //string inv_no = ((Label)(row.FindControl("lblINM_NO"))).Text;
-                        dtcheck = CommonClasses.Execute(" SELECT *  FROM CHALLAN_STOCK_LEDGER where CL_DOC_TYPE='IWIAP' AND CL_CH_NO IN (SELECT  CL_CH_NO  FROM CHALLAN_STOCK_LEDGER  WHERE CL_DOC_TYPE='OutSUBINM' AND  CL_DOC_ID='" + Index + "'  ) AND CL_DATE='" + Convert.ToDateTime(varName1).ToString("dd/MMM/yyyy") + "'");
+                dtcheck = CommonClasses.Execute(" SELECT *  FROM CHALLAN_STOCK_LEDGER where CL_P_CODE='" + PartyCode + "' AND  CL_DOC_TYPE='IWIAP' AND CL_CH_NO IN (SELECT  CL_CH_NO  FROM CHALLAN_STOCK_LEDGER  WHERE CL_DOC_TYPE='OutSUBINM' AND  CL_DOC_ID='" + Index + "'  ) AND CL_DATE='" + Convert.ToDateTime(varName1).ToString("dd/MMM/yyyy") + "'");
                         if (dtcheck.Rows.Count > 0)
                         {
                             PanelMsg.Visible = true;
@@ -243,7 +245,8 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
                     DataTable dtcheck = new DataTable();
                     string inv_code = ((Label)(dgInvoiceDettail.Rows[e.RowIndex].FindControl("lblINM_CODE"))).Text;
                     string inv_no = ((Label)(dgInvoiceDettail.Rows[e.RowIndex].FindControl("lblINM_NO"))).Text;
-                    dtcheck = CommonClasses.Execute(" SELECT *  FROM CHALLAN_STOCK_LEDGER where CL_DOC_TYPE='IWIAP' AND CL_CH_NO='" + inv_no + "'");
+                    string inv_Date = ((Label)(dgInvoiceDettail.Rows[e.RowIndex].FindControl("lblINM_DATE"))).Text;
+                    dtcheck = CommonClasses.Execute(" SELECT *  FROM CHALLAN_STOCK_LEDGER where CL_DOC_TYPE='IWIAP' AND CL_CH_NO='" + inv_no + "'  AND CL_DOC_DATE>'" + inv_Date + "'");
                     if (dtcheck.Rows.Count > 0)
                     {
                         PanelMsg.Visible = true;
@@ -374,9 +377,9 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
             DataTable dtfilter = new DataTable();
 
             if (txtString.Text != "")
-                dtfilter = CommonClasses.Execute("SELECT INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE,P_NAME FROM INVOICE_MASTER,PARTY_MASTER WHERE INM_P_CODE=P_CODE and INVOICE_MASTER.INM_CM_CODE= '" + Convert.ToInt32(Session["CompanyCode"]) + "' AND INVOICE_MASTER.ES_DELETE='0' and (INM_NO like upper('%" + str + "%') OR convert(varchar,INM_DATE,106) like upper('%" + str + "%') OR upper(P_NAME) like upper('%" + str + "%')) and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
+                dtfilter = CommonClasses.Execute("SELECT INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE,P_CODE,P_NAME FROM INVOICE_MASTER,PARTY_MASTER WHERE INM_P_CODE=P_CODE and INVOICE_MASTER.INM_CM_CODE= '" + Convert.ToInt32(Session["CompanyCode"]) + "' AND INVOICE_MASTER.ES_DELETE='0' and (INM_NO like upper('%" + str + "%') OR convert(varchar,INM_DATE,106) like upper('%" + str + "%') OR upper(P_NAME) like upper('%" + str + "%')) and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
             else
-                dtfilter = CommonClasses.Execute("SELECT INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE,P_NAME FROM INVOICE_MASTER,PARTY_MASTER WHERE INM_P_CODE=P_CODE and INVOICE_MASTER.INM_CM_CODE= '" + Convert.ToInt32(Session["CompanyCode"]) + "' AND INVOICE_MASTER.ES_DELETE='0' and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
+                dtfilter = CommonClasses.Execute("SELECT INM_CODE,INM_NO,convert(varchar,INM_DATE,106) as INM_DATE,P_CODE,P_NAME FROM INVOICE_MASTER,PARTY_MASTER WHERE INM_P_CODE=P_CODE and INVOICE_MASTER.INM_CM_CODE= '" + Convert.ToInt32(Session["CompanyCode"]) + "' AND INVOICE_MASTER.ES_DELETE='0' and INM_TYPE='OUTSUBINM' order by INM_CODE DESC");
 
             if (dtfilter.Rows.Count > 0)
             {
@@ -391,6 +394,7 @@ public partial class Transactions_VIEW_ViewDispatchToSubContracter : System.Web.
                 {
                     dtFilter.Columns.Add(new System.Data.DataColumn("INM_CODE", typeof(String)));
                     dtFilter.Columns.Add(new System.Data.DataColumn("INM_NO", typeof(String)));
+                    dtFilter.Columns.Add(new System.Data.DataColumn("P_CODE", typeof(String)));
                     dtFilter.Columns.Add(new System.Data.DataColumn("P_NAME", typeof(String)));
                     dtFilter.Columns.Add(new System.Data.DataColumn("INM_DATE", typeof(String)));
 
