@@ -76,6 +76,8 @@
                                     
                                       <li id="Li4" visible="true" runat="server"><a id="A9" href="#" onserverclick="Einv_click"
                                     runat="server"><i class="fa fa-tasks"></i>E Invoice</a> </li>
+                                    <li id="Li8" runat="server"><a id="A11" href="../../Utility/VIEW/ViewDatabaseBackup.aspx"
+                                    runat="server"><i class="fa fa-tasks"></i>Database Backup Utility</a> </li>
                             </ul>
                         </div>
                     </div>
